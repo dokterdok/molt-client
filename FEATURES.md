@@ -1,4 +1,4 @@
-# Moltzerzer Features
+﻿# Moltzer Features
 
 Complete documentation of all Moltzer features, keyboard shortcuts, and settings.
 
@@ -35,7 +35,7 @@ Complete documentation of all Moltzer features, keyboard shortcuts, and settings
 
 ### Rich Markdown Rendering
 
-Molt supports full GitHub-flavored markdown:
+Moltzer supports full GitHub-flavored markdown:
 
 **Text formatting:**
 - **Bold** (`**text**`)
@@ -47,7 +47,7 @@ Molt supports full GitHub-flavored markdown:
 ````markdown
 ```python
 def hello_world():
-    print("Hello from Molt!")
+    print("Hello from Moltzer!")
 ```
 ````
 
@@ -600,7 +600,7 @@ Extended reasoning mode that allows Claude to "think" before responding.
 ### Planned for v1.2
 - [ ] Voice output (TTS)
 - [ ] System tray integration
-- [ ] Global hotkey (show/hide Molt)
+- [ ] Global hotkey (show/hide Moltzer)
 - [ ] Multi-window support
 - [ ] Conversation sharing
 
@@ -631,7 +631,7 @@ Extended reasoning mode that allows Claude to "think" before responding.
 - Planned for v1.2
 
 **Context limits:**
-- Managed by Gateway, not Molt
+- Managed by Gateway, not Moltzer
 - No visual indicator of context usage
 - Planned for v1.1
 

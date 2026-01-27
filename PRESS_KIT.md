@@ -1,4 +1,4 @@
-# 🦞 Moltzer Press Kit
+﻿# 🦞 Moltzer Press Kit
 
 **Last Updated:** January 2025  
 **Version:** 1.0
@@ -22,15 +22,15 @@
 ### Primary Logo (Full)
 ```
 📁 assets/brand/
-├── molt-logo-full.svg          # Vector (scalable)
-├── molt-logo-full-dark.svg     # For light backgrounds
-├── molt-logo-full-light.svg    # For dark backgrounds
-├── molt-logo-full.png          # 1200x400 @ 2x
-└── molt-logo-full-300.png      # 300x100 (web use)
+├── Moltzer-logo-full.svg          # Vector (scalable)
+├── Moltzer-logo-full-dark.svg     # For light backgrounds
+├── Moltzer-logo-full-light.svg    # For dark backgrounds
+├── Moltzer-logo-full.png          # 1200x400 @ 2x
+└── Moltzer-logo-full-300.png      # 300x100 (web use)
 ```
 
 **Design Specifications:**
-- Icon (🦞 lobster) + "Molt" wordmark
+- Icon (🦞 lobster) + "Moltzer" wordmark
 - Horizontal layout
 - Minimum size: 120px width
 - Clear space: 1x icon height on all sides
@@ -38,13 +38,13 @@
 ### Icon Only
 ```
 📁 assets/brand/
-├── molt-icon.svg               # Vector
-├── molt-icon-512.png           # 512x512 (high-res)
-├── molt-icon-256.png           # 256x256
-├── molt-icon-128.png           # 128x128
-├── molt-icon-64.png            # 64x64 (favicon)
-├── molt-icon-32.png            # 32x32 (favicon)
-└── molt-icon-16.png            # 16x16 (favicon)
+├── Moltzer-icon.svg               # Vector
+├── Moltzer-icon-512.png           # 512x512 (high-res)
+├── Moltzer-icon-256.png           # 256x256
+├── Moltzer-icon-128.png           # 128x128
+├── Moltzer-icon-64.png            # 64x64 (favicon)
+├── Moltzer-icon-32.png            # 32x32 (favicon)
+└── Moltzer-icon-16.png            # 16x16 (favicon)
 ```
 
 **Icon Design:**
@@ -165,7 +165,7 @@
 
 | Trait | Description | Example |
 |-------|-------------|---------|
-| **Capable** | Confident, competent, reliable | "Molt handles your AI conversations effortlessly" |
+| **Capable** | Confident, competent, reliable | "Moltzer handles your AI conversations effortlessly" |
 | **Clean** | Minimal, focused, uncluttered | "One app. Every AI. Zero bloat." |
 | **Clever** | Smart, witty (not silly), precise | "Shed the browser tabs. Embrace the shell." |
 | **Approachable** | Friendly, not corporate | "Your AI deserves a better home." |
@@ -194,7 +194,7 @@
 
 **Product Description:**
 - ✅ "Moltzer is a native desktop client for chatting with Claude, GPT, and other AI models. It's fast, lightweight, and keeps your conversations private."
-- ❌ "Molt leverages cutting-edge AI technology to provide an unparalleled conversational experience powered by next-generation language models."
+- ❌ "Moltzer leverages cutting-edge AI technology to provide an unparalleled conversational experience powered by next-generation language models."
 
 **Error Messages:**
 - ✅ "Couldn't connect to the AI. Check your internet and try again."
@@ -219,7 +219,7 @@
 
 ### What is Moltzer?
 
-**Moltzerzer** is a native desktop application that provides a ChatGPT-style interface for chatting with multiple AI models (Claude, GPT, Gemini, and more). Unlike browser-based or Electron apps, Moltzer uses native OS technologies for blazing-fast performance and minimal resource usage.
+**Moltzer** is a native desktop application that provides a ChatGPT-style interface for chatting with multiple AI models (Claude, GPT, Gemini, and more). Unlike browser-based or Electron apps, Moltzer uses native OS technologies for blazing-fast performance and minimal resource usage.
 
 ### The Problem
 
@@ -396,7 +396,7 @@ David is a software engineer and AI enthusiast based in Switzerland. He created 
 ├── feature-keyboard.png        # Keyboard shortcuts overlay
 ├── feature-search.png          # Search results highlight
 ├── feature-themes.png          # Dark/Light mode split view
-├── infographic-why-molt.png    # Problem/Solution visual
+├── infographic-why-Moltzer.png    # Problem/Solution visual
 └── comparison-chart.png        # vs competitors table
 ```
 
@@ -419,15 +419,15 @@ David is a software engineer and AI enthusiast based in Switzerland. He created 
 
 **FOR IMMEDIATE RELEASE**
 
-### Moltzerzer Launches: The First Native Desktop Client Supporting All Major AI Models
+### Moltzer Launches: The First Native Desktop Client Supporting All Major AI Models
 
 *New open-source app brings ChatGPT, Claude, and Gemini together in a single, lightning-fast interface*
 
-**[CITY, DATE]** — Today marks the launch of **Moltzerzer**, a revolutionary native desktop application that unifies the AI chat experience. For the first time, users can access ChatGPT, Claude, Gemini, and other leading AI models from a single, blazing-fast desktop client.
+**[CITY, DATE]** — Today marks the launch of **Moltzer**, a revolutionary native desktop application that unifies the AI chat experience. For the first time, users can access ChatGPT, Claude, Gemini, and other leading AI models from a single, blazing-fast desktop client.
 
 Unlike browser-based alternatives or resource-heavy Electron apps, Moltzer uses Tauri technology to deliver native performance. The result: a ~10MB download that uses just ~50MB of RAM—a fraction of competing solutions.
 
-**"I built Moltzer because I was tired of juggling browser tabs and watching my laptop slow down,"** said David de Wit, creator of Molt. **"Power users deserve a tool that's as fast and focused as they are."**
+**"I built Moltzer because I was tired of juggling browser tabs and watching my laptop slow down,"** said David de Wit, creator of Moltzer. **"Power users deserve a tool that's as fast and focused as they are."**
 
 #### Key Features:
 
@@ -442,7 +442,7 @@ Unlike browser-based alternatives or resource-heavy Electron apps, Moltzer uses 
 Moltzer is available today as a free, open-source download from GitHub:  
 **https://github.com/dokterdok/moltzer-client/releases**
 
-#### About Molt:
+#### About Moltzer:
 
 Moltzer is an open-source desktop application designed for professionals who rely on AI daily. Built with Tauri and React, it represents a new generation of lightweight, privacy-respecting AI tools.
 
@@ -489,7 +489,7 @@ https://moltzer.dev/press
 ### From the Creator
 
 > "The best AI tool is the one that gets out of your way. Moltzer is invisible until you need it, then lightning-fast when you do."
-> — David de Wit, Creator of Molt
+> — David de Wit, Creator of Moltzer
 
 > "I'm not building the next ChatGPT. I'm building the best way to *use* ChatGPT—and Claude, and Gemini, and whatever comes next."
 > — David de Wit
@@ -499,7 +499,7 @@ https://moltzer.dev/press
 
 ### For Attribution
 
-> "Molt represents a new category: the AI client. As AI models become commoditized, the interface layer becomes increasingly valuable."
+> "Moltzer represents a new category: the AI client. As AI models become commoditized, the interface layer becomes increasingly valuable."
 
 > "Privacy isn't a feature—it's a right. Moltzer keeps your conversations on your device, encrypted, where they belong."
 
@@ -574,7 +574,7 @@ https://moltzer.dev/press
 
 Hi [Host Name],
 
-I'm David, creator of Molt—the first native desktop app that lets you chat with ChatGPT, Claude, and Gemini in one interface.
+I'm David, creator of Moltzer—the first native desktop app that lets you chat with ChatGPT, Claude, and Gemini in one interface.
 
 **Why your audience would care:**
 - [Tailored angle based on podcast]
@@ -649,7 +649,7 @@ https://github.com/dokterdok/moltzer-client
 
 **Tweet 2:**
 ```
-Why I built Molt:
+Why I built Moltzer:
 
 I was drowning in browser tabs. ChatGPT here, Claude there, Gemini somewhere else.
 
@@ -662,7 +662,7 @@ So I built it.
 
 **Tweet 3:**
 ```
-The tech behind Molt:
+The tech behind Moltzer:
 
 • Tauri (Rust) — not Electron
 • ~50MB RAM vs ~500MB
@@ -705,7 +705,7 @@ Star us on GitHub: github.com/dokterdok/moltzer-client
 
 **Short & punchy:**
 ```
-🦞 Just shipped Molt
+🦞 Just shipped Moltzer
 
 ChatGPT + Claude + Gemini in one native app
 
@@ -729,7 +729,7 @@ Native speed. Local encryption. Actually fast.
 
 **Technical audience:**
 ```
-New OSS project: Molt
+New OSS project: Moltzer
 
 A multi-model AI chat client built with:
 • Tauri v2 (Rust backend)
@@ -867,20 +867,20 @@ Free for Windows, macOS, and Linux.
 ```
 Hey Product Hunt! 👋
 
-I'm David, creator of Molt. I built this because I was frustrated with the AI tool experience:
+I'm David, creator of Moltzer. I built this because I was frustrated with the AI tool experience:
 
 1. Too many browser tabs (ChatGPT, Claude, Gemini...)
 2. Electron apps eating my RAM
 3. No good way to search across conversations
 4. Privacy concerns with cloud-stored chats
 
-Molt solves all of these with a native-speed, privacy-first approach.
+Moltzer solves all of these with a native-speed, privacy-first approach.
 
 I'd love your feedback! Especially interested in:
 - What features would make you switch?
 - Any models or integrations you'd want supported?
 
-And yes, the name "Molt" is a play on "multi-model" + the lobster emoji represents shedding (molting) the old browser-based experience. 🦞
+And yes, the name "Moltzer" is a play on "multi-model" + the lobster emoji represents shedding (Moltzering) the old browser-based experience. 🦞
 
 Happy to answer any questions!
 ```
@@ -1004,10 +1004,10 @@ Would love feedback from fellow Claude users!
 ### r/LocalLLaMA
 
 ```
-**Title:** Molt: Native AI chat client with planned Ollama/local model support
+**Title:** Moltzer: Native AI chat client with planned Ollama/local model support
 
 **Body:**
-Just launched Molt, a native desktop chat client built with Tauri.
+Just launched Moltzer, a native desktop chat client built with Tauri.
 
 Currently supports cloud models (GPT, Claude, Gemini), but local model support is on the roadmap.
 

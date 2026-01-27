@@ -72,9 +72,11 @@ interface Store {
 
   // Conversations
   conversations: Conversation[];
+  conversationsLoading: boolean;
   currentConversationId: string | null;
   currentConversation: Conversation | null;
   
+  setConversationsLoading: (loading: boolean) => void;
   createConversation: () => Conversation;
   selectConversation: (id: string) => void;
   deleteConversation: (id: string) => void;
@@ -121,6 +123,7 @@ export const useStore = create<Store>()((set, get) => ({
 
       // Conversations
       conversations: [],
+      conversationsLoading: false,
       currentConversationId: null,
       currentStreamingMessageId: null,
 
@@ -128,6 +131,8 @@ export const useStore = create<Store>()((set, get) => ({
         const state = get();
         return state.conversations.find((c) => c.id === state.currentConversationId) || null;
       },
+
+      setConversationsLoading: (loading) => set({ conversationsLoading: loading }),
 
       createConversation: () => {
         const conversation: Conversation = {

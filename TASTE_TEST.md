@@ -1,4 +1,4 @@
-# 🦞 TASTE TEST: Would the Masters Ship This?
+﻿# 🦞 TASTE TEST: Would the Masters Ship This?
 
 **Date:** 2025-01-29  
 **Verdict:** 🟡 **Almost, but not yet.**
@@ -125,7 +125,7 @@ code({ node, inline, className, children, ...props }: any) {
 
 ```typescript
 // Token leaking to localStorage during onboarding
-localStorage.setItem('molt-onboarding-progress', JSON.stringify({
+localStorage.setItem('Moltzer-onboarding-progress', JSON.stringify({
   gatewayToken: trimmedToken,  // OOPS - meant for keychain only!
 }));
 ```

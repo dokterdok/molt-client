@@ -1,4 +1,4 @@
-# Moltzerzer client - Product Roadmap
+﻿# Moltzer client - Product Roadmap
 
 **Last updated:** 2025-01-23  
 **Status:** Pre-release (1.0.0-dev)
@@ -358,7 +358,7 @@
 ### Browser Extension
 
 - [ ] **Chrome/Firefox Extension**
-  - Right-click → "Ask Molt"
+  - Right-click → "Ask Moltzer"
   - Sidebar chat overlay
   - Page context injection
   - Sync with desktop app
@@ -377,7 +377,7 @@
   - Inline code suggestions
 
 - [ ] **Productivity Tools**
-  - Calendar integration (Molt joins meetings)
+  - Calendar integration (Moltzer joins meetings)
   - Email assistant (draft replies)
   - Task manager integration (Todoist, Asana)
   - Note-taking apps (Notion, Obsidian)
@@ -386,7 +386,7 @@
   - Slack bot
   - Discord bot
   - Microsoft Teams integration
-  - Email gateway (email → Molt)
+  - Email gateway (email → Moltzer)
 
 ### Enterprise Features
 
@@ -490,8 +490,8 @@ This roadmap is a living document. Contributions welcome!
 Have thoughts on this roadmap? Let us know!
 
 - GitHub Discussions: [Roadmap Discussion](https://github.com/dokterdok/moltzer-client/discussions)
-- Discord: [Moltzer Community](https://discord.gg/molt) *(placeholder)*
-- Email: feedback@molt.app *(placeholder)*
+- Discord: [Moltzer Community](https://discord.gg/Moltzer) *(placeholder)*
+- Email: feedback@Moltzer.app *(placeholder)*
 
 ---
 

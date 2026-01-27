@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+﻿import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ChatInput } from './ChatInput';
@@ -91,9 +91,9 @@ describe('ChatInput', () => {
       render(<ChatInput onSend={mockOnSend} />);
       
       const input = screen.getByPlaceholderText('Message Moltzer...');
-      await user.type(input, 'Hello, Molt!');
+      await user.type(input, 'Hello, Moltzer!');
       
-      expect(input).toHaveValue('Hello, Molt!');
+      expect(input).toHaveValue('Hello, Moltzer!');
     });
 
     it('should call onSend when Enter is pressed', async () => {

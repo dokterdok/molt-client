@@ -1,5 +1,5 @@
-/**
- * Persistence layer for Molt Client
+﻿/**
+ * Persistence layer for Moltzer Client
  * 
  * Integrates:
  * - IndexedDB storage via Dexie

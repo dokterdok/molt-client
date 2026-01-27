@@ -1,4 +1,4 @@
-# Demo Mode & Frictionless Onboarding Design
+﻿# Demo Mode & Frictionless Onboarding Design
 
 ## Executive Summary
 
@@ -12,13 +12,13 @@
 
 ### Current Flow
 ```
-User downloads Molt
+User downloads Moltzer
         ↓
 Must set up Gateway (requires Node.js, npm, CLI)
         ↓
 Configure API keys, ports, security
         ↓
-Finally can use Molt
+Finally can use Moltzer
 ```
 
 ### Pain Points

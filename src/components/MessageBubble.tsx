@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, KeyboardEvent, ReactNode, isValidElement } from "react";
+﻿import { useState, useRef, useEffect, KeyboardEvent, ReactNode, isValidElement } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeHighlight from "rehype-highlight";
@@ -117,7 +117,7 @@ export function MessageBubble({ message, onEdit, onRegenerate, isLastAssistantMe
       onMouseEnter={() => setShowTimestamp(true)}
       onMouseLeave={() => setShowTimestamp(false)}
       role="article"
-      aria-label={`Message from ${isUser ? "You" : "Molt"}`}
+      aria-label={`Message from ${isUser ? "You" : "Moltzer"}`}
     >
       {/* Avatar */}
       <div
@@ -140,7 +140,7 @@ export function MessageBubble({ message, onEdit, onRegenerate, isLastAssistantMe
         {/* Header */}
         <div className="flex items-center gap-2 mb-1">
           <span className="text-sm font-medium">
-            {isUser ? "You" : "Molt"}
+            {isUser ? "You" : "Moltzer"}
           </span>
           <span 
             className={cn(
@@ -403,7 +403,7 @@ function TypingIndicator() {
           aria-hidden="true"
         />
       ))}
-      <span className="sr-only">Molt is typing...</span>
+      <span className="sr-only">Moltzer is typing...</span>
     </div>
   );
 }

@@ -38,7 +38,7 @@ Think of it as "ChatGPT for Clawdbot" — but better, because it's yours.
 
 **Already have Clawdbot Gateway running?**
 
-1. **[Download Moltzerzer](https://github.com/dokterdok/moltzer-client/releases)** for your platform
+1. **[Download Moltzer](https://github.com/dokterdok/moltzer-client/releases)** for your platform
 2. **Launch the app** and enter your Gateway URL (usually `ws://localhost:18789`)
 3. **Start chatting!** Press **⌘N** (Mac) or **Ctrl+N** (Windows/Linux) for a new conversation
 
@@ -134,7 +134,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed build instructions.
 
 ### First Launch
 
-1. **Launch Moltzerzer** — The app will guide you through initial setup
+1. **Launch Moltzer** — The app will guide you through initial setup
 
 2. **Configure Gateway connection:**
    - Enter Gateway URL (e.g., `ws://localhost:18789`)
@@ -432,7 +432,7 @@ MIT License — see [LICENSE](LICENSE) for details.
 
 ## 🙏 Acknowledgments
 
-- **[Clawdbot](https://github.com/clawdbot/clawdbot)** — The AI gateway powering Moltzerzer
+- **[Clawdbot](https://github.com/clawdbot/clawdbot)** — The AI gateway powering Moltzer
 - **[Tauri](https://tauri.app/)** — Making native apps lightweight again
 - **[Anthropic](https://anthropic.com/)** — Claude API
 - The open source community

@@ -1,4 +1,4 @@
-# NEXT_FEATURES.md - Feature Prioritization & Design
+﻿# NEXT_FEATURES.md - Feature Prioritization & Design
 
 **Analysis Date:** 2025-01-28  
 **Status:** Ready for implementation
@@ -262,7 +262,7 @@ regenerateLastResponse: (conversationId: string) => {
   updatePersistedConversation(conversationId, { messages: newMessages });
 
   // Re-send last user message (trigger in App.tsx via event)
-  window.dispatchEvent(new CustomEvent('molt:regenerate', { 
+  window.dispatchEvent(new CustomEvent('Moltzer:regenerate', { 
     detail: { conversationId, message: conversation.messages[lastUserMessageIndex] }
   }));
 }
@@ -314,8 +314,8 @@ useEffect(() => {
     }
   };
 
-  window.addEventListener('molt:regenerate', handleRegenerate);
-  return () => window.removeEventListener('molt:regenerate', handleRegenerate);
+  window.addEventListener('Moltzer:regenerate', handleRegenerate);
+  return () => window.removeEventListener('Moltzer:regenerate', handleRegenerate);
 }, [currentConversationId]);
 ```
 
@@ -358,7 +358,7 @@ describe('regenerateLastResponse', () => {
 
   it('should dispatch regenerate event', () => {
     const eventSpy = vi.fn();
-    window.addEventListener('molt:regenerate', eventSpy);
+    window.addEventListener('Moltzer:regenerate', eventSpy);
     
     const store = useStore.getState();
     const conv = store.createConversation();

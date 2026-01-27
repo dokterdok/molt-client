@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Conversation Export Utilities
  * 
  * Converts conversations to various export formats:
@@ -271,7 +271,7 @@ export function toHTML(conversation: Conversation, options: Partial<ExportOption
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>${escapeHtml(conversation.title)} - Molt Export</title>
+  <title>${escapeHtml(conversation.title)} - Moltzer Export</title>
   <style>
     :root {
       --bg: #ffffff;
@@ -335,7 +335,7 @@ export function toHTML(conversation: Conversation, options: Partial<ExportOption
     ${messagesHtml}
   </div>
   <div class="footer">
-    Exported from Molt on ${formatTimestamp(new Date())}
+    Exported from Moltzer on ${formatTimestamp(new Date())}
   </div>
 </body>
 </html>`;

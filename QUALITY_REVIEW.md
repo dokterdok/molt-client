@@ -1,4 +1,4 @@
-# Moltzerzer client - Quality Review Report
+﻿# Moltzer client - Quality Review Report
 
 **Generated:** 2025-01-29  
 **Reviewer:** Subagent deep-review-quality  
@@ -613,7 +613,7 @@ Output: 'aaa<asacaraiapata>aaalaearata(a"axasasa")a<a/asacaraiapata>aaa'
 if (parsed.gatewayToken) {
   await setGatewayToken(parsed.gatewayToken);
   delete parsed.gatewayToken;
-  localStorage.setItem('molt-settings', JSON.stringify(parsed));
+  localStorage.setItem('Moltzer-settings', JSON.stringify(parsed));
 }
 ```
 

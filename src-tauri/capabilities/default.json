@@ -1,7 +1,7 @@
-{
+﻿{
   "$schema": "../gen/schemas/desktop-schema.json",
   "identifier": "default",
-  "description": "Default capabilities for Molt Client",
+  "description": "Default capabilities for Moltzer Client",
   "windows": ["main"],
   "permissions": [
     "core:default",

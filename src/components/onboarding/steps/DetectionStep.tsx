@@ -29,17 +29,13 @@ export function DetectionStep({ onGatewayFound, onNoGateway, onSkip }: Detection
   // Track if detection has already run to prevent double-execution
   const hasRunRef = useRef(false);
 
-  console.log('[DetectionStep] Render');
-
   const autoDetectGateway = useCallback(async () => {
     // Prevent running twice
     if (hasRunRef.current) {
-      console.log('[DetectionStep] Detection already ran, skipping');
       return;
     }
     hasRunRef.current = true;
     
-    console.log('[DetectionStep] Starting auto-detection...');
     setError(null);
     
     const commonUrls = [

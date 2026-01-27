@@ -1,4 +1,4 @@
-# Moltzerzer client Architecture
+﻿# Moltzer client Architecture
 
 ## Overview
 
@@ -24,7 +24,7 @@ Moltzer client is designed to operate in two distinct modes:
 ┌─────────────────────────────────────────────────────────────────────┐
 │                           TEAM MODE                                  │
 │  ┌─────────────┐         ┌─────────────┐         ┌─────────────┐   │
-│  │ Moltzer client │ ──WS──► │Molt Backend │ ──WS──► │   Gateway   │   │
+│  │ Moltzer client │ ──WS──► │Moltzer Backend │ ──WS──► │   Gateway   │   │
 │  │  (Tauri)    │         │  (proxy)    │         │             │   │
 │  └─────────────┘         └─────────────┘         └─────────────┘   │
 │                                │                        │           │
@@ -580,7 +580,7 @@ moltzer-client/
 │       └── ...
 └── ...
 
-molt-backend/                 # Separate repo for team backend
+Moltzer-backend/                 # Separate repo for team backend
 ├── src/
 │   ├── api/                  # REST endpoints
 │   ├── ws/                   # WebSocket handler

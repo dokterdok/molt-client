@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+﻿import { test, expect } from '@playwright/test';
 
 /**
  * E2E Tests: Onboarding Flow
@@ -17,7 +17,7 @@ test.describe('Onboarding Flow', () => {
     await page.goto('/');
     
     // Should show welcome message
-    await expect(page.getByText(/Welcome to Molt/i)).toBeVisible();
+    await expect(page.getByText(/Welcome to Moltzer/i)).toBeVisible();
   });
 
   test('should detect local Gateway automatically', async ({ page }) => {
@@ -97,7 +97,7 @@ test.describe('Onboarding Flow', () => {
       await getStartedButton.click();
       
       // Should navigate to main chat view
-      await expect(page.getByPlaceholder(/Message Molt/i)).toBeVisible({ timeout: 5000 });
+      await expect(page.getByPlaceholder(/Message Moltzer/i)).toBeVisible({ timeout: 5000 });
     }
   });
 
@@ -125,7 +125,7 @@ test.describe('Onboarding Flow', () => {
     await page.reload();
     
     // Should not show onboarding again
-    await expect(page.getByText(/Welcome to Molt/i)).not.toBeVisible({ timeout: 5000 });
+    await expect(page.getByText(/Welcome to Moltzer/i)).not.toBeVisible({ timeout: 5000 });
   });
 
   test('should show feature tour during onboarding', async ({ page }) => {

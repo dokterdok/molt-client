@@ -1,4 +1,4 @@
-# Analytics & Telemetry Design for Moltzer
+﻿# Analytics & Telemetry Design for Moltzer
 
 ## Executive Summary
 
@@ -738,7 +738,7 @@ pub fn run() {
 import { trackEvent } from '@aptabase/tauri';
 
 // Analytics wrapper with consent check
-class MoltAnalytics {
+class MoltzerAnalytics {
   private enabled = false;
   
   async init() {
@@ -787,7 +787,7 @@ class MoltAnalytics {
 }
 
 // Export singleton
-export const analytics = new MoltAnalytics();
+export const analytics = new MoltzerAnalytics();
 ```
 
 ### 6.2 Integration Points
@@ -1048,7 +1048,7 @@ function hashStack(stack?: string): string {
 ## Appendix A: Privacy Policy Template
 
 ```markdown
-# Moltzerzer Privacy Policy
+# Moltzer Privacy Policy
 
 Last updated: [DATE]
 

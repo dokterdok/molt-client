@@ -1,4 +1,4 @@
-# 🚀 Moltzer Growth Strategy
+﻿# 🚀 Moltzer Growth Strategy
 
 **Document Version:** 1.0  
 **Last Updated:** 2025-01-27  
@@ -58,7 +58,7 @@ Research shows people share apps when they:
 - Get unexpectedly delighted (surprise factor)
 - Join a tribe (identity signaling)
 
-**Moltzerzer's strongest angle:** "Look how small/fast this is" (developer flex)
+**Moltzer's strongest angle:** "Look how small/fast this is" (developer flex)
 
 ---
 
@@ -84,7 +84,7 @@ Research shows people share apps when they:
 **Recommendation:** Defer to v2.0. Focus on export features first.
 
 **Alternative: Local Sharing**
-- Generate encrypted .molt file
+- Generate encrypted .Moltzer file
 - Recipient opens in Moltzer
 - No server needed
 - Preserves privacy positioning
@@ -134,7 +134,7 @@ Research shows people share apps when they:
 │  └─────────────────────────┘   │
 │                                 │
 │         ─────────────────       │
-│         Made with Moltzerzer          │
+│         Made with Moltzer          │
 └─────────────────────────────────┘
 ```
 
@@ -153,7 +153,7 @@ Research shows people share apps when they:
 **Options:**
 - On by default, can be disabled
 - Small, tasteful logo in corner
-- Links to Moltzerzer.dev when clicked (in supported contexts)
+- Links to Moltzer.dev when clicked (in supported contexts)
 
 **Key insight:** Don't make it obnoxious. Subtle = classy = tech cred.
 
@@ -163,7 +163,7 @@ Research shows people share apps when they:
 
 ### 3.1 Usage Stats in App
 
-**Description:** Show aggregate Moltzer usage ("Molt users have sent X messages").
+**Description:** Show aggregate Moltzer usage ("Moltzer users have sent X messages").
 
 | Aspect | Assessment |
 |--------|------------|
@@ -234,12 +234,12 @@ Research shows people share apps when they:
 |-----------|--------|----------------|
 | **Early feature access** | Exclusivity | Beta channel for referrers |
 | **Name in credits** | Recognition | Contributors.md, About dialog |
-| **Discord/community role** | Status | "Molt Ambassador" role |
+| **Discord/community role** | Status | "Moltzer Ambassador" role |
 | **Custom themes** | Personalization | Unlock theme packs |
 | **Swag** (at scale) | Physical | Stickers, t-shirts |
 
 **Recommendation:** Start with recognition-based incentives:
-- "Molt Ambassadors" who bring 3+ users get special Discord role
+- "Moltzer Ambassadors" who bring 3+ users get special Discord role
 - Top contributors get name in app credits
 - Save swag for when there's budget
 
@@ -262,7 +262,7 @@ Research shows people share apps when they:
 **Better approach:** Make sharing natural, not forced.
 
 **Instead of "Invite Friends" button:**
-- One-click tweet: "Been using @MoltClient - 10MB native AI chat. Way better than Electron bloat."
+- One-click tweet: "Been using @MoltzerClient - 10MB native AI chat. Way better than Electron bloat."
 - Easy screenshot/export (covered above)
 - Shareable config files for team setup
 
@@ -302,12 +302,12 @@ Research shows people share apps when they:
 **Why this works:**
 - No backend needed (GitHub repo of .json files)
 - Users contribute prompts, get recognition
-- Import prompts from others = discover Molt
+- Import prompts from others = discover Moltzer
 - "Made with Moltzer" in prompt metadata
 
 **Implementation:**
 ```
-1. Official repo: github.com/molt/prompts
+1. Official repo: github.com/Moltzer/prompts
 2. In-app "Browse Prompts" (fetches from repo)
 3. One-click import
 4. Submit your own via PR
@@ -334,7 +334,7 @@ Research shows people share apps when they:
 - Deep integration with Clawdbot team
 - Featured in Clawdbot docs as recommended client
 - Co-marketing efforts
-- Bundled installer option (Molt + Gateway)
+- Bundled installer option (Moltzer + Gateway)
 
 ---
 
@@ -355,7 +355,7 @@ Research on viral dev tool tweets:
 **High-potential tweets:**
 ```
 "Electron apps: 300MB, 500MB RAM
-Molt: 10MB, 50MB RAM
+Moltzer: 10MB, 50MB RAM
 
 Same features. Native performance.
 
@@ -373,7 +373,7 @@ This is what Tauri makes possible."
 Own your AI conversations. 🦞"
 ```
 
-### 6.2 "Molt Tip of the Day"
+### 6.2 "Moltzer Tip of the Day"
 
 **Description:** Daily tips/tricks shared on social.
 
@@ -436,7 +436,7 @@ Own your AI conversations. 🦞"
 - [ ] File attachment UI removed or working
 - [ ] Landing page live (moltzer.dev)
 - [ ] README polished with GIFs
-- [ ] Social accounts created (@MoltClient)
+- [ ] Social accounts created (@MoltzerClient)
 - [ ] Discord/community ready
 
 ### 7.2 Product Hunt Launch
@@ -540,7 +540,7 @@ Would love feedback, especially on:
 
 ### 7.5 Twitter/X Strategy
 
-**Account:** @MoltClient
+**Account:** @MoltzerClient
 
 **Launch tweets (thread):**
 ```
@@ -719,7 +719,7 @@ Discovery (HN/PH/Reddit/Twitter)
       [Loop]
 ```
 
-**Key insight:** The viral loop has a bottleneck—Clawdbot Gateway requirement. Users can't casually try Molt.
+**Key insight:** The viral loop has a bottleneck—Clawdbot Gateway requirement. Users can't casually try Moltzer.
 
 **Solution for v2.0:** Demo mode with limited free tier or sandbox Gateway.
 
@@ -736,7 +736,7 @@ Discovery (HN/PH/Reddit/Twitter)
 | Jan.ai | Local LLMs | Gateway flexibility, encryption |
 | Msty | Local/API both | Tauri (smaller), Clawdbot integration |
 
-**Moltzerzer's moat:** Native performance + privacy + Clawdbot ecosystem
+**Moltzer's moat:** Native performance + privacy + Clawdbot ecosystem
 
 ---
 

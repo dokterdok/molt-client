@@ -1,4 +1,4 @@
-# Moltzerzer client Onboarding Flow
+﻿# Moltzer client Onboarding Flow
 
 ## Overview
 World-class first-launch experience inspired by Linear, Notion, and Arc browser.
@@ -48,9 +48,9 @@ World-class first-launch experience inspired by Linear, Notion, and Arc browser.
 ## First Launch Detection
 
 ```typescript
-const onboardingCompleted = localStorage.getItem('molt-onboarding-completed');
-const onboardingSkipped = localStorage.getItem('molt-onboarding-skipped');
-const hasSettings = localStorage.getItem('molt-settings');
+const onboardingCompleted = localStorage.getItem('Moltzer-onboarding-completed');
+const onboardingSkipped = localStorage.getItem('Moltzer-onboarding-skipped');
+const hasSettings = localStorage.getItem('Moltzer-settings');
 
 if (!onboardingCompleted && !onboardingSkipped && !hasSettings) {
   showOnboarding();
@@ -77,9 +77,9 @@ if (!showOnboarding) {
 **Testing:**
 - Clear localStorage to trigger onboarding again:
   ```javascript
-  localStorage.removeItem('molt-onboarding-completed');
-  localStorage.removeItem('molt-onboarding-skipped');
-  localStorage.removeItem('molt-settings');
+  localStorage.removeItem('Moltzer-onboarding-completed');
+  localStorage.removeItem('Moltzer-onboarding-skipped');
+  localStorage.removeItem('Moltzer-settings');
   ```
 
 ## Files

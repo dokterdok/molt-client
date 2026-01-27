@@ -1,4 +1,4 @@
-# Moltzerzer Setup Guide
+﻿# Moltzer Setup Guide
 
 Complete guide to installing and configuring Moltzer and Clawdbot Gateway.
 
@@ -8,9 +8,9 @@ Complete guide to installing and configuring Moltzer and Clawdbot Gateway.
 
 - [Prerequisites](#prerequisites)
 - [Installing Clawdbot Gateway](#installing-clawdbot-gateway)
-- [Installing Molt](#installing-molt)
-- [Configuring Gateway for Moltzer](#configuring-gateway-for-molt)
-- [Connecting Moltzer to Gateway](#connecting-molt-to-gateway)
+- [Installing Moltzer](#installing-Moltzer)
+- [Configuring Gateway for Moltzer](#configuring-gateway-for-Moltzer)
+- [Connecting Moltzer to Gateway](#connecting-Moltzer-to-gateway)
 - [Troubleshooting](#troubleshooting)
 - [Advanced Configuration](#advanced-configuration)
 
@@ -20,7 +20,7 @@ Complete guide to installing and configuring Moltzer and Clawdbot Gateway.
 
 ### System Requirements
 
-**Moltzerzer client:**
+**Moltzer client:**
 - **macOS:** 10.15 (Catalina) or later
 - **Windows:** Windows 10 or later
 - **Linux:** Modern distro with WebKit2GTK 4.1+
@@ -43,7 +43,7 @@ Complete guide to installing and configuring Moltzer and Clawdbot Gateway.
 
 ## Installing Clawdbot Gateway
 
-Molt requires a running Clawdbot Gateway instance. Follow these steps to install it.
+Moltzer requires a running Clawdbot Gateway instance. Follow these steps to install it.
 
 ### Option 1: Using npm (Recommended)
 
@@ -110,23 +110,23 @@ npm start
 
 ---
 
-## Installing Molt
+## Installing Moltzer
 
 ### macOS
 
 **Method 1: Download .dmg**
 1. Go to [Releases](https://github.com/dokterdok/moltzer-client/releases)
-2. Download `Molt-1.0.0.dmg`
+2. Download `Moltzer-1.0.0.dmg`
 3. Open the .dmg file
 4. Drag Moltzer to Applications folder
-5. Launch Moltzerzer from Applications
+5. Launch Moltzer from Applications
 
 **Method 2: Homebrew** *(if available)*
 ```bash
 brew install moltzer-client
 ```
 
-**Note:** First launch may show "Molt cannot be opened because the developer cannot be verified"
+**Note:** First launch may show "Moltzer cannot be opened because the developer cannot be verified"
 - Right-click Moltzer → Open → Open anyway
 - This only needs to be done once
 
@@ -134,13 +134,13 @@ brew install moltzer-client
 
 **Method 1: Download .msi installer**
 1. Go to [Releases](https://github.com/dokterdok/moltzer-client/releases)
-2. Download `Molt-1.0.0.msi`
+2. Download `Moltzer-1.0.0.msi`
 3. Run the installer
 4. Follow the installation wizard
-5. Launch Moltzerzer from Start Menu
+5. Launch Moltzer from Start Menu
 
 **Method 2: Portable .exe**
-1. Download `Molt-1.0.0.exe`
+1. Download `Moltzer-1.0.0.exe`
 2. No installation needed — just run it!
 
 **Note:** Windows Defender may show a warning (unsigned app)
@@ -151,20 +151,20 @@ brew install moltzer-client
 **Method 1: AppImage** *(Recommended)*
 ```bash
 # Download AppImage
-wget https://github.com/dokterdok/moltzer-client/releases/download/v1.0.0/Molt-1.0.0.AppImage
+wget https://github.com/dokterdok/moltzer-client/releases/download/v1.0.0/Moltzer-1.0.0.AppImage
 
 # Make executable
-chmod +x Molt-1.0.0.AppImage
+chmod +x Moltzer-1.0.0.AppImage
 
 # Run
-./Molt-1.0.0.AppImage
+./Moltzer-1.0.0.AppImage
 ```
 
 **Method 2: .deb (Debian/Ubuntu)**
 ```bash
-wget https://github.com/dokterdok/moltzer-client/releases/download/v1.0.0/Molt-1.0.0.deb
-sudo dpkg -i Molt-1.0.0.deb
-molt
+wget https://github.com/dokterdok/moltzer-client/releases/download/v1.0.0/Moltzer-1.0.0.deb
+sudo dpkg -i Moltzer-1.0.0.deb
+Moltzer
 ```
 
 **Method 3: Build from source**
@@ -176,7 +176,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for build instructions.
 
 ### Basic Configuration
 
-Molt works with default Gateway settings out-of-the-box. No special configuration needed!
+Moltzer works with default Gateway settings out-of-the-box. No special configuration needed!
 
 ### Custom Port
 
@@ -204,7 +204,7 @@ clawdbot gateway restart
 ```
 
 **Update Moltzer settings:**
-- Open Moltzerzer → Settings
+- Open Moltzer → Settings
 - Change Gateway URL to `ws://localhost:8080`
 
 ### Enable/Disable Authentication
@@ -301,7 +301,7 @@ If you skipped onboarding or need to reconnect:
 
 ### Automatic Protocol Detection
 
-Molt automatically tries both `ws://` and `wss://` if one fails:
+Moltzer automatically tries both `ws://` and `wss://` if one fails:
 
 - Enter `ws://example.com:18789`
 - If connection fails, Moltzer tries `wss://example.com:18789`
@@ -313,7 +313,7 @@ Molt automatically tries both `ws://` and `wss://` if one fails:
 
 ## Troubleshooting
 
-### Moltzerzer won't connect to Gateway
+### Moltzer won't connect to Gateway
 
 **Symptoms:**
 - "Connection lost" banner
@@ -401,15 +401,15 @@ tail -f ~/.config/clawdbot/logs/gateway.log
     }
     ```
 
-### Moltzerzer crashes on startup
+### Moltzer crashes on startup
 
 **macOS:**
 ```bash
 # Check for crash reports
-ls ~/Library/Logs/DiagnosticReports/Molt*
+ls ~/Library/Logs/DiagnosticReports/Moltzer*
 
 # Run from terminal to see errors
-/Applications/Molt.app/Contents/MacOS/Molt
+/Applications/Moltzer.app/Contents/MacOS/Moltzer
 ```
 
 **Windows:**
@@ -418,16 +418,16 @@ ls ~/Library/Logs/DiagnosticReports/Molt*
 eventvwr.msc
 
 # Run from PowerShell
-& "C:\Program Files\Molt\Molt.exe"
+& "C:\Program Files\Moltzer\Moltzer.exe"
 ```
 
 **Linux:**
 ```bash
 # Run from terminal
-./Molt-1.0.0.AppImage
+./Moltzer-1.0.0.AppImage
 
 # Check system logs
-journalctl -xe | grep molt
+journalctl -xe | grep Moltzer
 ```
 
 ### Messages not encrypting
@@ -467,7 +467,7 @@ journalctl -xe | grep molt
    - Windows/Linux: **Ctrl+Shift+I**
 
 2. Go to Application → Storage → IndexedDB
-3. Look for "MoltDB"
+3. Look for "MoltzerDB"
 4. Check if conversations and messages exist
 
 **Rebuild index:**
@@ -504,7 +504,7 @@ wss://gateway.example.com
 
 ### Multiple Gateway Profiles
 
-Molt stores settings per OS user. To use multiple Gateways:
+Moltzer stores settings per OS user. To use multiple Gateways:
 
 1. **Create separate OS user accounts**
 2. **Or manually switch settings:**
@@ -520,12 +520,12 @@ Override default config via environment variables:
 # macOS/Linux
 export moltzer_GATEWAY_URL="ws://localhost:8080"
 export moltzer_GATEWAY_TOKEN="your-token-here"
-./Molt-1.0.0.AppImage
+./Moltzer-1.0.0.AppImage
 
 # Windows PowerShell
 $env:moltzer_GATEWAY_URL="ws://localhost:8080"
 $env:moltzer_GATEWAY_TOKEN="your-token-here"
-& "C:\Program Files\Molt\Molt.exe"
+& "C:\Program Files\Moltzer\Moltzer.exe"
 ```
 
 ### Developer Tools
@@ -534,11 +534,11 @@ Enable developer tools for debugging:
 
 ```bash
 # macOS/Linux
-moltzer_DEVTOOLS=1 ./Molt-1.0.0.AppImage
+moltzer_DEVTOOLS=1 ./Moltzer-1.0.0.AppImage
 
 # Windows
 $env:moltzer_DEVTOOLS=1
-& "C:\Program Files\Molt\Molt.exe"
+& "C:\Program Files\Moltzer\Moltzer.exe"
 ```
 
 Then press **⌘⌥I** (Mac) or **Ctrl+Shift+I** (Windows/Linux)

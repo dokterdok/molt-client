@@ -40,24 +40,18 @@ export function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
   );
   const [gatewayToken, setGatewayToken] = useState("");
 
-  // Debug: Log current step on every render
-  console.log('[OnboardingFlow] Render - currentStep:', currentStep);
-
   // Restore progress on mount
   useEffect(() => {
-    console.log('[OnboardingFlow] Mount - checking saved progress');
     const savedProgress = localStorage.getItem('moltzer-onboarding-progress');
     if (savedProgress) {
       try {
         const progress: OnboardingProgress = JSON.parse(savedProgress);
-        console.log('[OnboardingFlow] Found saved progress:', progress);
         // If saved within last 24 hours, restore
         if (Date.now() - progress.timestamp < 24 * 60 * 60 * 1000) {
           if (progress.gatewayUrl) setGatewayUrl(progress.gatewayUrl);
           // Token is NOT restored from localStorage - it's in keychain
           // Start at detection if we have partial progress
           if (progress.step === 'setup-started' || progress.step === 'detection-failed') {
-            console.log('[OnboardingFlow] Restoring to detection step');
             setCurrentStep('detection');
           }
         }
@@ -69,10 +63,8 @@ export function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
 
   // Stable transition function
   const transitionTo = useCallback((nextStep: OnboardingStep) => {
-    console.log('[OnboardingFlow] transitionTo called:', nextStep);
     setIsAnimating(true);
     setTimeout(() => {
-      console.log('[OnboardingFlow] Setting currentStep to:', nextStep);
       setCurrentStep(nextStep);
       setIsAnimating(false);
     }, 150);
@@ -80,14 +72,12 @@ export function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
 
   // All callbacks wrapped in useCallback for stability
   const handleSkip = useCallback(() => {
-    console.log('[OnboardingFlow] handleSkip called');
     // Mark onboarding as skipped (not completed)
     localStorage.setItem("moltzer-onboarding-skipped", "true");
     onComplete();
   }, [onComplete]);
 
   const handleComplete = useCallback(() => {
-    console.log('[OnboardingFlow] handleComplete called');
     // Mark onboarding as fully completed
     localStorage.setItem("moltzer-onboarding-completed", "true");
     localStorage.removeItem("moltzer-onboarding-skipped");
@@ -95,14 +85,12 @@ export function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
   }, [onComplete]);
 
   const handleGatewayFound = useCallback((url: string) => {
-    console.log('[OnboardingFlow] handleGatewayFound called with:', url);
     setGatewayUrl(url);
     // Skip directly to success when auto-detected
     transitionTo("success");
   }, [transitionTo]);
 
   const handleNoGateway = useCallback(() => {
-    console.log('[OnboardingFlow] handleNoGateway called');
     // Save progress
     localStorage.setItem('moltzer-onboarding-progress', JSON.stringify({
       step: 'detection-failed',
@@ -112,12 +100,10 @@ export function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
   }, [transitionTo]);
 
   const handleRetryDetection = useCallback(() => {
-    console.log('[OnboardingFlow] handleRetryDetection called');
     transitionTo("detection");
   }, [transitionTo]);
 
   const handleManualSetup = useCallback(() => {
-    console.log('[OnboardingFlow] handleManualSetup called');
     // Save progress (token NOT stored in localStorage - security)
     localStorage.setItem('moltzer-onboarding-progress', JSON.stringify({
       step: 'setup-started',
@@ -128,32 +114,26 @@ export function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
   }, [transitionTo, gatewayUrl]);
 
   const handleWelcomeNext = useCallback(() => {
-    console.log('[OnboardingFlow] handleWelcomeNext called');
     transitionTo("detection");
   }, [transitionTo]);
 
   const handleBackToWelcome = useCallback(() => {
-    console.log('[OnboardingFlow] handleBackToWelcome called');
     transitionTo("welcome");
   }, [transitionTo]);
 
   const handleBackToNoGateway = useCallback(() => {
-    console.log('[OnboardingFlow] handleBackToNoGateway called');
     transitionTo("no-gateway");
   }, [transitionTo]);
 
   const handleSetupSuccess = useCallback(() => {
-    console.log('[OnboardingFlow] handleSetupSuccess called');
     transitionTo("success");
   }, [transitionTo]);
 
   const handleSuccessNext = useCallback(() => {
-    console.log('[OnboardingFlow] handleSuccessNext called');
     transitionTo("tour");
   }, [transitionTo]);
 
   const handleExplainerNext = useCallback(() => {
-    console.log('[OnboardingFlow] handleExplainerNext called');
     transitionTo("setup");
   }, [transitionTo]);
 
@@ -161,7 +141,6 @@ export function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape" && currentStep !== "complete") {
-        console.log('[OnboardingFlow] Escape pressed, skipping');
         handleSkip();
       }
     };

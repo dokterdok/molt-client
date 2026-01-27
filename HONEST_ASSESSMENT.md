@@ -1,4 +1,4 @@
-# Moltzerzer - Brutally Honest Assessment
+﻿# Moltzer - Brutally Honest Assessment
 
 **Date:** 2025-01-27  
 **Reviewer:** Claude (subagent)  
@@ -132,7 +132,7 @@ pub async fn get_models(...) -> Result<Vec<ModelInfo>, String> {
 ### 🚨 Security Concern: Token in localStorage
 ```tsx
 // GatewaySetupStep.tsx
-localStorage.setItem('molt-onboarding-progress', JSON.stringify({
+localStorage.setItem('Moltzer-onboarding-progress', JSON.stringify({
   step: 'setup-complete',
   gatewayUrl: actualUrl,
   gatewayToken: trimmedToken,  // <-- OOPS
@@ -211,7 +211,7 @@ README promises these shortcuts:
 
 1. **Verify Gateway Protocol**
    - Get actual Clawdbot Gateway docs
-   - Compare with Moltzerzer's expected format
+   - Compare with Moltzer's expected format
    - Could be completely incompatible
 
 2. **Fix get_models**

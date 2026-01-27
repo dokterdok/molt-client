@@ -1,9 +1,9 @@
-# Competitive Analysis: AI Chat Clients
+﻿# Competitive Analysis: AI Chat Clients
 *Research conducted: January 2025*
 
 ## Executive Summary
 
-This document analyzes the competitive landscape for **Moltzerzer**, focusing on the two dominant AI chat clients: **ChatGPT** (OpenAI) and **Claude** (Anthropic). Based on user feedback from X/Twitter, feature analysis, and UX research, this report identifies critical features, differentiation opportunities, and scope recommendations.
+This document analyzes the competitive landscape for **Moltzer**, focusing on the two dominant AI chat clients: **ChatGPT** (OpenAI) and **Claude** (Anthropic). Based on user feedback from X/Twitter, feature analysis, and UX research, this report identifies critical features, differentiation opportunities, and scope recommendations.
 
 ---
 
@@ -203,7 +203,7 @@ These are **non-negotiable**. Without them, users will immediately reject the ap
 9. **Context preservation** - Don't lose thread in long conversations
 10. **Clear error messages** - Tell users what went wrong and how to fix it
 
-### 4.2 Features That Would Differentiate Molt
+### 4.2 Features That Would Differentiate Moltzer
 
 These are **unique selling points** that competitors don't have:
 
@@ -257,7 +257,7 @@ These would be **distractions** from core value:
 - Lightweight, fast desktop experience
 - More control over their AI interactions
 
-**Moltzerzer is the AI chat client that:**
+**Moltzer is the AI chat client that:**
 - Lets you use ANY model (GPT, Claude, Gemini, local)
 - Organizes conversations like a pro tool (folders, search, branches)
 - Runs faster and lighter than Electron competitors

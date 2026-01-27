@@ -1,14 +1,14 @@
-# Security Policy
+﻿# Security Policy
 
 ## 🔒 Security Overview
 
-Molt takes security and privacy seriously. This document outlines our security practices and how to report vulnerabilities.
+Moltzer takes security and privacy seriously. This document outlines our security practices and how to report vulnerabilities.
 
 ## 🛡️ Security Features
 
 ### End-to-End Encryption
 
-All conversations stored in Moltzerzer are encrypted using **AES-GCM 256-bit** encryption:
+All conversations stored in Moltzer are encrypted using **AES-GCM 256-bit** encryption:
 
 - **At Rest:** All messages in the local IndexedDB database are encrypted
 - **Master Key:** Stored securely in your OS's credential manager:
@@ -78,7 +78,7 @@ All conversations stored in Moltzerzer are encrypted using **AES-GCM 256-bit** e
 
 ### General Security
 
-- Download Moltzerzer only from official sources:
+- Download Moltzer only from official sources:
   - [GitHub Releases](https://github.com/dokterdok/moltzer-client/releases)
   - Official package managers (when available)
 - Verify checksums of downloaded binaries
@@ -144,7 +144,7 @@ Subscribe to **Watch → Custom → Security alerts** on GitHub to get notified.
 
 ## ✅ Security Audit
 
-Molt has not yet undergone a formal third-party security audit. If you're interested in sponsoring an audit, please reach out to security@moltzer.dev.
+Moltzer has not yet undergone a formal third-party security audit. If you're interested in sponsoring an audit, please reach out to security@moltzer.dev.
 
 ## 🙏 Acknowledgments
 

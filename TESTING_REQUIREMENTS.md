@@ -1,4 +1,4 @@
-# Moltzerzer Testing Requirements
+﻿# Moltzer Testing Requirements
 
 Comprehensive analysis of testing complexity for all Moltzer features.
 
@@ -38,7 +38,7 @@ test('should detect Gateway automatically', async ({ page }) => {
   await page.goto('/');
   await expect(page.getByText(/Looking for Gateway/i)).toBeVisible();
   // If Gateway is running, should proceed
-  await expect(page.getByPlaceholder(/Message Molt/i)).toBeVisible({ timeout: 10000 });
+  await expect(page.getByPlaceholder(/Message Moltzer/i)).toBeVisible({ timeout: 10000 });
 });
 
 // Test 2: Failure path (no Gateway)
@@ -296,7 +296,7 @@ test('should stream message response', async ({ page }) => {
   await page.goto('/');
   
   // Send message
-  const input = page.getByPlaceholder(/Message Molt/i);
+  const input = page.getByPlaceholder(/Message Moltzer/i);
   await input.fill('Hello!');
   await page.keyboard.press('Enter');
   
@@ -371,7 +371,7 @@ test('should create new conversation', async ({ page }) => {
   await page.getByRole('button', { name: /New Chat/i }).click();
   
   // Should show empty input
-  const input = page.getByPlaceholder(/Message Molt/i);
+  const input = page.getByPlaceholder(/Message Moltzer/i);
   await expect(input).toBeVisible();
   await expect(input).toHaveValue('');
 });
@@ -381,7 +381,7 @@ test('should delete conversation', async ({ page }) => {
   
   // Create test conversation
   const uniqueTitle = `Test Conv ${Date.now()}`;
-  await page.getByPlaceholder(/Message Molt/i).fill(uniqueTitle);
+  await page.getByPlaceholder(/Message Moltzer/i).fill(uniqueTitle);
   await page.keyboard.press('Enter');
   
   // Wait for message to appear
@@ -457,12 +457,12 @@ test('should filter conversations in sidebar', async ({ page }) => {
   await page.goto('/');
   
   // Create a few conversations with distinct names
-  await page.getByPlaceholder(/Message Molt/i).fill('Python tutorial');
+  await page.getByPlaceholder(/Message Moltzer/i).fill('Python tutorial');
   await page.keyboard.press('Enter');
   await page.waitForTimeout(500);
   
   await page.getByRole('button', { name: /New Chat/i }).click();
-  await page.getByPlaceholder(/Message Molt/i).fill('JavaScript guide');
+  await page.getByPlaceholder(/Message Moltzer/i).fill('JavaScript guide');
   await page.keyboard.press('Enter');
   
   // Filter by "Python"
@@ -487,7 +487,7 @@ test('should search across all messages', async ({ page }) => {
   await searchInput.fill('test query');
   
   // Should show results or "no results" message
-  const results = page.getByRole('button').filter({ hasText: /You|Molt/ });
+  const results = page.getByRole('button').filter({ hasText: /You|Moltzer/ });
   const noResults = page.getByText(/No results found/i);
   
   // One or the other should be visible
@@ -585,7 +585,7 @@ test('should persist settings across reload', async ({ page }) => {
 
 ### Notes
 
-- Settings stored in localStorage (key: `molt-settings`)
+- Settings stored in localStorage (key: `Moltzer-settings`)
 - Gateway token stored separately in OS keychain (not in settings)
 - Settings schema defined in Zustand store
 - Theme applies immediately without reload (but persists across restarts)
@@ -601,7 +601,7 @@ test('should persist settings across reload', async ({ page }) => {
 **Manual Steps:**
 1. **Verify Encryption:**
    - Send a message
-   - Open browser DevTools → IndexedDB → MoltDB → messages
+   - Open browser DevTools → IndexedDB → MoltzerDB → messages
    - Verify `content` field is base64 gibberish (encrypted)
 2. **Verify Decryption:**
    - Reload app
@@ -627,7 +627,7 @@ test('should encrypt messages in IndexedDB', async ({ page }) => {
   
   // Send a message
   const uniqueMsg = `Secret message ${Date.now()}`;
-  await page.getByPlaceholder(/Message Molt/i).fill(uniqueMsg);
+  await page.getByPlaceholder(/Message Moltzer/i).fill(uniqueMsg);
   await page.keyboard.press('Enter');
   
   // Wait for message to be saved
@@ -635,7 +635,7 @@ test('should encrypt messages in IndexedDB', async ({ page }) => {
   
   // Check IndexedDB
   const encryptedContent = await page.evaluate(async (msg) => {
-    const db = await (window as any).indexedDB.open('MoltDB');
+    const db = await (window as any).indexedDB.open('MoltzerDB');
     const tx = db.transaction('messages', 'readonly');
     const store = tx.objectStore('messages');
     const messages = await store.getAll();
@@ -656,7 +656,7 @@ test('should decrypt messages on load', async ({ page }) => {
   
   // Send message
   const testMsg = `Test ${Date.now()}`;
-  await page.getByPlaceholder(/Message Molt/i).fill(testMsg);
+  await page.getByPlaceholder(/Message Moltzer/i).fill(testMsg);
   await page.keyboard.press('Enter');
   
   // Reload page
@@ -822,7 +822,7 @@ test('should send thinking parameter when enabled', async ({ page }) => {
   await page.getByRole('button', { name: /Save Changes/i }).click();
   
   // Send message
-  await page.getByPlaceholder(/Message Molt/i).fill('Solve a complex problem');
+  await page.getByPlaceholder(/Message Moltzer/i).fill('Solve a complex problem');
   await page.keyboard.press('Enter');
   
   // If Gateway supports thinking, should show thinking indicator
@@ -883,7 +883,7 @@ test('Cmd+N should create new conversation', async ({ page }) => {
   await page.keyboard.press('Control+n');
   
   // Should clear chat and focus input
-  const input = page.getByPlaceholder(/Message Molt/i);
+  const input = page.getByPlaceholder(/Message Moltzer/i);
   await expect(input).toBeFocused();
 });
 
@@ -906,7 +906,7 @@ test('Cmd+, should open settings', async ({ page }) => {
 test('Shift+Enter should add new line', async ({ page }) => {
   await page.goto('/');
   
-  const input = page.getByPlaceholder(/Message Molt/i);
+  const input = page.getByPlaceholder(/Message Moltzer/i);
   await input.fill('Line 1');
   await page.keyboard.press('Shift+Enter');
   await input.pressSequentially('Line 2');
@@ -1096,7 +1096,7 @@ test('should upload file attachment', async ({ page }) => {
 
 ### Notes
 
-- **NOT YET IMPLEMENTED** in Moltzerzer (UI exists, functionality planned for v1.1)
+- **NOT YET IMPLEMENTED** in Moltzer (UI exists, functionality planned for v1.1)
 - **PARKED FOR MANUAL REVIEW** with David
 - Requires Gateway support for multipart/form-data or base64 encoding
 - Security: validate file types, size limits
@@ -1127,7 +1127,7 @@ test('should render image in message', async ({ page }) => {
   await page.goto('/');
   
   // Send message with image markdown
-  await page.getByPlaceholder(/Message Molt/i).fill('![Test image](https://example.com/image.png)');
+  await page.getByPlaceholder(/Message Moltzer/i).fill('![Test image](https://example.com/image.png)');
   await page.keyboard.press('Enter');
   
   // Verify image element exists
@@ -1152,7 +1152,7 @@ test('should render image in message', async ({ page }) => {
 
 ### Notes
 
-- **NOT YET FULLY IMPLEMENTED** in Moltzerzer (markdown images might work, inline display TBD)
+- **NOT YET FULLY IMPLEMENTED** in Moltzer (markdown images might work, inline display TBD)
 - **PARKED FOR MANUAL REVIEW** with David
 - Consider lazy loading for performance
 - Accessibility: require alt text, keyboard navigation

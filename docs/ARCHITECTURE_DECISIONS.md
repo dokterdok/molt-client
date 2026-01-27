@@ -1,4 +1,4 @@
-# Architecture Decisions: Moltzer client vs Clawdbot Gateway
+﻿# Architecture Decisions: Moltzer client vs Clawdbot Gateway
 
 **Last updated:** 2026-01-27  
 **Purpose:** Define clear boundaries between client and server responsibilities based on Clawdbot Gateway capabilities
@@ -14,7 +14,7 @@ Clawdbot Gateway is a **feature-complete WebSocket server** that handles:
 - Message delivery across channels (WhatsApp, Telegram, Discord, etc.)
 - HTTP APIs (OpenAI-compatible, OpenResponses, Tools Invoke)
 
-**Moltzerzer client should be a thin UI layer** that focuses exclusively on:
+**Moltzer client should be a thin UI layer** that focuses exclusively on:
 - Chat interface and user experience
 - Local data caching for performance
 - OS-native integrations (keychain, notifications, menu bar)
@@ -91,7 +91,7 @@ Clawdbot Gateway is a **feature-complete WebSocket server** that handles:
 
 **Why:** These require access to system resources, secrets, or agent state that clients should never touch directly.
 
-### 2.2 SHOULD Be Client-Side (Molt)
+### 2.2 SHOULD Be Client-Side (Moltzer)
 
 | Responsibility | Rationale |
 |----------------|-----------|
@@ -249,14 +249,14 @@ interface SessionEntry {
 
 ### 4.2 Keep It Focused on Chat UX
 
-**Moltzerzer's job:**
+**Moltzer's job:**
 1. Connect to Gateway via WebSocket
 2. Send `chat.send` requests with user messages
 3. Stream responses and render them beautifully
 4. Cache conversations locally for speed
 5. Provide native OS integrations (keychain, notifications, menu bar)
 
-**Moltzerzer's philosophy:**
+**Moltzer's philosophy:**
 - **Thin client, fat server:** Let Gateway do the heavy lifting
 - **Zero secrets:** No API keys, no auth tokens (except gateway token in keychain)
 - **UI-first:** Invest in polish, not reimplementing Gateway features
@@ -415,7 +415,7 @@ These are **not required** for Moltzer to function but would improve the ecosyst
 
 ### 6.1 Operator Dashboard Integration
 
-**Use Case:** Desktop clients (Molt, macOS app) want embedded settings/status UI.
+**Use Case:** Desktop clients (Moltzer, macOS app) want embedded settings/status UI.
 
 **Current:** Gateway serves Control UI at `http://<host>:18789/`
 

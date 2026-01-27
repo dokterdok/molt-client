@@ -1,11 +1,11 @@
-import { test, expect } from '@playwright/test';
+﻿import { test, expect } from '@playwright/test';
 
 test.describe('Basic App Tests', () => {
   test('should load the app', async ({ page }) => {
     await page.goto('/');
     
     // Check that the app loaded (adjust selector based on your app)
-    await expect(page).toHaveTitle(/Molt/i);
+    await expect(page).toHaveTitle(/Moltzer/i);
   });
 
   test('should display chat interface', async ({ page }) => {

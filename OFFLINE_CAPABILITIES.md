@@ -1,4 +1,4 @@
-# Moltzerzer Offline & Local-First Capabilities
+﻿# Moltzer Offline & Local-First Capabilities
 
 > **Status:** Design Specification  
 > **Version:** 1.0  
@@ -801,7 +801,7 @@ class WebDAVAdapter implements SyncStorageAdapter {
   ) {}
   
   async getManifest(): Promise<SyncManifest | null> {
-    const response = await fetch(`${this.url}/molt/manifest.json`, {
+    const response = await fetch(`${this.url}/Moltzer/manifest.json`, {
       headers: this.authHeaders(),
     });
     if (!response.ok) return null;

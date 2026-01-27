@@ -1,4 +1,4 @@
-# Protocol Verification Report: Moltzer ↔ Clawdbot Gateway
+﻿# Protocol Verification Report: Moltzer ↔ Clawdbot Gateway
 
 **Date:** 2025-01-27  
 **Status:** 🔴 CRITICAL MISMATCHES FOUND
@@ -70,7 +70,7 @@ Moltzer's WebSocket implementation has several protocol mismatches with Clawdbot
        "minProtocol": 3,
        "maxProtocol": 3,
        "client": {
-         "id": "molt",
+         "id": "Moltzer",
          "version": "0.1.0",
          "platform": "windows|macos|linux",
          "mode": "operator"
@@ -82,7 +82,7 @@ Moltzer's WebSocket implementation has several protocol mismatches with Clawdbot
        "permissions": {},
        "auth": { "token": "..." },
        "locale": "en-US",
-       "userAgent": "molt/0.1.0"
+       "userAgent": "Moltzer/0.1.0"
      }
    }
    ```

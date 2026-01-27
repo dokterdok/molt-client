@@ -31,6 +31,7 @@ interface SidebarProps {
 export function Sidebar({ onToggle: _onToggle, onRerunSetup }: SidebarProps) {
   const {
     conversations,
+    conversationsLoading,
     currentConversationId,
     createConversation,
     selectConversation,
@@ -176,31 +177,41 @@ export function Sidebar({ onToggle: _onToggle, onRerunSetup }: SidebarProps) {
 
       {/* Conversation list */}
       <div className="flex-1 overflow-y-auto px-2 scrollbar-thin">
-        {pinnedConversations.length > 0 && (
-          <ConversationSection
-            title="Pinned"
-            conversations={pinnedConversations}
-            currentId={currentConversationId}
-            onSelect={selectConversation}
-            onDelete={deleteConversation}
-            onPin={pinConversation}
-            onExport={handleExport}
-          />
+        {conversationsLoading ? (
+          <div className="space-y-2 p-2">
+            {Array.from({ length: 5 }).map((_, i) => (
+              <ConversationSkeleton key={i} />
+            ))}
+          </div>
+        ) : (
+          <>
+            {pinnedConversations.length > 0 && (
+              <ConversationSection
+                title="Pinned"
+                conversations={pinnedConversations}
+                currentId={currentConversationId}
+                onSelect={selectConversation}
+                onDelete={deleteConversation}
+                onPin={pinConversation}
+                onExport={handleExport}
+              />
+            )}
+
+            {recentConversations.length > 0 && (
+              <ConversationSection
+                title="Recent"
+                conversations={recentConversations}
+                currentId={currentConversationId}
+                onSelect={selectConversation}
+                onDelete={deleteConversation}
+                onPin={pinConversation}
+                onExport={handleExport}
+              />
+            )}
+          </>
         )}
 
-        {recentConversations.length > 0 && (
-          <ConversationSection
-            title="Recent"
-            conversations={recentConversations}
-            currentId={currentConversationId}
-            onSelect={selectConversation}
-            onDelete={deleteConversation}
-            onPin={pinConversation}
-            onExport={handleExport}
-          />
-        )}
-
-        {filteredConversations.length === 0 && (
+        {!conversationsLoading && filteredConversations.length === 0 && (
           searchQuery ? (
             <EmptyState
               icon={<Search className="w-8 h-8" strokeWidth={1.5} />}

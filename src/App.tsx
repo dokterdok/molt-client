@@ -1,11 +1,11 @@
-import { useEffect, useState, useRef } from "react";
+﻿import { useEffect, useState, useRef } from "react";
 import { listen } from "@tauri-apps/api/event";
 import { invoke } from "@tauri-apps/api/core";
 import { Sidebar } from "./components/Sidebar";
 import { ChatView } from "./components/ChatView";
 import { WelcomeView } from "./components/WelcomeView";
 import { OnboardingFlow } from "./components/onboarding/OnboardingFlow";
-import { useStore } from "./stores/store";
+import { useStore, type ModelInfo } from "./stores/store";
 import { cn } from "./lib/utils";
 import { ToastContainer, useToast } from "./components/ui/toast";
 import { Spinner } from "./components/ui/spinner";
@@ -71,6 +71,9 @@ export default function App() {
         // Load settings from localStorage + keychain
         await useStore.getState().loadSettings();
         
+        // Set loading state for conversations
+        useStore.getState().setConversationsLoading(true);
+        
         // Load conversations from IndexedDB
         const { conversations } = await loadPersistedData();
 
@@ -82,6 +85,7 @@ export default function App() {
         console.error('Failed to load persisted data:', err);
         showError('Failed to load saved conversations');
       } finally {
+        useStore.getState().setConversationsLoading(false);
         setIsLoadingData(false);
       }
     };
@@ -257,7 +261,7 @@ export default function App() {
         }
         
         // Fetch available models after connection (non-blocking)
-        invoke<any[]>("get_models").then(models => {
+        invoke<ModelInfo[]>("get_models").then(models => {
           if (models && models.length > 0 && isMountedRef.current) {
             useStore.getState().setAvailableModels(models);
           }
@@ -364,7 +368,7 @@ export default function App() {
         setRetryNowFn(null);
         disconnectAttempts = 0;
         // Fetch models on connection (non-blocking)
-        invoke<any[]>("get_models").then(models => {
+        invoke<ModelInfo[]>("get_models").then(models => {
           if (models && models.length > 0 && eventListenerMounted) {
             useStore.getState().setAvailableModels(models);
           }
@@ -621,7 +625,7 @@ export default function App() {
               </svg>
             </button>
             <h1 className="font-semibold truncate select-none" data-tauri-drag-region>
-              {currentConversation?.title || "Molt"}
+              {currentConversation?.title || "Moltzer"}
             </h1>
           </div>
           

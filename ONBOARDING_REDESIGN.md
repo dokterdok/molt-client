@@ -1,4 +1,4 @@
-# Onboarding Redesign: No-Gateway Flow
+﻿# Onboarding Redesign: No-Gateway Flow
 
 ## Summary
 Enhanced Moltzer onboarding to better handle users who don't have Clawdbot Gateway installed yet.
@@ -81,7 +81,7 @@ Success    No-Gateway Screen (new)
 ### Progress Storage
 ```typescript
 // localStorage keys
-"molt-onboarding-progress" → {
+"Moltzer-onboarding-progress" → {
   step: "detection-failed" | "setup-started" | "setup-complete",
   gatewayUrl?: string,
   gatewayToken?: string,
@@ -92,13 +92,13 @@ Success    No-Gateway Screen (new)
 ## User Experience Improvements
 
 ### Before
-1. User opens Molt
+1. User opens Moltzer
 2. Asked to enter Gateway URL
 3. If Gateway not installed → confusing error, no guidance
 4. User stuck, doesn't know what Gateway is or how to get it
 
 ### After
-1. User opens Molt
+1. User opens Moltzer
 2. Automatic detection tries to find Gateway
 3. If found → instant connection, seamless
 4. If not found → clear explanation + installation guide
@@ -126,10 +126,10 @@ Start Gateway with:
 To test the onboarding flow:
 ```javascript
 // In browser console
-localStorage.removeItem('molt-onboarding-completed');
-localStorage.removeItem('molt-onboarding-skipped');
-localStorage.removeItem('molt-onboarding-progress');
-localStorage.removeItem('molt-settings');
+localStorage.removeItem('Moltzer-onboarding-completed');
+localStorage.removeItem('Moltzer-onboarding-skipped');
+localStorage.removeItem('Moltzer-onboarding-progress');
+localStorage.removeItem('Moltzer-settings');
 // Reload page
 ```
 

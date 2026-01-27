@@ -1,4 +1,4 @@
-# macOS Native Window Chrome Integration
+﻿# macOS Native Window Chrome Integration
 
 ## Overview
 
@@ -56,7 +56,7 @@ Used throughout the app to conditionally apply macOS-specific styling.
     data-tauri-drag-region
   >
     <span className="text-2xl select-none">🦞</span>
-    <span className="font-semibold text-lg select-none">Molt</span>
+    <span className="font-semibold text-lg select-none">Moltzer</span>
     {/* Connection status */}
   </div>
 </div>
@@ -93,7 +93,7 @@ Used throughout the app to conditionally apply macOS-specific styling.
   >
     {/* Sidebar toggle + title */}
     <h1 className="font-semibold select-none" data-tauri-drag-region>
-      {currentConversation?.title || "Molt"}
+      {currentConversation?.title || "Moltzer"}
     </h1>
   </div>
   

@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+﻿import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { MessageBubble } from './MessageBubble';
 import type { Message } from '../stores/store';
@@ -190,7 +190,7 @@ describe('MessageBubble', () => {
 
       render(<MessageBubble message={message} />);
       
-      expect(screen.getByText(/Molt is typing.../i)).toBeInTheDocument();
+      expect(screen.getByText(/Moltzer is typing.../i)).toBeInTheDocument();
     });
 
     it('should show streaming cursor when streaming with content', () => {

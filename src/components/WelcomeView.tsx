@@ -1,4 +1,4 @@
-import { useStore } from "../stores/store";
+﻿import { useStore } from "../stores/store";
 import { cn } from "../lib/utils";
 import { Plus, AlertTriangle, Cpu } from "lucide-react";
 import { Button } from "./ui/button";
@@ -6,7 +6,7 @@ import { Button } from "./ui/button";
 export function WelcomeView() {
   const { createConversation, addMessage, connected, settings, availableModels } = useStore();
 
-  // Molt-specific suggestions showcasing agentic capabilities
+  // Moltzer-specific suggestions showcasing agentic capabilities
   const suggestions = [
     {
       icon: "📅",
@@ -73,7 +73,7 @@ export function WelcomeView() {
             <span className="text-5xl drop-shadow-lg">🦞</span>
           </div>
           <h1 className="text-5xl font-bold bg-gradient-to-r from-orange-500 via-red-500 to-pink-500 bg-clip-text text-transparent mb-3">
-            Molt
+            Moltzer
           </h1>
           <p className="text-lg text-muted-foreground">
             Your AI that actually <span className="font-medium text-foreground">does things</span>

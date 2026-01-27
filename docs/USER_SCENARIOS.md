@@ -1,4 +1,4 @@
-# USER SCENARIOS: UX for Different Use Cases
+﻿# USER SCENARIOS: UX for Different Use Cases
 
 This document outlines optimal UX design for different Moltzer user personas and scenarios.
 
@@ -102,7 +102,7 @@ This document outlines optimal UX design for different Moltzer user personas and
      - **Advanced**: "Connect to local Gateway (recommended for teams)"
 3. **User chooses Quick Start**
 4. **API Key Screen**:
-   - Simple explanation: "Molt needs an AI provider. We support Anthropic, OpenAI, and others."
+   - Simple explanation: "Moltzer needs an AI provider. We support Anthropic, OpenAI, and others."
    - Drop-down: Select provider (Anthropic selected by default)
    - Input: "Paste your API key here"
    - Link: "Don't have one? Get an Anthropic key here →"
@@ -220,7 +220,7 @@ This document outlines optimal UX design for different Moltzer user personas and
    - Names conversation: Click title → "Neural Network History Research"
    - OR conversation auto-titled by AI
 5. **User takes break**:
-   - Closes Molt
+   - Closes Moltzer
 6. **Returns later**:
    - Conversation list shows "Neural Network History Research"
    - Opens it, continues
@@ -550,4 +550,4 @@ Install Gateway → Configure → Set up users → Monitor → Troubleshoot
 - **Complex things should be possible** (power user automates workflow)
 - **Expert things should be discoverable** (admin configures Gateway)
 
-Molt should feel as simple as a notepad for casual users, yet as powerful as a terminal for power users.
+Moltzer should feel as simple as a notepad for casual users, yet as powerful as a terminal for power users.

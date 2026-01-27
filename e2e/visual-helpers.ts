@@ -1,11 +1,11 @@
-import { Page, expect } from '@playwright/test';
+﻿import { Page, expect } from '@playwright/test';
 import * as fs from 'fs';
 import * as path from 'path';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 
 /**
- * Visual Testing Helpers for Molt E2E Tests
+ * Visual Testing Helpers for Moltzer E2E Tests
  * 
  * Provides utilities for consistent screenshot capture, comparison,
  * and visual verification across test flows.
@@ -103,8 +103,8 @@ export async function clearAppState(page: Page): Promise<void> {
 // Skip onboarding for tests that don't need it
 export async function skipOnboarding(page: Page): Promise<void> {
   await page.evaluate(() => {
-    localStorage.setItem('molt-onboarding-completed', 'true');
-    localStorage.setItem('molt-app-version', '1.0.0');
+    localStorage.setItem('Moltzer-onboarding-completed', 'true');
+    localStorage.setItem('Moltzer-app-version', '1.0.0');
   });
 }
 
@@ -116,7 +116,7 @@ export async function waitForAppReady(page: Page, options: { timeout?: number } 
   await Promise.race([
     page.waitForSelector('header', { timeout }),
     page.waitForSelector('[data-testid="onboarding"]', { timeout }).catch(() => null),
-    page.getByText(/Welcome to Molt/i).waitFor({ timeout }).catch(() => null),
+    page.getByText(/Welcome to Moltzer/i).waitFor({ timeout }).catch(() => null),
   ]);
 }
 

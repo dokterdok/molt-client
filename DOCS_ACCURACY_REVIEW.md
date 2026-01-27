@@ -1,4 +1,4 @@
-# Documentation Accuracy Review - Moltzer client
+﻿# Documentation Accuracy Review - Moltzer client
 
 **Review Date:** January 27, 2026  
 **Reviewer:** Subagent (deep-review-docs)  
@@ -95,7 +95,7 @@ the Moltzer documentation is generally accurate and well-written. Most technical
    - https://moltzer.dev (website likely doesn't exist)
    - support@moltzer.dev (email likely doesn't exist)
    - security@moltzer.dev (email likely doesn't exist)
-   - https://twitter.com/moltclient (social media likely doesn't exist)
+   - https://twitter.com/Moltzerclient (social media likely doesn't exist)
    ```
    - **FIX NEEDED:** Remove or replace with actual contact methods
 
@@ -159,7 +159,7 @@ the Moltzer documentation is generally accurate and well-written. Most technical
    - Config location `~/.config/clawdbot/clawdbot.json` ✅ (standard)
 
 4. **Auto Protocol Detection:**
-   - "Molt automatically tries both ws:// and wss://" ✅
+   - "Moltzer automatically tries both ws:// and wss://" ✅
    - Verified in `gateway.rs` `try_connect_with_fallback()` function
 
 ### ⚠️ Inaccurate / Problematic
@@ -429,7 +429,7 @@ the Moltzer documentation is generally accurate and well-written. Most technical
 
 4. **Security Audit:**
    ```markdown
-   "Molt has not yet undergone a formal third-party security audit"
+   "Moltzer has not yet undergone a formal third-party security audit"
    ```
    - ✅ HONEST admission
    - **ACCURATE**
@@ -494,7 +494,7 @@ All installation methods in README.md and SETUP.md assume published releases:
 ❌ Download from GitHub Releases
 ❌ winget install Moltzer.Client
 ❌ brew install moltzer-client
-❌ sudo dpkg -i Molt-1.0.0.deb
+❌ sudo dpkg -i Moltzer-1.0.0.deb
 ❌ Download .dmg / .msi / .AppImage
 ```
 
@@ -528,7 +528,7 @@ This WORKS ✅ and should be the main installation method until releases are pub
 **In README.md:**
 - `https://github.com/dokterdok/moltzer-client` - Likely wrong ❌
 - `https://moltzer.dev` - Likely doesn't exist ❌
-- `https://twitter.com/moltclient` - Likely doesn't exist ❌
+- `https://twitter.com/Moltzerclient` - Likely doesn't exist ❌
 - `support@moltzer.dev` - Likely doesn't exist ❌
 
 **In SETUP.md:**

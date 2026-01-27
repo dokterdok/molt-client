@@ -1,11 +1,11 @@
-import { test, expect, Page } from '@playwright/test';
+﻿import { test, expect, Page } from '@playwright/test';
 import * as fs from 'fs';
 import * as path from 'path';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 
 /**
- * Visual E2E Testing System for Molt
+ * Visual E2E Testing System for Moltzer
  * 
  * Tests the app like a real user - screenshots at each step, analyze, take action.
  * Screenshots are saved to e2e/screenshots/ for visual inspection and comparison.
@@ -133,14 +133,14 @@ test.describe('Visual Flow: Onboarding', () => {
     console.log('\n🎬 STEP 1: Welcome Screen');
     
     // Wait for welcome to be visible
-    await expect(page.getByText(/Welcome to Molt/i)).toBeVisible({ timeout: 10000 });
+    await expect(page.getByText(/Welcome to Moltzer/i)).toBeVisible({ timeout: 10000 });
     
     await captureStep(page, 'onboarding', '01-welcome', 
       'Should see Welcome screen with lobster logo, headline, and Get Started button');
     
     // Verify key elements
     const welcomeCheck = {
-      hasTitle: await page.getByText(/Welcome to Molt/i).isVisible(),
+      hasTitle: await page.getByText(/Welcome to Moltzer/i).isVisible(),
       hasGetStarted: await page.getByRole('button', { name: /Get Started/i }).isVisible(),
       hasSkipOption: await page.getByText(/I'll set this up later/i).isVisible(),
     };
@@ -329,8 +329,8 @@ test.describe('Visual Flow: Main Chat', () => {
     await Promise.race([
       page.evaluate(() => {
         try {
-          localStorage.setItem('molt-onboarding-completed', 'true');
-          localStorage.setItem('molt-app-version', '1.0.0');
+          localStorage.setItem('Moltzer-onboarding-completed', 'true');
+          localStorage.setItem('Moltzer-app-version', '1.0.0');
         } catch (e) {
           console.error('Failed to set storage:', e);
         }
@@ -486,8 +486,8 @@ test.describe('Visual Flow: Settings', () => {
     await Promise.race([
       page.evaluate(() => {
         try {
-          localStorage.setItem('molt-onboarding-completed', 'true');
-          localStorage.setItem('molt-app-version', '1.0.0');
+          localStorage.setItem('Moltzer-onboarding-completed', 'true');
+          localStorage.setItem('Moltzer-app-version', '1.0.0');
         } catch (e) {
           console.error('Failed to set storage:', e);
         }
@@ -660,8 +660,8 @@ test.describe('Visual Flow: Offline Mode', () => {
     await Promise.race([
       page.evaluate(() => {
         try {
-          localStorage.setItem('molt-onboarding-completed', 'true');
-          localStorage.setItem('molt-app-version', '1.0.0');
+          localStorage.setItem('Moltzer-onboarding-completed', 'true');
+          localStorage.setItem('Moltzer-app-version', '1.0.0');
         } catch (e) {
           console.error('Failed to set storage:', e);
         }

@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+﻿import { test, expect } from '@playwright/test';
 
 /**
  * E2E Tests: Messaging
@@ -21,21 +21,21 @@ test.describe('Messaging Flow', () => {
 
   test('should send a message', async ({ page }) => {
     // Find chat input
-    const input = page.getByPlaceholder(/Message Molt/i);
+    const input = page.getByPlaceholder(/Message Moltzer/i);
     await expect(input).toBeVisible({ timeout: 10000 });
     
     // Type message
-    await input.fill('Hello, Molt! This is a test message.');
+    await input.fill('Hello, Moltzer! This is a test message.');
     
     // Send message
     await page.keyboard.press('Enter');
     
     // Message should appear in chat
-    await expect(page.getByText('Hello, Molt! This is a test message.')).toBeVisible();
+    await expect(page.getByText('Hello, Moltzer! This is a test message.')).toBeVisible();
   });
 
   test('should show user message immediately', async ({ page }) => {
-    const input = page.getByPlaceholder(/Message Molt/i);
+    const input = page.getByPlaceholder(/Message Moltzer/i);
     await expect(input).toBeVisible({ timeout: 10000 });
     
     const testMessage = 'Test message ' + Date.now();
@@ -47,7 +47,7 @@ test.describe('Messaging Flow', () => {
   });
 
   test('should clear input after sending', async ({ page }) => {
-    const input = page.getByPlaceholder(/Message Molt/i);
+    const input = page.getByPlaceholder(/Message Moltzer/i);
     await expect(input).toBeVisible({ timeout: 10000 });
     
     await input.fill('Test message');
@@ -58,7 +58,7 @@ test.describe('Messaging Flow', () => {
   });
 
   test('should allow multiline messages with Shift+Enter', async ({ page }) => {
-    const input = page.getByPlaceholder(/Message Molt/i);
+    const input = page.getByPlaceholder(/Message Moltzer/i);
     await expect(input).toBeVisible({ timeout: 10000 });
     
     await input.fill('Line 1');
@@ -76,7 +76,7 @@ test.describe('Messaging Flow', () => {
   });
 
   test('should disable send button when input is empty', async ({ page }) => {
-    const input = page.getByPlaceholder(/Message Molt/i);
+    const input = page.getByPlaceholder(/Message Moltzer/i);
     await expect(input).toBeVisible({ timeout: 10000 });
     
     const sendButton = page.getByLabelText(/Send message/i);
@@ -90,7 +90,7 @@ test.describe('Messaging Flow', () => {
   });
 
   test('should show typing indicator while waiting for response', async ({ page }) => {
-    const input = page.getByPlaceholder(/Message Molt/i);
+    const input = page.getByPlaceholder(/Message Moltzer/i);
     await expect(input).toBeVisible({ timeout: 10000 });
     
     await input.fill('Tell me a story');
@@ -104,7 +104,7 @@ test.describe('Messaging Flow', () => {
   });
 
   test('should display messages in correct order', async ({ page }) => {
-    const input = page.getByPlaceholder(/Message Molt/i);
+    const input = page.getByPlaceholder(/Message Moltzer/i);
     await expect(input).toBeVisible({ timeout: 10000 });
     
     // Send multiple messages
@@ -130,7 +130,7 @@ test.describe('Messaging Flow', () => {
   });
 
   test('should copy message content', async ({ page }) => {
-    const input = page.getByPlaceholder(/Message Molt/i);
+    const input = page.getByPlaceholder(/Message Moltzer/i);
     await expect(input).toBeVisible({ timeout: 10000 });
     
     const testMessage = 'Message to copy';
@@ -153,7 +153,7 @@ test.describe('Messaging Flow', () => {
   });
 
   test('should handle very long messages', async ({ page }) => {
-    const input = page.getByPlaceholder(/Message Molt/i);
+    const input = page.getByPlaceholder(/Message Moltzer/i);
     await expect(input).toBeVisible({ timeout: 10000 });
     
     const longMessage = 'a'.repeat(5000);
@@ -165,7 +165,7 @@ test.describe('Messaging Flow', () => {
   });
 
   test('should handle special characters', async ({ page }) => {
-    const input = page.getByPlaceholder(/Message Molt/i);
+    const input = page.getByPlaceholder(/Message Moltzer/i);
     await expect(input).toBeVisible({ timeout: 10000 });
     
     const specialMessage = '<script>alert("test")</script> & symbols: @#$%';
@@ -177,7 +177,7 @@ test.describe('Messaging Flow', () => {
   });
 
   test('should handle emoji input', async ({ page }) => {
-    const input = page.getByPlaceholder(/Message Molt/i);
+    const input = page.getByPlaceholder(/Message Moltzer/i);
     await expect(input).toBeVisible({ timeout: 10000 });
     
     const emojiMessage = 'Hello 👋 World 🌍';
@@ -195,7 +195,7 @@ test.describe('Message Display', () => {
   });
 
   test('should render markdown in messages', async ({ page }) => {
-    const input = page.getByPlaceholder(/Message Molt/i);
+    const input = page.getByPlaceholder(/Message Moltzer/i);
     if (await input.isVisible({ timeout: 5000 })) {
       await input.fill('This is **bold** text');
       await page.keyboard.press('Enter');
@@ -207,7 +207,7 @@ test.describe('Message Display', () => {
   });
 
   test('should render code blocks with syntax highlighting', async ({ page }) => {
-    const input = page.getByPlaceholder(/Message Molt/i);
+    const input = page.getByPlaceholder(/Message Moltzer/i);
     if (await input.isVisible({ timeout: 5000 })) {
       await input.fill('```js\nconst x = 1;\n```');
       await page.keyboard.press('Enter');
@@ -218,7 +218,7 @@ test.describe('Message Display', () => {
   });
 
   test('should render links as clickable', async ({ page }) => {
-    const input = page.getByPlaceholder(/Message Molt/i);
+    const input = page.getByPlaceholder(/Message Moltzer/i);
     if (await input.isVisible({ timeout: 5000 })) {
       await input.fill('Check out https://example.com');
       await page.keyboard.press('Enter');
@@ -230,7 +230,7 @@ test.describe('Message Display', () => {
   });
 
   test('should show timestamp on hover', async ({ page }) => {
-    const input = page.getByPlaceholder(/Message Molt/i);
+    const input = page.getByPlaceholder(/Message Moltzer/i);
     if (await input.isVisible({ timeout: 5000 })) {
       await input.fill('Test message');
       await page.keyboard.press('Enter');
@@ -259,13 +259,13 @@ test.describe('Conversation Management', () => {
       await newChatButton.click();
       
       // Should clear chat area
-      const input = page.getByPlaceholder(/Message Molt/i);
+      const input = page.getByPlaceholder(/Message Moltzer/i);
       await expect(input).toBeVisible();
     }
   });
 
   test('should persist messages across page reload', async ({ page }) => {
-    const input = page.getByPlaceholder(/Message Molt/i);
+    const input = page.getByPlaceholder(/Message Moltzer/i);
     if (await input.isVisible({ timeout: 5000 })) {
       const uniqueMessage = 'Persist test ' + Date.now();
       await input.fill(uniqueMessage);
@@ -287,7 +287,7 @@ test.describe('Messaging Accessibility', () => {
   test('should have proper ARIA labels', async ({ page }) => {
     await page.goto('/');
     
-    const input = page.getByPlaceholder(/Message Molt/i);
+    const input = page.getByPlaceholder(/Message Moltzer/i);
     if (await input.isVisible({ timeout: 5000 })) {
       await expect(input).toBeVisible();
       
@@ -302,7 +302,7 @@ test.describe('Messaging Accessibility', () => {
     // Tab to input
     await page.keyboard.press('Tab');
     
-    const input = page.getByPlaceholder(/Message Molt/i);
+    const input = page.getByPlaceholder(/Message Moltzer/i);
     
     // Input should be focused
     if (await input.isVisible({ timeout: 5000 })) {

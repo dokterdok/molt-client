@@ -1,4 +1,4 @@
-# Moltzerzer Performance Benchmarks
+﻿# Moltzer Performance Benchmarks
 
 *Last updated: January 2026*
 
@@ -8,7 +8,7 @@ This document tracks Moltzer's performance metrics, competitor benchmarks, optim
 
 ## Executive Summary
 
-**Moltzerzer's performance advantage is REAL and significant:**
+**Moltzer's performance advantage is REAL and significant:**
 
 | Metric | Moltzer (Tauri) | ChatGPT (Electron) | Advantage |
 |--------|--------------|---------------------|-----------|
@@ -41,7 +41,7 @@ Total frontend                  835.2 KB   249.3 KB
 **This is excellent!** The gzipped size (~249 KB) is what actually transfers over the network. Compare to:
 - ChatGPT web: ~2-4 MB gzipped
 - Claude web: ~2-3 MB gzipped
-- **Moltzerzer is 8-12x smaller than web competitors**
+- **Moltzer is 8-12x smaller than web competitors**
 
 **Analysis:**
 - JS bundle is reasonable for a full React app with Markdown, syntax highlighting
@@ -58,7 +58,7 @@ Total frontend                  835.2 KB   249.3 KB
 **Rust backend (estimated release build):**
 ```
 Tauri shell + plugins            ~6-8 MB
-Molt Rust code (gateway, etc.)   ~500 KB
+Moltzer Rust code (gateway, etc.)   ~500 KB
 WebView runtime                  ~5-8 MB (bundled)
 ─────────────────────────────────────────
 Estimated installer size         ~12-15 MB

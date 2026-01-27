@@ -1,7 +1,7 @@
-# macOS Frozen UI Bug - Fix Summary
+﻿# macOS Frozen UI Bug - Fix Summary
 
 ## Problem
-Molt was completely unusable on macOS with these symptoms:
+Moltzer was completely unusable on macOS with these symptoms:
 - App shows "Connecting to Gateway" forever
 - Can't click any UI element
 - Can't move the window

@@ -1,4 +1,4 @@
-# Testing Guide
+﻿# Testing Guide
 
 This project uses a comprehensive testing strategy with multiple layers of tests.
 
@@ -95,7 +95,7 @@ import { test, expect } from '@playwright/test';
 
 test('should load app', async ({ page }) => {
   await page.goto('/');
-  await expect(page).toHaveTitle(/Molt/);
+  await expect(page).toHaveTitle(/Moltzer/);
 });
 ```
 

@@ -1,9 +1,12 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useStore, Conversation } from "../stores/store";
 import { SettingsDialog } from "./SettingsDialog";
 import { SearchDialog } from "./SearchDialog";
 import { cn } from "../lib/utils";
 import { formatDistanceToNow } from "date-fns";
+
+// Check if running on macOS (for traffic light padding)
+const isMacOS = typeof navigator !== "undefined" && navigator.platform.toLowerCase().includes("mac");
 
 interface SidebarProps {
   onToggle: () => void;
@@ -70,12 +73,18 @@ export function Sidebar({ onToggle: _onToggle }: SidebarProps) {
 
   return (
     <div className="flex flex-col h-full bg-muted/30">
-      {/* Header with connection status */}
-      <div className="p-3 pb-0">
-        <div className="flex items-center gap-2 mb-3 px-1">
-          <div className="flex items-center gap-2">
+      {/* Header with connection status - draggable for macOS title bar */}
+      <div 
+        className={cn("p-3 pb-0", isMacOS && "pt-2")}
+        data-tauri-drag-region
+      >
+        <div 
+          className={cn("flex items-center gap-2 mb-3 px-1", isMacOS && "pl-[70px]")}
+          data-tauri-drag-region
+        >
+          <div className="flex items-center gap-2" data-tauri-drag-region>
             <span className="text-2xl select-none" role="img" aria-label="Molt logo">🦞</span>
-            <span className="font-semibold text-lg">Molt</span>
+            <span className="font-semibold text-lg select-none">Molt</span>
           </div>
           <div className="flex items-center gap-1.5 ml-auto" role="status" aria-live="polite">
             <span className="relative flex w-2 h-2">

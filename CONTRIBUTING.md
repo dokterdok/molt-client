@@ -1,6 +1,6 @@
-# Contributing to Moltzerzer 🦞
+# Contributing to Moltzer 🦞
 
-Thank you for your interest in Contributing to Moltzerzer! Whether you're fixing a bug, adding a feature, or improving documentation, we appreciate your help in making Moltzerzerzer better for everyone.
+Thank you for your interest in contributing to Moltzer! Whether you're fixing a bug, adding a feature, or improving documentation, we appreciate your help in making Moltzer better for everyone.
 
 This document provides guidelines and instructions for contributing. Don't worry if you're new to open source — we're here to help!
 
@@ -91,36 +91,137 @@ Follow [Conventional Commits](https://www.conventionalcommits.org/):
 ### Code Style
 
 **TypeScript/React:**
-- Use TypeScript for all new code
-- Follow ESLint rules (`npm run lint`)
-- Format with Prettier (`npm run format`)
-- Prefer functional components with hooks
-- Use Zustand for state management
+- **Type safety:** Use TypeScript for all new code, avoid `any` types
+- **Linting:** Follow ESLint rules (`npm run lint`) — PRs must pass with no errors
+- **Formatting:** Run Prettier (`npm run format`) before committing
+- **Components:** Prefer functional components with hooks over class components
+- **State management:** Use Zustand for global state, React hooks for local state
+- **Naming conventions:**
+  - Components: PascalCase (`MessageBubble.tsx`)
+  - Functions: camelCase (`sendMessage()`)
+  - Constants: UPPER_SNAKE_CASE (`MAX_MESSAGE_LENGTH`)
+  - Interfaces: PascalCase with `I` prefix optional (`Message` or `IMessage`)
+- **File organization:**
+  - One component per file
+  - Group related utilities in `lib/`
+  - Colocate tests with source files (`*.test.ts`)
+- **Comments:** Add JSDoc comments for exported functions and complex logic
+- **Imports:** Group and order: React → external libs → internal modules → styles
+
+**Example:**
+```typescript
+/**
+ * Send a message to the Gateway
+ * @param content - Message text
+ * @param conversationId - Target conversation
+ * @returns Promise resolving when message is sent
+ */
+export async function sendMessage(
+  content: string,
+  conversationId: string
+): Promise<void> {
+  // Implementation
+}
+```
 
 **Rust:**
-- Follow Rust conventions (`cargo fmt`)
-- Run Clippy (`cargo clippy`)
-- Add documentation comments for public APIs
+- **Formatting:** Run `cargo fmt` before committing
+- **Linting:** Run `cargo clippy` and fix all warnings
+- **Documentation:** Add doc comments (`///`) for all public functions and structs
+- **Error handling:** Use `Result<T, E>` and avoid panics in library code
+- **Naming:** Follow Rust conventions (snake_case for functions, PascalCase for types)
+
+**Example:**
+```rust
+/// Connect to the Clawdbot Gateway
+///
+/// # Arguments
+/// * `url` - WebSocket URL (ws:// or wss://)
+/// * `token` - Optional authentication token
+///
+/// # Returns
+/// Connection handle or error
+pub async fn connect_gateway(
+    url: &str,
+    token: Option<&str>
+) -> Result<GatewayConnection, GatewayError> {
+    // Implementation
+}
+```
 
 ### Testing
 
+**All PRs must include tests.** Code without tests will not be merged unless there's a compelling reason.
+
 **Run tests:**
 ```bash
-# Unit tests
+# Unit tests (vitest)
 npm run test
 
-# E2E tests
+# Unit tests with UI
+npm run test:ui
+
+# E2E tests (Playwright)
 npm run test:e2e
 
 # E2E tests with UI
 npm run test:e2e:ui
+
+# E2E tests in debug mode
+npm run test:e2e:debug
+
+# Run specific test file
+npm run test -- db.test.ts
 ```
 
-**Write tests for:**
-- New features
-- Bug fixes
-- Complex logic
-- API integrations
+**Test requirements:**
+- **Unit tests:** For all utility functions, hooks, and business logic
+  - Test happy paths and edge cases
+  - Mock external dependencies (Gateway, IndexedDB, etc.)
+  - Aim for >80% code coverage
+  
+- **Integration tests:** For components that interact with stores or DB
+  - Test user interactions (clicks, typing, etc.)
+  - Verify state updates correctly
+  - Use `@testing-library/react` for component tests
+  
+- **E2E tests:** For critical user flows
+  - Onboarding and setup
+  - Sending and receiving messages
+  - Conversation management (create, delete, search)
+  - Settings changes
+  
+**Writing good tests:**
+```typescript
+// ✅ Good: Descriptive test names
+test('should encrypt message content before saving to DB', async () => {
+  // Arrange
+  const message = 'Hello, world!';
+  const key = await generateEncryptionKey();
+  
+  // Act
+  const encrypted = await encryptMessage(message, key);
+  
+  // Assert
+  expect(encrypted).not.toBe(message);
+  expect(await decryptMessage(encrypted, key)).toBe(message);
+});
+
+// ❌ Bad: Vague test name
+test('encryption works', async () => {
+  // ...
+});
+```
+
+**Test file organization:**
+- Colocate tests with source: `db.ts` → `db.test.ts`
+- E2E tests go in `e2e/` folder
+- Shared test utilities in `src/test/` and `e2e/helpers/`
+
+**Coverage requirements:**
+- New features: Must have >80% coverage
+- Bug fixes: Must include regression test
+- Refactoring: Maintain or improve existing coverage
 
 ### Building
 
@@ -253,4 +354,4 @@ Violations may result in warnings, temporary bans, or permanent removal from the
 
 ---
 
-Thank you for Contributing to Moltzerzer! Every contribution, big or small, makes a difference. 🦞
+Thank you for contributing to Moltzer! Every contribution, big or small, makes a difference. 🦞

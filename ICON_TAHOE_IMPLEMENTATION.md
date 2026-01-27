@@ -18,7 +18,13 @@ Created a 1024x1024 SVG with:
 - ✅ **Rounder Tahoe shape** - Updated corner radius for more circular appearance
 - ✅ **Liquid Glass effect** - Specular highlights, inner glow, depth shadows
 - ✅ **Orange/red gradient** - Modern gradient from #FF7847 → #FF5722 → #D84315
-- ✅ **Molt lobster/shrimp** - Clean, professional character design
+- ✅ **Realistic lobster anatomy** - Based on 🦞 emoji and Clawdbot logo:
+  - Large claws (crusher and pincer)
+  - Long antennae extending to top
+  - Eye stalks with detailed eyes
+  - Four pairs of walking legs
+  - Segmented abdomen (5 segments)
+  - Proper tail fan (telson and uropods)
 - ✅ **Professional quality** - Matches Apple's native app icon standards
 
 ### 3. Icon Generation
@@ -95,8 +101,9 @@ For true dynamic lighting effects on macOS 26:
 
 ### Color Palette
 - Primary gradient: `#FF7847` → `#FF5722` → `#D84315`
-- Lobster: `#FFFFFF` at 92-96% opacity
-- Eyes: `#1A1A1A` with white highlights
+- Lobster body: `#FFFFFF` at 92-96% opacity
+- Eyes: `#1A1A1A` with white highlights on stalks
+- Segment details: `#FF5722` at 15-20% opacity for depth
 - Specular highlight: White at 70% → 0% opacity
 
 ### Shape Characteristics

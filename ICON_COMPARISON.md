@@ -6,6 +6,7 @@
 - ❌ **Simple gradient** - Flat 2-stop gradient
 - ❌ **No depth effects** - Missing Liquid Glass characteristics
 - ❌ **512x512 size** - Smaller canvas
+- ❌ **Abstract creature** - Not clearly recognizable as a lobster
 
 ## After (Tahoe Liquid Glass Style)
 **File**: `app-icon-tahoe.svg`
@@ -14,9 +15,16 @@
 - ✅ **Specular highlights** - Radial gradient at top-left mimicking light reflection
 - ✅ **Inner glow** - Subtle radial glow from top-center
 - ✅ **Bottom shadow** - Depth gradient for dimensional effect
-- ✅ **Soft glow filter** - 4px blur on lobster for integration
+- ✅ **Soft glow filter** - 3px blur on lobster for integration
 - ✅ **1024x1024 size** - Full resolution for all platforms
 - ✅ **Clip path** - Ensures perfect shape consistency
+- ✅ **Realistic lobster** - 🦞 emoji style with proper anatomy:
+  - Large claws (crusher and pincer)
+  - Long antennae extending to top
+  - Eye stalks with detailed eyes
+  - Four pairs of walking legs
+  - Segmented abdomen (5 segments)
+  - Proper tail fan (telson and uropods)
 
 ## Key Improvements
 

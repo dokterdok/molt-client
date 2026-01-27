@@ -149,14 +149,18 @@ export function ExportDialog({ open, onClose, conversation }: ExportDialogProps)
       {/* Dialog */}
       <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
         <div
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="export-dialog-title"
+          aria-describedby="export-dialog-description"
           className="bg-background border border-border rounded-xl shadow-2xl w-full max-w-md animate-in fade-in zoom-in-95 duration-200"
           onClick={(e) => e.stopPropagation()}
         >
           {/* Header */}
           <div className="flex items-center justify-between p-4 border-b border-border">
             <div>
-              <h2 className="text-lg font-semibold">Export Conversation</h2>
-              <p className="text-sm text-muted-foreground truncate max-w-[280px]">
+              <h2 id="export-dialog-title" className="text-lg font-semibold">Export Conversation</h2>
+              <p id="export-dialog-description" className="text-sm text-muted-foreground truncate max-w-[280px]">
                 {conversation.title}
               </p>
             </div>
@@ -165,19 +169,22 @@ export function ExportDialog({ open, onClose, conversation }: ExportDialogProps)
               className="p-2 hover:bg-muted rounded-lg transition-colors"
               aria-label="Close dialog"
             >
-              <X className="w-5 h-5" />
+              <X className="w-5 h-5" aria-hidden="true" />
             </button>
           </div>
 
           {/* Content */}
           <div className="p-4 space-y-4">
             {/* Format selection */}
-            <div>
-              <label className="text-sm font-medium mb-2 block">Format</label>
-              <div className="grid grid-cols-2 gap-2">
+            <fieldset>
+              <legend className="text-sm font-medium mb-2 block">Format</legend>
+              <div className="grid grid-cols-2 gap-2" role="radiogroup" aria-label="Export format">
                 {formatOptions.map((format) => (
                   <button
                     key={format.value}
+                    type="button"
+                    role="radio"
+                    aria-checked={selectedFormat === format.value}
                     onClick={() => setSelectedFormat(format.value)}
                     className={cn(
                       "flex items-start gap-3 p-3 rounded-lg border text-left transition-all",
@@ -189,7 +196,7 @@ export function ExportDialog({ open, onClose, conversation }: ExportDialogProps)
                     <div className={cn(
                       "flex-shrink-0 mt-0.5",
                       selectedFormat === format.value ? "text-primary" : "text-muted-foreground"
-                    )}>
+                    )} aria-hidden="true">
                       {format.icon}
                     </div>
                     <div className="min-w-0">
@@ -201,14 +208,15 @@ export function ExportDialog({ open, onClose, conversation }: ExportDialogProps)
                   </button>
                 ))}
               </div>
-            </div>
+            </fieldset>
 
             {/* Options */}
-            <div className="space-y-3">
-              <label className="text-sm font-medium block">Options</label>
+            <fieldset className="space-y-3">
+              <legend className="text-sm font-medium block">Options</legend>
               
               <label className="flex items-center gap-3 cursor-pointer">
                 <input
+                  id="include-metadata"
                   type="checkbox"
                   checked={includeMetadata}
                   onChange={(e) => setIncludeMetadata(e.target.checked)}
@@ -219,6 +227,7 @@ export function ExportDialog({ open, onClose, conversation }: ExportDialogProps)
 
               <label className="flex items-center gap-3 cursor-pointer">
                 <input
+                  id="include-timestamps"
                   type="checkbox"
                   checked={includeTimestamps}
                   onChange={(e) => setIncludeTimestamps(e.target.checked)}
@@ -230,6 +239,7 @@ export function ExportDialog({ open, onClose, conversation }: ExportDialogProps)
               {hasThinkingContent && (
                 <label className="flex items-center gap-3 cursor-pointer">
                   <input
+                    id="include-thinking"
                     type="checkbox"
                     checked={includeThinking}
                     onChange={(e) => setIncludeThinking(e.target.checked)}
@@ -238,7 +248,7 @@ export function ExportDialog({ open, onClose, conversation }: ExportDialogProps)
                   <span className="text-sm">Include thinking content</span>
                 </label>
               )}
-            </div>
+            </fieldset>
 
             {/* Error message */}
             {error && (

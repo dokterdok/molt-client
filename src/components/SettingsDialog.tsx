@@ -463,12 +463,15 @@ export function SettingsDialog({ open, onClose, onRerunSetup }: SettingsDialogPr
             <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-3">
               Appearance
             </h3>
-            <div>
-              <label className="block text-sm font-medium mb-1.5">Theme</label>
-              <div className="flex gap-2">
+            <fieldset>
+              <legend className="block text-sm font-medium mb-1.5">Theme</legend>
+              <div className="flex gap-2" role="radiogroup" aria-label="Select theme">
                 {(["light", "dark", "system"] as const).map((theme) => (
                   <button
                     key={theme}
+                    type="button"
+                    role="radio"
+                    aria-checked={formData.theme === theme}
                     onClick={() => {
                       setFormData({ ...formData, theme });
                       // Apply theme immediately
@@ -489,7 +492,7 @@ export function SettingsDialog({ open, onClose, onRerunSetup }: SettingsDialogPr
                   </button>
                 ))}
               </div>
-            </div>
+            </fieldset>
           </section>
         </div>
 

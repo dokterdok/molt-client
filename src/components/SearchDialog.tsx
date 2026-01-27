@@ -129,10 +129,16 @@ export function SearchDialog({ open, onClose }: SearchDialogProps) {
       />
 
       {/* Dialog */}
-      <div className="relative bg-background rounded-xl shadow-2xl w-full max-w-2xl mx-4 overflow-hidden animate-in fade-in slide-in-from-top-4 duration-200">
+      <div 
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="search-dialog-title"
+        className="relative bg-background rounded-xl shadow-2xl w-full max-w-2xl mx-4 overflow-hidden animate-in fade-in slide-in-from-top-4 duration-200"
+      >
+        <h2 id="search-dialog-title" className="sr-only">Search messages</h2>
         {/* Security notice */}
         <div className="px-4 py-2 bg-amber-500/10 border-b border-amber-500/20 flex items-start gap-2 text-xs text-amber-700 dark:text-amber-300">
-          <svg className="w-4 h-4 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-4 h-4 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
           </svg>
           <span>
@@ -142,19 +148,22 @@ export function SearchDialog({ open, onClose }: SearchDialogProps) {
         
         {/* Search input */}
         <div className="flex items-center gap-3 px-4 py-3 border-b border-border">
-          <svg className="w-5 h-5 text-muted-foreground flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-5 h-5 text-muted-foreground flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
           </svg>
+          <label htmlFor="search-input" className="sr-only">Search all messages</label>
           <input
+            id="search-input"
             ref={inputRef}
-            type="text"
+            type="search"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder="Search all messages..."
+            aria-describedby="search-instructions"
             className="flex-1 bg-transparent focus:outline-none text-lg"
           />
-          <kbd className="hidden sm:inline-flex px-2 py-1 text-xs font-mono bg-muted rounded">
+          <kbd className="hidden sm:inline-flex px-2 py-1 text-xs font-mono bg-muted rounded" aria-hidden="true">
             ESC
           </kbd>
         </div>
@@ -211,7 +220,7 @@ export function SearchDialog({ open, onClose }: SearchDialogProps) {
           ) : (
             <div className="flex flex-col items-center justify-center py-12 text-muted-foreground">
               <p className="text-sm">Type to search across all conversations</p>
-              <div className="flex gap-2 mt-4 text-xs">
+              <div id="search-instructions" className="flex gap-2 mt-4 text-xs">
                 <kbd className="px-2 py-1 bg-muted rounded">↑↓</kbd>
                 <span>Navigate</span>
                 <kbd className="px-2 py-1 bg-muted rounded">Enter</kbd>

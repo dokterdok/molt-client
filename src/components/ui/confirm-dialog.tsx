@@ -32,7 +32,13 @@ export function ConfirmDialog({
       />
 
       {/* Dialog */}
-      <div className="relative bg-background rounded-xl shadow-2xl w-full max-w-md mx-4 overflow-hidden animate-in fade-in zoom-in-95 duration-200 border border-border">
+      <div 
+        role="alertdialog"
+        aria-modal="true"
+        aria-labelledby="confirm-dialog-title"
+        aria-describedby="confirm-dialog-description"
+        className="relative bg-background rounded-xl shadow-2xl w-full max-w-md mx-4 overflow-hidden animate-in fade-in zoom-in-95 duration-200 border border-border"
+      >
         {/* Content */}
         <div className="p-6">
           <div className="flex items-start gap-4">
@@ -41,12 +47,12 @@ export function ConfirmDialog({
               confirmVariant === "destructive" 
                 ? "bg-destructive/10 text-destructive" 
                 : "bg-primary/10 text-primary"
-            )}>
+            )} aria-hidden="true">
               <AlertTriangle className="w-5 h-5" />
             </div>
             <div className="flex-1">
-              <h3 className="text-lg font-semibold mb-2">{title}</h3>
-              <p className="text-sm text-muted-foreground">{description}</p>
+              <h3 id="confirm-dialog-title" className="text-lg font-semibold mb-2">{title}</h3>
+              <p id="confirm-dialog-description" className="text-sm text-muted-foreground">{description}</p>
             </div>
           </div>
         </div>

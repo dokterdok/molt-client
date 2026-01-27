@@ -88,11 +88,11 @@ export function SearchDialog({ open, onClose }: SearchDialogProps) {
     }
   }, []);
 
-  // Debounced search
+  // Debounced search (300ms for better UX)
   useEffect(() => {
     const timer = setTimeout(() => {
       performSearch(query);
-    }, 200);
+    }, 300);
     return () => clearTimeout(timer);
   }, [query, performSearch]);
 

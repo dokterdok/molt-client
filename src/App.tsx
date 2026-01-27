@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import { listen } from "@tauri-apps/api/event";
 import { invoke } from "@tauri-apps/api/core";
 import { Sidebar } from "./components/Sidebar";
@@ -43,6 +43,12 @@ export default function App() {
     completeCurrentMessage,
     settings 
   } = useStore();
+  
+  // Refs for tracking state across async operations
+  const isMountedRef = useRef(true);
+  const connectionCancelledRef = useRef(false);
+  // Track the URL we're currently connecting with to prevent re-triggers
+  const lastAttemptedUrlRef = useRef<string | null>(null);
 
   // Check if this is first launch (onboarding needed)
   useEffect(() => {
@@ -158,6 +164,9 @@ export default function App() {
 
   // Connect to Gateway on mount (skip during onboarding or if no URL configured)
   useEffect(() => {
+    // Reset mounted ref
+    isMountedRef.current = true;
+    
     // Don't attempt connection during onboarding
     if (showOnboarding) {
       setIsConnecting(false);
@@ -170,40 +179,59 @@ export default function App() {
       setShowOnboarding(true); // Force onboarding if no URL
       return;
     }
+    
+    // Prevent re-triggering if we just updated the URL due to protocol switch
+    // This avoids an infinite loop when protocol_switched updates the URL
+    if (lastAttemptedUrlRef.current === settings.gatewayUrl) {
+      return;
+    }
 
     let reconnectTimer: number | undefined;
     let countdownInterval: number | undefined;
     let connectingFlag = false;
     let attempts = 0;
-    let cancelled = false;
 
     const clearTimers = () => {
       if (reconnectTimer) clearTimeout(reconnectTimer);
       if (countdownInterval) clearInterval(countdownInterval);
-      setRetryCountdown(null);
-      setRetryNowFn(null);
-      setCancelConnection(null);
+      if (isMountedRef.current) {
+        setRetryCountdown(null);
+        setRetryNowFn(null);
+        setCancelConnection(null);
+      }
     };
 
     const connectToGateway = async () => {
-      if (connectingFlag || cancelled) return;
+      if (connectingFlag || connectionCancelledRef.current || !isMountedRef.current) return;
       connectingFlag = true;
-      cancelled = false;
+      connectionCancelledRef.current = false;
       clearTimers();
-      setIsConnecting(true);
-      setConnectionError(null);
-      attempts++;
-      setReconnectAttempts(attempts);
+      
+      // Track which URL we're attempting
+      lastAttemptedUrlRef.current = settings.gatewayUrl;
+      
+      if (isMountedRef.current) {
+        setIsConnecting(true);
+        setConnectionError(null);
+        attempts++;
+        setReconnectAttempts(attempts);
+      }
 
-      // Set up cancel function
+      // Set up cancel function - this immediately updates UI even though
+      // the Rust invoke can't be cancelled mid-flight
       const cancelFn = () => {
-        cancelled = true;
+        connectionCancelledRef.current = true;
         connectingFlag = false;
-        setIsConnecting(false);
-        setConnectionError("Connection cancelled");
         clearTimers();
+        if (isMountedRef.current) {
+          setIsConnecting(false);
+          setConnectionError("Connection cancelled");
+          setCancelConnection(null);
+        }
       };
-      setCancelConnection(() => cancelFn);
+      if (isMountedRef.current) {
+        setCancelConnection(() => cancelFn);
+      }
 
       try {
         const result = await invoke<ConnectResult>("connect", { 
@@ -211,48 +239,53 @@ export default function App() {
           token: settings.gatewayToken 
         });
         
-        // Check if cancelled during connection
-        if (cancelled) {
-          setIsConnecting(false);
-          setCancelConnection(null);
+        // Check if cancelled or unmounted during connection
+        if (connectionCancelledRef.current || !isMountedRef.current) {
           return;
         }
         
         // If protocol was switched, update settings with the working URL
+        // But mark it as the "last attempted" URL to prevent re-trigger
         if (result.protocol_switched) {
+          lastAttemptedUrlRef.current = result.used_url;
           useStore.getState().updateSettings({ gatewayUrl: result.used_url });
         }
         
-        // Fetch available models after connection
-        try {
-          const models = await invoke<any[]>("get_models");
-          if (models && models.length > 0) {
+        // Fetch available models after connection (non-blocking)
+        invoke<any[]>("get_models").then(models => {
+          if (models && models.length > 0 && isMountedRef.current) {
             useStore.getState().setAvailableModels(models);
           }
-        } catch (err) {
+        }).catch(err => {
           console.error("Failed to fetch models:", err);
-        }
-        setIsConnecting(false);
-        setConnectionError(null);
-        setCancelConnection(null);
+        });
         
-        // Show success on reconnection (not initial)
-        if (attempts > 1) {
-          const protocolMsg = result.protocol_switched ? ` (using ${result.used_url.startsWith("wss://") ? "wss://" : "ws://"})` : "";
-          showSuccess(`Reconnected to Gateway${protocolMsg}`);
-          attempts = 0;
-          setReconnectAttempts(0);
+        if (isMountedRef.current) {
+          setIsConnecting(false);
+          setConnectionError(null);
+          setCancelConnection(null);
+          
+          // Show success on reconnection (not initial)
+          if (attempts > 1) {
+            const protocolMsg = result.protocol_switched ? ` (using ${result.used_url.startsWith("wss://") ? "wss://" : "ws://"})` : "";
+            showSuccess(`Reconnected to Gateway${protocolMsg}`);
+            attempts = 0;
+            setReconnectAttempts(0);
+          }
         }
       } catch (err) {
         console.error("Failed to connect:", err);
+        
+        // Check if cancelled or unmounted
+        if (connectionCancelledRef.current || !isMountedRef.current) {
+          return;
+        }
+        
         const errorMessage = typeof err === 'string' ? err : 'Connection failed';
         setConnectionError(errorMessage);
         setIsConnecting(false);
         setCancelConnection(null);
         connectingFlag = false;
-        
-        // Don't retry if cancelled
-        if (cancelled) return;
         
         // Calculate delay using exponential backoff: 5s → 10s → 30s → 60s (capped)
         const backoffIndex = Math.min(attempts - 1, BACKOFF_DELAYS.length - 1);
@@ -260,20 +293,30 @@ export default function App() {
         
         // Start countdown
         let countdown = delaySeconds;
-        setRetryCountdown(countdown);
+        if (isMountedRef.current) {
+          setRetryCountdown(countdown);
+        }
         
         // Create retry now function
         const retryNow = () => {
           clearTimers();
           connectingFlag = false;
-          cancelled = false;
-          setConnectionError(null);
+          connectionCancelledRef.current = false;
+          if (isMountedRef.current) {
+            setConnectionError(null);
+          }
           connectToGateway();
         };
-        setRetryNowFn(() => retryNow);
+        if (isMountedRef.current) {
+          setRetryNowFn(() => retryNow);
+        }
         
         // Update countdown every second
         countdownInterval = window.setInterval(() => {
+          if (!isMountedRef.current || connectionCancelledRef.current) {
+            clearTimers();
+            return;
+          }
           countdown--;
           if (countdown <= 0) {
             clearTimers();
@@ -289,7 +332,8 @@ export default function App() {
     connectToGateway();
 
     return () => {
-      cancelled = true;
+      isMountedRef.current = false;
+      connectionCancelledRef.current = true;
       clearTimers();
     };
   }, [settings.gatewayUrl, settings.gatewayToken, showSuccess, showOnboarding]);
@@ -299,6 +343,7 @@ export default function App() {
     let reconnectTimer: number | undefined;
     let countdownInterval: number | undefined;
     let disconnectAttempts = 0;
+    let eventListenerMounted = true;
 
     const clearTimers = () => {
       if (reconnectTimer) clearTimeout(reconnectTimer);
@@ -307,22 +352,23 @@ export default function App() {
 
     const unlisten = Promise.all([
       listen("gateway:connected", async () => {
+        if (!eventListenerMounted) return;
         setConnected(true);
         setIsConnecting(false);
         setRetryCountdown(null);
         setRetryNowFn(null);
         disconnectAttempts = 0;
-        // Fetch models on connection
-        try {
-          const models = await invoke<any[]>("get_models");
-          if (models && models.length > 0) {
+        // Fetch models on connection (non-blocking)
+        invoke<any[]>("get_models").then(models => {
+          if (models && models.length > 0 && eventListenerMounted) {
             useStore.getState().setAvailableModels(models);
           }
-        } catch (err) {
+        }).catch(err => {
           console.error("Failed to fetch models:", err);
-        }
+        });
       }),
       listen("gateway:disconnected", () => {
+        if (!eventListenerMounted) return;
         setConnected(false);
         setConnectionError("Connection to Gateway lost");
         clearTimers();
@@ -339,18 +385,23 @@ export default function App() {
         setRetryCountdown(countdown);
         
         const attemptReconnect = async () => {
+          if (!eventListenerMounted) return;
           clearTimers();
           setRetryCountdown(null);
           setIsConnecting(true);
           setConnectionError(null);
+          
           try {
             const result = await invoke<ConnectResult>("connect", { 
               url: settings.gatewayUrl, 
               token: settings.gatewayToken 
             });
             
+            if (!eventListenerMounted) return;
+            
             // If protocol was switched, update settings with the working URL
             if (result.protocol_switched) {
+              lastAttemptedUrlRef.current = result.used_url;
               useStore.getState().updateSettings({ gatewayUrl: result.used_url });
             }
             
@@ -361,6 +412,7 @@ export default function App() {
             }
             disconnectAttempts = 0;
           } catch (err) {
+            if (!eventListenerMounted) return;
             console.error("Reconnection failed:", err);
             const errorMessage = typeof err === 'string' ? err : 'Reconnection failed';
             setConnectionError(errorMessage);
@@ -377,6 +429,10 @@ export default function App() {
             setRetryNowFn(() => attemptReconnect);
             
             countdownInterval = window.setInterval(() => {
+              if (!eventListenerMounted) {
+                clearTimers();
+                return;
+              }
               nextCountdown--;
               if (nextCountdown <= 0) {
                 clearTimers();
@@ -391,6 +447,10 @@ export default function App() {
         setRetryNowFn(() => attemptReconnect);
         
         countdownInterval = window.setInterval(() => {
+          if (!eventListenerMounted) {
+            clearTimers();
+            return;
+          }
           countdown--;
           if (countdown <= 0) {
             clearTimers();
@@ -401,14 +461,17 @@ export default function App() {
         }, 1000);
       }),
       listen<string>("gateway:stream", (event) => {
+        if (!eventListenerMounted) return;
         appendToCurrentMessage(event.payload);
       }),
       listen("gateway:complete", () => {
+        if (!eventListenerMounted) return;
         completeCurrentMessage();
       }),
     ]);
 
     return () => {
+      eventListenerMounted = false;
       clearTimers();
       unlisten.then((listeners) => {
         listeners.forEach((fn) => fn());

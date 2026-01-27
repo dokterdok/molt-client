@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import { invoke } from "@tauri-apps/api/core";
 import { cn } from "../../../lib/utils";
 import { Spinner } from "../../ui/spinner";
@@ -19,14 +19,13 @@ export function DetectionStep({ onGatewayFound, onNoGateway, onSkip }: Detection
   const [isVisible, setIsVisible] = useState(false);
   const [currentUrl, setCurrentUrl] = useState<string>("");
   const [progress, setProgress] = useState(0);
+  
+  // Track mounted state to prevent updates after unmount
+  const isMountedRef = useRef(true);
+  // Track if detection was cancelled
+  const isCancelledRef = useRef(false);
 
-  useEffect(() => {
-    setTimeout(() => setIsVisible(true), 100);
-    autoDetectGateway();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const autoDetectGateway = async () => {
+  const autoDetectGateway = useCallback(async () => {
     const commonUrls = [
       "ws://localhost:18789",
       "ws://127.0.0.1:18789",
@@ -35,27 +34,82 @@ export function DetectionStep({ onGatewayFound, onNoGateway, onSkip }: Detection
     ];
 
     for (let i = 0; i < commonUrls.length; i++) {
+      // Check if cancelled or unmounted before each attempt
+      if (isCancelledRef.current || !isMountedRef.current) {
+        return;
+      }
+      
       const url = commonUrls[i];
       setCurrentUrl(url);
       setProgress(((i + 1) / commonUrls.length) * 100);
       
       try {
         const result = await invoke<ConnectResult>("connect", { url, token: "" });
+        
+        // Check again after async operation
+        if (isCancelledRef.current || !isMountedRef.current) {
+          return;
+        }
+        
         // Success! Gateway found
         await new Promise(resolve => setTimeout(resolve, 300)); // Brief pause to show success
+        
+        if (isCancelledRef.current || !isMountedRef.current) {
+          return;
+        }
+        
         onGatewayFound(result.used_url);
         return;
       } catch {
+        // Check before delay
+        if (isCancelledRef.current || !isMountedRef.current) {
+          return;
+        }
         // Try next URL
         await new Promise(resolve => setTimeout(resolve, 400)); // Delay between attempts
         continue;
       }
     }
 
+    // Check before calling onNoGateway
+    if (isCancelledRef.current || !isMountedRef.current) {
+      return;
+    }
+
     // No Gateway found after checking all URLs
     await new Promise(resolve => setTimeout(resolve, 500));
+    
+    if (isCancelledRef.current || !isMountedRef.current) {
+      return;
+    }
+    
     onNoGateway();
-  };
+  }, [onGatewayFound, onNoGateway]);
+
+  useEffect(() => {
+    // Reset refs on mount
+    isMountedRef.current = true;
+    isCancelledRef.current = false;
+    
+    setTimeout(() => {
+      if (isMountedRef.current) {
+        setIsVisible(true);
+      }
+    }, 100);
+    
+    autoDetectGateway();
+    
+    // Cleanup on unmount
+    return () => {
+      isMountedRef.current = false;
+    };
+  }, [autoDetectGateway]);
+
+  // Handle skip - cancel detection and call onSkip
+  const handleSkip = useCallback(() => {
+    isCancelledRef.current = true;
+    onSkip();
+  }, [onSkip]);
 
   return (
     <div className="flex-1 flex flex-col items-center justify-center p-8">
@@ -127,7 +181,7 @@ export function DetectionStep({ onGatewayFound, onNoGateway, onSkip }: Detection
             This usually takes just a few seconds
           </p>
           <button
-            onClick={onSkip}
+            onClick={handleSkip}
             className="text-sm text-muted-foreground hover:text-foreground transition-colors underline"
           >
             Skip auto-detection

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef, useCallback } from "react";
 import { invoke } from "@tauri-apps/api/core";
 import { useStore } from "../../../stores/store";
 import { cn } from "../../../lib/utils";
@@ -18,6 +18,8 @@ interface GatewaySetupStepProps {
   onSuccess: () => void;
   onBack: () => void;
   onSkip: () => void;
+  /** If true, skip auto-detection (we already tried in DetectionStep) */
+  skipAutoDetect?: boolean;
 }
 
 // Result from the connect command
@@ -27,7 +29,7 @@ interface ConnectResult {
   protocol_switched: boolean;
 }
 
-type ConnectionState = "idle" | "detecting" | "testing" | "success" | "error";
+type ConnectionState = "idle" | "detecting" | "testing" | "success" | "error" | "cancelled";
 
 // Derive a helpful hint and actionable fix based on error content
 function getErrorHint(errorStr: string): { hint: string; action?: string; command?: string } {
@@ -95,6 +97,7 @@ export function GatewaySetupStep({
   onSuccess,
   onBack,
   onSkip,
+  skipAutoDetect = false,
 }: GatewaySetupStepProps) {
   const [isVisible, setIsVisible] = useState(false);
   const [connectionState, setConnectionState] = useState<ConnectionState>("idle");
@@ -104,15 +107,18 @@ export function GatewaySetupStep({
   const [suggestedPort, setSuggestedPort] = useState<string | null>(null);
   const [protocolNotice, setProtocolNotice] = useState<string>("");
   const { updateSettings } = useStore();
+  
+  // Track mounted state and cancellation
+  const isMountedRef = useRef(true);
+  const isCancelledRef = useRef(false);
 
-  useEffect(() => {
-    setTimeout(() => setIsVisible(true), 100);
+  const autoDetectGateway = useCallback(async () => {
+    // Skip if coming from detection flow (already tried)
+    if (skipAutoDetect) {
+      setConnectionState("idle");
+      return;
+    }
     
-    // Auto-detect local Gateway
-    autoDetectGateway();
-  }, []);
-
-  const autoDetectGateway = async () => {
     setConnectionState("detecting");
     setErrorMessage("");
     setErrorHint(null);
@@ -126,8 +132,19 @@ export function GatewaySetupStep({
     ];
 
     for (const url of commonUrls) {
+      // Check if cancelled or unmounted
+      if (isCancelledRef.current || !isMountedRef.current) {
+        return;
+      }
+      
       try {
         const result = await invoke<ConnectResult>("connect", { url, token: "" });
+        
+        // Check again after async operation
+        if (isCancelledRef.current || !isMountedRef.current) {
+          return;
+        }
+        
         // Success! Gateway found
         const actualUrl = result.used_url;
         onGatewayUrlChange(actualUrl);
@@ -149,9 +166,11 @@ export function GatewaySetupStep({
           timestamp: Date.now()
         }));
         
-        // Auto-advance after a moment
+        // Auto-advance after a moment (if still mounted)
         setTimeout(() => {
-          onSuccess();
+          if (isMountedRef.current && !isCancelledRef.current) {
+            onSuccess();
+          }
         }, 1500);
         return;
       } catch {
@@ -160,11 +179,44 @@ export function GatewaySetupStep({
       }
     }
 
-    // No Gateway found
+    // No Gateway found (if still mounted)
+    if (isMountedRef.current && !isCancelledRef.current) {
+      setConnectionState("idle");
+    }
+  }, [skipAutoDetect, onGatewayUrlChange, updateSettings, onSuccess]);
+
+  useEffect(() => {
+    // Reset refs on mount
+    isMountedRef.current = true;
+    isCancelledRef.current = false;
+    
+    setTimeout(() => {
+      if (isMountedRef.current) {
+        setIsVisible(true);
+      }
+    }, 100);
+    
+    // Auto-detect local Gateway
+    autoDetectGateway();
+    
+    // Cleanup on unmount
+    return () => {
+      isMountedRef.current = false;
+    };
+  }, [autoDetectGateway]);
+
+  // Cancel any ongoing connection test
+  const handleCancel = useCallback(() => {
+    isCancelledRef.current = true;
     setConnectionState("idle");
-  };
+    setErrorMessage("");
+    setErrorHint(null);
+  }, []);
 
   const handleTestConnection = async () => {
+    // Reset cancelled state for new test
+    isCancelledRef.current = false;
+    
     // Auto-fix: Trim whitespace from inputs
     const trimmedUrl = gatewayUrl.trim();
     const trimmedToken = gatewayToken.trim();
@@ -190,7 +242,18 @@ export function GatewaySetupStep({
 
     try {
       await invoke("disconnect");
+      
+      // Check if cancelled
+      if (isCancelledRef.current || !isMountedRef.current) {
+        return;
+      }
+      
       const result = await invoke<ConnectResult>("connect", { url: trimmedUrl, token: trimmedToken });
+      
+      // Check if cancelled after async operation
+      if (isCancelledRef.current || !isMountedRef.current) {
+        return;
+      }
       
       // Success!
       setConnectionState("success");
@@ -211,21 +274,27 @@ export function GatewaySetupStep({
         timestamp: Date.now()
       }));
 
-      // Fetch models
-      try {
-        const models = await invoke<any[]>("get_models");
-        if (models && models.length > 0) {
+      // Fetch models (but don't block on it)
+      invoke<any[]>("get_models").then(models => {
+        if (models && models.length > 0 && isMountedRef.current) {
           useStore.getState().setAvailableModels(models);
         }
-      } catch (err) {
+      }).catch(err => {
         console.error("Failed to fetch models:", err);
-      }
+      });
 
-      // Auto-advance
+      // Auto-advance (if still mounted and not cancelled)
       setTimeout(() => {
-        onSuccess();
+        if (isMountedRef.current && !isCancelledRef.current) {
+          onSuccess();
+        }
       }, 1500);
     } catch (err: any) {
+      // Check if cancelled
+      if (isCancelledRef.current || !isMountedRef.current) {
+        return;
+      }
+      
       setConnectionState("error");
       
       // Show the actual error message with a contextual hint

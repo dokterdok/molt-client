@@ -168,6 +168,7 @@ export function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
         onSuccess={() => handleNext("success")}
         onBack={() => handleBack("no-gateway")}
         onSkip={handleSkip}
+        skipAutoDetect={true} // Already tried in DetectionStep
       />
     ),
     success: (

@@ -1,8 +1,9 @@
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect, useState, useCallback } from "react";
 import { invoke } from "@tauri-apps/api/core";
 import { useStore } from "../stores/store";
 import { ChatInput, PreparedAttachment } from "./ChatInput";
 import { MessageBubble } from "./MessageBubble";
+import { ConfirmDialog } from "./ui/confirm-dialog";
 import {
   ArrowDown,
   AlertTriangle,
@@ -31,6 +32,9 @@ export function ChatView() {
   const [isNearBottom, setIsNearBottom] = useState(true);
   const [isSending, setIsSending] = useState(false);
   const [lastFailedMessage, setLastFailedMessage] = useState<{ content: string; attachments: PreparedAttachment[] } | null>(null);
+  
+  // Edit confirmation state
+  const [pendingEdit, setPendingEdit] = useState<{ messageId: string; newContent: string; subsequentCount: number } | null>(null);
 
   // Auto-scroll to bottom on new messages (only if already near bottom)
   useEffect(() => {
@@ -65,13 +69,29 @@ export function ChatView() {
     }
   };
 
-  // Handle editing a user message - deletes subsequent messages and resends
-  const handleEditMessage = async (messageId: string, newContent: string) => {
+  // Handle editing a user message - checks for subsequent messages and shows confirmation
+  const handleEditMessage = useCallback((messageId: string, newContent: string) => {
     if (!currentConversation || isSending || currentStreamingMessageId) return;
 
     // Find the message index
     const messageIndex = currentConversation.messages.findIndex(m => m.id === messageId);
     if (messageIndex === -1) return;
+
+    // Check for subsequent messages
+    const subsequentCount = currentConversation.messages.length - messageIndex - 1;
+    
+    if (subsequentCount > 0) {
+      // Show confirmation dialog
+      setPendingEdit({ messageId, newContent, subsequentCount });
+    } else {
+      // No subsequent messages, proceed directly
+      executeEdit(messageId, newContent);
+    }
+  }, [currentConversation, isSending, currentStreamingMessageId]);
+
+  // Actually execute the edit (after confirmation if needed)
+  const executeEdit = useCallback(async (messageId: string, newContent: string) => {
+    if (!currentConversation) return;
 
     // Delete all messages after this one (including any assistant response)
     deleteMessagesAfter(currentConversation.id, messageId);
@@ -81,6 +101,7 @@ export function ChatView() {
 
     setError(null);
     setIsSending(true);
+    setPendingEdit(null);
 
     try {
       // Add placeholder for assistant response
@@ -107,7 +128,17 @@ export function ChatView() {
     } finally {
       setIsSending(false);
     }
-  };
+  }, [currentConversation, settings.defaultModel, deleteMessagesAfter, updateMessage, addMessage]);
+
+  const handleConfirmEdit = useCallback(() => {
+    if (pendingEdit) {
+      executeEdit(pendingEdit.messageId, pendingEdit.newContent);
+    }
+  }, [pendingEdit, executeEdit]);
+
+  const handleCancelEdit = useCallback(() => {
+    setPendingEdit(null);
+  }, []);
 
   // Handle regenerating an assistant response
   const handleRegenerate = async (messageId: string) => {
@@ -225,6 +256,17 @@ export function ChatView() {
 
   return (
     <div className="flex flex-col flex-1 min-h-0">
+      {/* Edit confirmation dialog */}
+      <ConfirmDialog
+        open={!!pendingEdit}
+        onClose={handleCancelEdit}
+        onConfirm={handleConfirmEdit}
+        title="Edit message?"
+        description={`This will delete ${pendingEdit?.subsequentCount} message${pendingEdit?.subsequentCount === 1 ? '' : 's'} after this one and regenerate a new response.`}
+        confirmText="Edit & Regenerate"
+        confirmVariant="destructive"
+      />
+
       {/* Messages */}
       <div 
         ref={scrollContainerRef}

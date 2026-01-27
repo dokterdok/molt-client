@@ -295,7 +295,7 @@ console.log(x + y);
       const conversation = store.createConversation();
       
       const messages = Array.from({ length: 1000 }, (_, i) => ({
-        role: (i % 2 === 0 ? 'user' : 'assistant') as const,
+        role: (i % 2 === 0 ? 'user' : 'assistant') as 'user' | 'assistant',
         content: `Batch message ${i}`,
       }));
       

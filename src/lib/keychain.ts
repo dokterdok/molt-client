@@ -17,7 +17,7 @@ export async function getGatewayToken(): Promise<string> {
       key: "gateway_token",
     });
     return token;
-  } catch (err) {
+  } catch {
     // Token not found or error - return empty string
     return "";
   }
@@ -49,7 +49,7 @@ export async function deleteGatewayToken(): Promise<void> {
       service: SERVICE_NAME,
       key: "gateway_token",
     });
-  } catch (err) {
+  } catch {
     // Ignore errors (token might not exist)
   }
 }

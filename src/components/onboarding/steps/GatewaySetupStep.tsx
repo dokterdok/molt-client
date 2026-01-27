@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { invoke } from "@tauri-apps/api/core";
 import { useStore } from "../../../stores/store";
 import { cn } from "../../../lib/utils";
@@ -154,7 +154,7 @@ export function GatewaySetupStep({
           onSuccess();
         }, 1500);
         return;
-      } catch (err) {
+      } catch {
         // Try next URL
         continue;
       }
@@ -204,11 +204,10 @@ export function GatewaySetupStep({
       
       updateSettings({ gatewayUrl: actualUrl, gatewayToken: trimmedToken });
 
-      // Save progress
+      // Save progress (token NOT stored here - goes to keychain via updateSettings)
       localStorage.setItem('molt-onboarding-progress', JSON.stringify({
         step: 'setup-complete',
         gatewayUrl: actualUrl,
-        gatewayToken: trimmedToken,
         timestamp: Date.now()
       }));
 

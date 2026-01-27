@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { WelcomeStep } from "./steps/WelcomeStep";
 import { DetectionStep } from "./steps/DetectionStep";
 import { NoGatewayStep } from "./steps/NoGatewayStep";
@@ -24,7 +24,7 @@ export type OnboardingStep =
 interface OnboardingProgress {
   step: string;
   gatewayUrl?: string;
-  gatewayToken?: string;
+  // NOTE: gatewayToken is NEVER stored in localStorage - it goes to OS keychain only
   timestamp: number;
 }
 
@@ -49,7 +49,7 @@ export function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
         // If saved within last 24 hours, restore
         if (Date.now() - progress.timestamp < 24 * 60 * 60 * 1000) {
           if (progress.gatewayUrl) setGatewayUrl(progress.gatewayUrl);
-          if (progress.gatewayToken) setGatewayToken(progress.gatewayToken);
+          // Token is NOT restored from localStorage - it's in keychain
           // Start at detection if we have partial progress
           if (progress.step === 'setup-started' || progress.step === 'detection-failed') {
             setCurrentStep('detection');
@@ -121,11 +121,10 @@ export function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
   };
 
   const handleManualSetup = () => {
-    // Save progress
+    // Save progress (token NOT stored in localStorage - security)
     localStorage.setItem('molt-onboarding-progress', JSON.stringify({
       step: 'setup-started',
       gatewayUrl,
-      gatewayToken,
       timestamp: Date.now()
     }));
     handleNext("setup");

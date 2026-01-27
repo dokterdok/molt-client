@@ -45,7 +45,7 @@ export function DetectionStep({ onGatewayFound, onNoGateway, onSkip }: Detection
         await new Promise(resolve => setTimeout(resolve, 300)); // Brief pause to show success
         onGatewayFound(result.used_url);
         return;
-      } catch (_err) {
+      } catch {
         // Try next URL
         await new Promise(resolve => setTimeout(resolve, 400)); // Delay between attempts
         continue;

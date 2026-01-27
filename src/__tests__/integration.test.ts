@@ -2,10 +2,7 @@ import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { useStore } from '../stores/store';
 import { db } from '../lib/db';
 import { 
-  persistConversation, 
   loadPersistedData, 
-  deletePersistedConversation,
-  persistMessage,
   searchPersistedMessages,
 } from '../lib/persistence';
 

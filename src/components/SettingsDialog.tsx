@@ -124,8 +124,8 @@ export function SettingsDialog({ open, onClose, onRerunSetup }: SettingsDialogPr
       if (models && models.length > 0) {
         setAvailableModels(models);
       }
-    } catch (err) {
-      console.log("Could not fetch models from Gateway, using fallbacks");
+    } catch {
+      // Could not fetch models from Gateway, using fallbacks
     } finally {
       setModelsLoading(false);
     }

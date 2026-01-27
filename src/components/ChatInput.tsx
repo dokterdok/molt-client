@@ -58,7 +58,7 @@ export function ChatInput({ onSend, disabled, isSending }: ChatInputProps) {
         const paths = Array.isArray(selected) ? selected : [selected];
         // In Tauri v2, we'd need to read files through the fs plugin
         // For now, just store the paths
-        console.log("Selected files:", paths);
+        // Files selected - paths are stored for later processing
       }
     } catch (err) {
       console.error("Failed to open file dialog:", err);

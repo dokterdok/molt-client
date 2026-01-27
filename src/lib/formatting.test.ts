@@ -206,6 +206,7 @@ x = 1
     function sanitizeInput(input: string): string {
       return input
         .trim()
+        // eslint-disable-next-line no-control-regex
         .replace(/[\u0000-\u001F\u007F-\u009F]/g, '') // Remove control characters
         .replace(/\s+/g, ' '); // Normalize whitespace
     }

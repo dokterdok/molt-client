@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useStore, Conversation } from "../stores/store";
 import { SettingsDialog } from "./SettingsDialog";
 import { SearchDialog } from "./SearchDialog";

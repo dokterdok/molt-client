@@ -61,7 +61,7 @@ export async function loadPersistedData(): Promise<{
       let title = dbConv.title;
       try {
         title = await decrypt(dbConv.title);
-      } catch (err) {
+      } catch {
         // If decryption fails, it might be unencrypted (migration case)
         console.warn(`Could not decrypt conversation title ${dbConv.id}, using as-is`);
       }

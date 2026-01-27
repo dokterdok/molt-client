@@ -45,8 +45,8 @@ async function getMasterKey(): Promise<CryptoKey> {
       );
       return cachedKey;
     }
-  } catch (err) {
-    console.log("No existing key found, generating new one");
+  } catch {
+    // No existing key found, generating new one
   }
 
   // Generate new key

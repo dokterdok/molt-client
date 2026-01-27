@@ -27,15 +27,15 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   ) => {
     const variants = {
       primary:
-        "bg-primary text-primary-foreground hover:bg-primary/90 active:bg-primary/80 shadow-sm hover:shadow-md hover-lift",
+        "bg-primary text-primary-foreground hover:bg-primary/90 active:bg-primary/80 shadow-sm hover:shadow-md hover-lift relative overflow-hidden",
       secondary:
-        "bg-secondary text-secondary-foreground hover:bg-secondary/80 active:bg-secondary/70 hover-lift",
+        "bg-secondary text-secondary-foreground hover:bg-secondary/80 active:bg-secondary/70 hover-lift relative overflow-hidden",
       ghost:
-        "text-foreground hover:bg-muted/50 active:bg-muted",
+        "text-foreground hover:bg-muted/50 active:bg-muted relative overflow-hidden",
       destructive:
-        "bg-destructive text-destructive-foreground hover:bg-destructive/90 active:bg-destructive/80 hover-lift",
+        "bg-destructive text-destructive-foreground hover:bg-destructive/90 active:bg-destructive/80 hover-lift relative overflow-hidden",
       outline:
-        "border border-border bg-background hover:bg-muted/50 active:bg-muted text-foreground hover-lift",
+        "border border-border bg-background hover:bg-muted/50 active:bg-muted text-foreground hover-lift relative overflow-hidden",
     };
 
     const sizes = {
@@ -53,9 +53,9 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           // Base styles
           "inline-flex items-center justify-center gap-2 font-medium",
           "rounded-xl transition-all duration-200",
-          "focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-offset-2",
+          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2",
           "disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none",
-          "active:scale-[0.98]",
+          "active:scale-[0.98] active:transition-transform active:duration-100",
           // Variant & size
           variants[variant],
           sizes[size],

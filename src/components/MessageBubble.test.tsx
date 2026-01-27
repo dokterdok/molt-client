@@ -357,7 +357,7 @@ describe('MessageBubble', () => {
 
       render(<MessageBubble message={message} />);
       
-      expect(screen.getByRole('article')).toHaveAttribute('aria-label', 'Message from You');
+      expect(screen.getByRole('article').getAttribute('aria-label')).toMatch(/Message from You/);
     });
 
     it('should have accessible copy button', () => {

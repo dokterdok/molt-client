@@ -1,6 +1,6 @@
-<div align="center">
+﻿<div align="center">
   
-# 🦞 Molt
+# 🦞 Moltzer
 
 **A native, lightweight desktop client for Clawdbot**
 
@@ -110,8 +110,8 @@ brew install moltzer-client
 # https://github.com/dokterdok/moltzer-client/releases
 
 # Make executable and run
-chmod +x Molt-1.0.0.AppImage
-./Molt-1.0.0.AppImage
+chmod +x Moltzer-1.0.0.AppImage
+./Moltzer-1.0.0.AppImage
 ```
 
 ### Build from Source
@@ -322,6 +322,108 @@ See [GitHub Issues](https://github.com/dokterdok/moltzer-client/issues) for full
 
 ---
 
+## 🔧 Troubleshooting
+
+### Connection Issues
+
+**Problem:** "Cannot connect to Gateway" error
+
+**Solutions:**
+1. **Verify Gateway is running:**
+   ```bash
+   clawdbot gateway status
+   ```
+2. **Check Gateway URL:**
+   - Default: `ws://localhost:18789`
+   - If using HTTPS, try `wss://` instead of `ws://`
+3. **Check firewall:**
+   - Ensure port 18789 is not blocked
+   - Add exception for Moltzer and clawdbot
+
+**Problem:** Connection drops frequently
+
+**Solutions:**
+1. Check network stability
+2. Increase timeout in Gateway config
+3. Use `wss://` for more reliable connections
+
+### Performance Issues
+
+**Problem:** App feels slow or laggy
+
+**Solutions:**
+1. **Clear local database:**
+   - Settings → Advanced → Clear Cache
+   - Warning: This deletes all conversations
+2. **Check resource usage:**
+   - Open Task Manager/Activity Monitor
+   - If using >500MB RAM, file a bug report
+3. **Update to latest version:**
+   - Check [Releases](https://github.com/dokterdok/moltzer-client/releases)
+
+### Encryption Issues
+
+**Problem:** "Cannot decrypt conversation" error
+
+**Solutions:**
+1. **Master key may have changed:**
+   - Check OS keychain/credential manager
+   - If key is missing, conversations cannot be recovered
+2. **Fresh start:**
+   - Export important conversations first
+   - Settings → Advanced → Reset Encryption Keys
+
+### Platform-Specific Issues
+
+**macOS:**
+- **App won't open:** Right-click → Open (to bypass Gatekeeper)
+- **Frozen UI:** Update to latest version (known issue on macOS 13)
+
+**Windows:**
+- **SmartScreen warning:** Click "More info" → "Run anyway"
+- **WebView2 missing:** Download from [Microsoft](https://go.microsoft.com/fwlink/p/?LinkId=2124703)
+
+**Linux:**
+- **AppImage won't run:** `chmod +x Moltzer-*.AppImage`
+- **Missing dependencies:** Install `webkit2gtk` and `libayatana-appindicator3`
+
+### Data & Storage
+
+**Problem:** Conversations disappeared
+
+**Solutions:**
+1. **Check if database is intact:**
+   - Developer Tools (F12) → Application → IndexedDB → MoltDB
+2. **Check encryption keys:**
+   - Settings → Security → Verify Master Key
+3. **Restore from backup** (if you have one):
+   - Settings → Import/Export → Import Backup
+
+**Problem:** App uses too much disk space
+
+**Solutions:**
+1. **Delete old conversations:**
+   - Conversations are stored locally forever by default
+2. **Clear search index:**
+   - Settings → Advanced → Rebuild Search Index
+
+### Still Having Issues?
+
+1. **Check logs:**
+   - macOS: `~/Library/Logs/Moltzer/`
+   - Windows: `%APPDATA%\Moltzer\logs\`
+   - Linux: `~/.local/share/Moltzer/logs/`
+
+2. **Report a bug:**
+   - [Open an issue](https://github.com/dokterdok/moltzer-client/issues/new/choose)
+   - Include: OS version, Moltzer version, error messages, logs
+
+3. **Get help:**
+   - [GitHub Discussions](https://github.com/dokterdok/moltzer-client/discussions)
+   - Email: support@moltzer.dev
+
+---
+
 ## 📝 License
 
 MIT License — see [LICENSE](LICENSE) for details.
@@ -330,7 +432,7 @@ MIT License — see [LICENSE](LICENSE) for details.
 
 ## 🙏 Acknowledgments
 
-- **[Clawdbot](https://github.com/clawdbot/clawdbot)** — The AI gateway powering Molt
+- **[Clawdbot](https://github.com/clawdbot/clawdbot)** — The AI gateway powering Moltzerzer
 - **[Tauri](https://tauri.app/)** — Making native apps lightweight again
 - **[Anthropic](https://anthropic.com/)** — Claude API
 - The open source community
@@ -350,6 +452,6 @@ MIT License — see [LICENSE](LICENSE) for details.
   <p>
     <a href="https://github.com/dokterdok/moltzer-client">GitHub</a> •
     <a href="https://moltzer.dev">Website</a> •
-    <a href="https://twitter.com/moltclient">Twitter</a>
+    <a href="https://twitter.com/Moltzerclient">Twitter</a>
   </p>
 </div>

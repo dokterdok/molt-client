@@ -1,6 +1,10 @@
-//! Molt Client - Native Moltbot Client
-//! 
-//! Rust backend handling WebSocket communication with Moltbot Gateway
+//! Moltzer Client - Native Desktop Client for Clawdbot
+//!
+//! Rust backend providing:
+//! - WebSocket communication with Clawdbot Gateway
+//! - OS keychain integration for secure credential storage
+//! - Gateway discovery on local network
+//! - Native system integration (notifications, window management)
 
 mod gateway;
 mod keychain;

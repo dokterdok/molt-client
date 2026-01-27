@@ -53,7 +53,7 @@ mod tests {
 
     #[tokio::test]
     async fn test_keychain_operations() {
-        let service = "com.molt.client.test".to_string();
+        let service = "com.moltzer.client.test".to_string();
         let key = "test-key".to_string();
         let value = "test-value".to_string();
 

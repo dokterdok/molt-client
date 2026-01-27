@@ -91,6 +91,13 @@ if (!showOnboarding) {
 - `steps/SuccessStep.tsx` - Celebration screen
 - `steps/FeatureTourStep.tsx` - Keyboard shortcuts tour
 
+## macOS Native Integration
+
+The onboarding flow respects macOS window chrome:
+- Skip hint positioned below traffic lights (`top-2` on macOS vs `top-4` elsewhere)
+- Consistent with main app's Slack-style window integration
+- Native drag regions and traffic light spacing throughout
+
 ## Future Enhancements
 
 - [ ] Animated screenshots/demos of features

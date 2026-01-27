@@ -11,6 +11,9 @@ import { ToastContainer, useToast } from "./components/ui/toast";
 import { Spinner } from "./components/ui/spinner";
 import { loadPersistedData } from "./lib/persistence";
 
+// Check if running on macOS (for traffic light padding)
+const isMacOS = typeof navigator !== "undefined" && navigator.platform.toLowerCase().includes("mac");
+
 export default function App() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [isConnecting, setIsConnecting] = useState(true);
@@ -299,9 +302,21 @@ export default function App() {
           </div>
         )}
         
-        {/* Header */}
-        <header className="h-12 border-b border-border flex items-center justify-between px-4 flex-shrink-0">
-          <div className="flex items-center gap-2">
+        {/* Header - draggable on macOS */}
+        <header 
+          className={cn(
+            "h-12 border-b border-border flex items-center justify-between px-4 flex-shrink-0",
+            isMacOS && "pt-2"
+          )}
+          data-tauri-drag-region
+        >
+          <div 
+            className={cn(
+              "flex items-center gap-2",
+              isMacOS && !sidebarOpen && "pl-[70px]"
+            )}
+            data-tauri-drag-region
+          >
             <button
               onClick={() => setSidebarOpen(!sidebarOpen)}
               className="p-2 hover:bg-muted rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-primary/50"
@@ -328,32 +343,32 @@ export default function App() {
                 />
               </svg>
             </button>
-            <h1 className="font-semibold truncate">
+            <h1 className="font-semibold truncate select-none" data-tauri-drag-region>
               {currentConversation?.title || "Molt"}
             </h1>
           </div>
           
           {/* Connection status */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2" data-tauri-drag-region>
             {isConnecting ? (
-              <div className="flex items-center gap-2 text-muted-foreground text-sm animate-in fade-in duration-200">
+              <div className="flex items-center gap-2 text-muted-foreground text-sm animate-in fade-in duration-200" data-tauri-drag-region>
                 <Spinner size="sm" />
-                <span className="hidden sm:inline">
+                <span className="hidden sm:inline select-none" data-tauri-drag-region>
                   {reconnectAttempts > 1 ? `Reconnecting (${reconnectAttempts})...` : "Connecting..."}
                 </span>
               </div>
             ) : !connected ? (
-              <div className="flex items-center gap-2 text-amber-600 dark:text-amber-400 text-sm animate-in fade-in duration-200">
-                <span className="relative flex w-2 h-2">
+              <div className="flex items-center gap-2 text-amber-600 dark:text-amber-400 text-sm animate-in fade-in duration-200" data-tauri-drag-region>
+                <span className="relative flex w-2 h-2" data-tauri-drag-region>
                   <span className="absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75 animate-ping" />
                   <span className="relative inline-flex w-2 h-2 rounded-full bg-amber-500" />
                 </span>
-                <span className="hidden sm:inline">Reconnecting...</span>
+                <span className="hidden sm:inline select-none" data-tauri-drag-region>Reconnecting...</span>
               </div>
             ) : (
-              <div className="flex items-center gap-2 text-green-600 dark:text-green-400 text-sm animate-in fade-in duration-200" title="Connected to Gateway">
-                <span className="w-2 h-2 bg-green-500 rounded-full" />
-                <span className="hidden sm:inline">Connected</span>
+              <div className="flex items-center gap-2 text-green-600 dark:text-green-400 text-sm animate-in fade-in duration-200" title="Connected to Gateway" data-tauri-drag-region>
+                <span className="w-2 h-2 bg-green-500 rounded-full" data-tauri-drag-region />
+                <span className="hidden sm:inline select-none" data-tauri-drag-region>Connected</span>
               </div>
             )}
           </div>

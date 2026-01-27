@@ -74,18 +74,23 @@ export function Sidebar({ onToggle: _onToggle }: SidebarProps) {
       <div className="p-3 pb-0">
         <div className="flex items-center gap-2 mb-3 px-1">
           <div className="flex items-center gap-2">
-            <span className="text-2xl">🦞</span>
+            <span className="text-2xl select-none" role="img" aria-label="Molt logo">🦞</span>
             <span className="font-semibold text-lg">Molt</span>
           </div>
-          <div className="flex items-center gap-1.5 ml-auto">
-            <span
-              className={cn(
-                "w-2 h-2 rounded-full transition-colors",
-                connected ? "bg-green-500 animate-pulse" : "bg-red-500"
+          <div className="flex items-center gap-1.5 ml-auto" role="status" aria-live="polite">
+            <span className="relative flex w-2 h-2">
+              {connected && (
+                <span className="absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75 animate-ping" />
               )}
-            />
-            <span className="text-xs text-muted-foreground">
-              {connected ? "Connected" : "Offline"}
+              <span
+                className={cn(
+                  "relative inline-flex w-2 h-2 rounded-full transition-colors",
+                  connected ? "bg-green-500" : "bg-red-500"
+                )}
+              />
+            </span>
+            <span className="text-xs text-muted-foreground font-medium">
+              {connected ? "Online" : "Offline"}
             </span>
           </div>
         </div>

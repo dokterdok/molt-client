@@ -115,29 +115,34 @@ export function ChatView() {
         <div className="absolute bottom-24 left-1/2 -translate-x-1/2 animate-in fade-in slide-in-from-bottom-2 duration-200">
           <button
             onClick={scrollToBottom}
-            className="px-4 py-2 bg-background border border-border rounded-full shadow-lg hover:bg-muted transition-colors flex items-center gap-2"
+            className="px-4 py-2 bg-background border border-border rounded-full shadow-lg hover:bg-muted hover:shadow-xl hover:scale-105 transition-all duration-200 flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-primary/50"
+            aria-label="Scroll to bottom of conversation"
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
             </svg>
-            <span className="text-sm">Jump to bottom</span>
+            <span className="text-sm font-medium">Jump to bottom</span>
           </button>
         </div>
       )}
 
       {/* Error banner */}
       {error && (
-        <div className="px-4 py-2 bg-destructive/10 border-t border-destructive/20 animate-in slide-in-from-bottom duration-200">
-          <div className="max-w-3xl mx-auto flex items-center justify-between gap-4">
-            <div className="flex items-center gap-2 text-destructive">
-              <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        <div className="px-4 py-3 bg-destructive/10 border-t border-destructive/20 animate-in slide-in-from-bottom duration-200">
+          <div className="max-w-3xl mx-auto flex items-start justify-between gap-4">
+            <div className="flex items-start gap-3 flex-1 min-w-0">
+              <svg className="w-5 h-5 flex-shrink-0 text-destructive mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
               </svg>
-              <span className="text-sm">{error}</span>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-medium text-destructive mb-0.5">Message Send Failed</p>
+                <p className="text-xs text-destructive/80 break-words">{error}</p>
+              </div>
             </div>
             <button
               onClick={() => setError(null)}
-              className="text-destructive hover:text-destructive/80 transition-colors"
+              className="flex-shrink-0 p-1 text-destructive hover:text-destructive/80 hover:bg-destructive/10 rounded transition-colors focus:outline-none focus:ring-2 focus:ring-destructive/50"
+              aria-label="Dismiss error"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -175,8 +180,8 @@ export function ChatView() {
 
 function EmptyConversation() {
   return (
-    <div className="flex flex-col items-center justify-center py-16 text-center animate-in fade-in duration-500">
-      <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-orange-400/10 to-red-500/10 mb-6">
+    <div className="flex flex-col items-center justify-center py-16 px-4 text-center animate-in fade-in duration-500">
+      <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-orange-400/10 to-red-500/10 mb-6 shadow-sm animate-in zoom-in-95 duration-500" style={{ animationDelay: "100ms" }}>
         <svg className="w-10 h-10 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path
             strokeLinecap="round"
@@ -186,17 +191,20 @@ function EmptyConversation() {
           />
         </svg>
       </div>
-      <h2 className="text-xl font-semibold mb-2">Start your conversation</h2>
-      <p className="text-muted-foreground max-w-md">
+      <h2 className="text-xl font-semibold mb-2 animate-in fade-in slide-in-from-bottom-2 duration-500" style={{ animationDelay: "200ms" }}>
+        Start your conversation
+      </h2>
+      <p className="text-muted-foreground max-w-md text-sm sm:text-base leading-relaxed animate-in fade-in slide-in-from-bottom-2 duration-500" style={{ animationDelay: "300ms" }}>
         Type a message below to begin chatting. I can help with coding, writing, analysis, and much more.
       </p>
       
-      {/* Quick actions */}
-      <div className="flex flex-wrap gap-2 mt-6 justify-center">
-        {["Write code", "Explain concept", "Brainstorm ideas", "Debug error"].map((action) => (
+      {/* Quick action suggestions */}
+      <div className="flex flex-wrap gap-2 mt-8 justify-center max-w-lg animate-in fade-in slide-in-from-bottom-2 duration-500" style={{ animationDelay: "400ms" }}>
+        {["Write code", "Explain concept", "Brainstorm ideas", "Debug error"].map((action, i) => (
           <span
             key={action}
-            className="px-3 py-1.5 text-sm bg-muted rounded-full text-muted-foreground"
+            className="px-3 py-1.5 text-sm bg-muted/50 hover:bg-muted rounded-full text-muted-foreground hover:text-foreground transition-colors border border-transparent hover:border-border cursor-default"
+            style={{ animationDelay: `${400 + i * 50}ms` }}
           >
             {action}
           </span>

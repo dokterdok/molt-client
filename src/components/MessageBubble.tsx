@@ -232,17 +232,19 @@ export function MessageBubble({ message }: MessageBubbleProps) {
 
 function TypingIndicator() {
   return (
-    <div className="flex items-center gap-1.5 py-1">
+    <div className="flex items-center gap-1.5 py-2 px-1">
       {[0, 1, 2].map((i) => (
         <span
           key={i}
-          className="w-2 h-2 rounded-full bg-primary/60 animate-bounce"
+          className="w-2 h-2 rounded-full bg-primary/70 animate-bounce shadow-sm"
           style={{ 
             animationDelay: `${i * 0.15}s`,
             animationDuration: "0.6s"
           }}
+          aria-hidden="true"
         />
       ))}
+      <span className="sr-only">Molt is typing...</span>
     </div>
   );
 }

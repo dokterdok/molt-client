@@ -291,8 +291,19 @@ export default function App() {
         </header>
 
         {/* Chat or Welcome */}
-        <div className="flex-1 min-h-0">
+        <div className="flex-1 min-h-0 relative">
           {currentConversation ? <ChatView /> : <WelcomeView />}
+          
+          {/* Initial connection loading overlay */}
+          {isConnecting && reconnectAttempts === 1 && (
+            <div className="absolute inset-0 bg-background/95 backdrop-blur-sm flex flex-col items-center justify-center gap-4 z-40 animate-in fade-in duration-300">
+              <Spinner size="lg" />
+              <div className="text-center">
+                <p className="text-sm font-medium mb-1">Connecting to Gateway</p>
+                <p className="text-xs text-muted-foreground">Please wait...</p>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>

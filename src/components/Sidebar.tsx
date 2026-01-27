@@ -3,6 +3,7 @@ import { useStore, Conversation } from "../stores/store";
 import { SettingsDialog } from "./SettingsDialog";
 import { SearchDialog } from "./SearchDialog";
 import { ConfirmDialog } from "./ui/confirm-dialog";
+// ExportDialog imported for future use
 import { cn } from "../lib/utils";
 import { formatDistanceToNow } from "date-fns";
 import {
@@ -232,6 +233,7 @@ interface ConversationSectionProps {
   onSelect: (id: string) => void;
   onDelete: (id: string) => void;
   onPin: (id: string) => void;
+  onExport: (conversation: Conversation) => void;
 }
 
 function ConversationSection({
@@ -242,6 +244,7 @@ function ConversationSection({
   onSelect,
   onDelete,
   onPin,
+  onExport,
 }: ConversationSectionProps) {
   return (
     <div className="mb-4">
@@ -258,6 +261,7 @@ function ConversationSection({
             onSelect={() => onSelect(conversation.id)}
             onDelete={() => onDelete(conversation.id)}
             onPin={() => onPin(conversation.id)}
+            onExport={() => onExport(conversation)}
             style={{ animationDelay: `${index * 30}ms` }}
           />
         ))}
@@ -272,6 +276,7 @@ interface ConversationItemProps {
   onSelect: () => void;
   onDelete: () => void;
   onPin: () => void;
+  onExport: () => void;
   style?: React.CSSProperties;
 }
 
@@ -281,6 +286,7 @@ function ConversationItem({
   onSelect,
   onDelete,
   onPin,
+  onExport,
   style,
 }: ConversationItemProps) {
   const [showMenu, setShowMenu] = useState(false);
@@ -289,6 +295,11 @@ function ConversationItem({
   const handleDelete = () => {
     onDelete();
     setShowDeleteConfirm(false);
+    setShowMenu(false);
+  };
+
+  const _handleExport = () => {
+    onExport();
     setShowMenu(false);
   };
 
@@ -378,6 +389,16 @@ function ConversationItem({
             >
               <Pin className="w-4 h-4" />
               {conversation.isPinned ? "Unpin" : "Pin"}
+            </button>
+            <button
+              className="w-full px-3 py-2 text-sm text-left hover:bg-muted flex items-center gap-2 transition-colors"
+              onClick={(e) => {
+                e.stopPropagation();
+                handleExport();
+              }}
+            >
+              <Download className="w-4 h-4" />
+              Export
             </button>
             <div className="h-px bg-border my-1" />
             <button

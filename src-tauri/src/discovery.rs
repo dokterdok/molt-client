@@ -31,7 +31,7 @@ pub async fn discover_gateways() -> Result<Vec<DiscoveredGateway>, String> {
     
     // Method 1: Check environment variables
     if let Some(url) = check_env_vars() {
-        let gateway = test_gateway(&url, "Environment Variable").await;
+        let gateway = test_gateway(url, "Environment Variable").await;
         gateways.push(gateway);
     }
     
@@ -43,7 +43,7 @@ pub async fn discover_gateways() -> Result<Vec<DiscoveredGateway>, String> {
     if let Some(url) = check_config_files().await {
         // Only add if not already found
         if !gateways.iter().any(|g| g.url == url) {
-            let gateway = test_gateway(&url, "Config File").await;
+            let gateway = test_gateway(url, "Config File").await;
             gateways.push(gateway);
         }
     }

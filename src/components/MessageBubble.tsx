@@ -12,6 +12,8 @@ import {
   Check,
   Link as LinkIcon,
   Cpu,
+  Pencil,
+  RefreshCw,
   X,
   Send,
   FileText,
@@ -25,7 +27,7 @@ interface MessageBubbleProps {
   isLastAssistantMessage?: boolean;
 }
 
-export function MessageBubble({ message, onEdit, onRegenerate, isLastAssistantMessage: _isLastAssistantMessage }: MessageBubbleProps) {
+export function MessageBubble({ message, onEdit, onRegenerate, isLastAssistantMessage }: MessageBubbleProps) {
   const [copiedCode, setCopiedCode] = useState<string | null>(null);
   const [showTimestamp, setShowTimestamp] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
@@ -58,7 +60,7 @@ export function MessageBubble({ message, onEdit, onRegenerate, isLastAssistantMe
     await navigator.clipboard.writeText(message.content);
   };
 
-  const _handleStartEdit = () => {
+  const handleStartEdit = () => {
     setEditContent(message.content);
     setIsEditing(true);
   };
@@ -84,7 +86,7 @@ export function MessageBubble({ message, onEdit, onRegenerate, isLastAssistantMe
     }
   };
 
-  const _handleRegenerate = () => {
+  const handleRegenerate = () => {
     if (onRegenerate) {
       onRegenerate(message.id);
     }

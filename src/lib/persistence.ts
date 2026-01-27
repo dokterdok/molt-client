@@ -281,6 +281,30 @@ export async function searchPersistedMessages(
 }
 
 /**
+ * Delete a single message from IndexedDB
+ */
+export async function deletePersistedMessage(messageId: string): Promise<void> {
+  try {
+    await db.messages.delete(messageId);
+  } catch (err) {
+    console.error('Failed to delete message:', err);
+    throw err;
+  }
+}
+
+/**
+ * Delete multiple messages from IndexedDB
+ */
+export async function deletePersistedMessages(messageIds: string[]): Promise<void> {
+  try {
+    await db.messages.bulkDelete(messageIds);
+  } catch (err) {
+    console.error('Failed to delete messages:', err);
+    throw err;
+  }
+}
+
+/**
  * Clear all persisted data
  * WARNING: This will delete all conversations and messages
  */

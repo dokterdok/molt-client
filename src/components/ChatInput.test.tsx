@@ -198,14 +198,13 @@ describe('ChatInput', () => {
       render(<ChatInput onSend={mockOnSend} />);
       
       const textarea = screen.getByPlaceholderText('Message Molt...') as HTMLTextAreaElement;
-      const initialHeight = textarea.style.height;
       
       // Type multiple lines
       await user.type(textarea, 'Line 1{Shift>}{Enter}{/Shift}Line 2{Shift>}{Enter}{/Shift}Line 3');
       
       // Height should be different after adding content
-      // Note: In jsdom this might not actually change, but we can verify the onInput handler is set
-      expect(textarea.onInput).toBeDefined();
+      // Note: In jsdom this might not actually change, but we can verify the oninput handler is set
+      expect(textarea.oninput).toBeDefined();
     });
 
     it('should have max height constraint', () => {

@@ -1,18 +1,92 @@
 import { useState, useRef, KeyboardEvent, useEffect } from "react";
 import { open } from "@tauri-apps/plugin-dialog";
+import { readFile } from "@tauri-apps/plugin-fs";
 import { cn } from "../lib/utils";
 import { Spinner } from "./ui/spinner";
-import { Paperclip, Send, X } from "lucide-react";
+import { Paperclip, Send, X, FileText, Image as ImageIcon, AlertCircle } from "lucide-react";
+
+// Attachment with base64 data ready to send
+export interface PreparedAttachment {
+  id: string;
+  filename: string;
+  mimeType: string;
+  data: string; // base64
+  path: string; // original path for display
+  previewUrl?: string; // data URL for image preview
+}
+
+// Supported file types and their MIME mappings
+const MIME_TYPES: Record<string, string> = {
+  // Images
+  png: "image/png",
+  jpg: "image/jpeg",
+  jpeg: "image/jpeg",
+  gif: "image/gif",
+  webp: "image/webp",
+  // Text files
+  txt: "text/plain",
+  md: "text/markdown",
+  // Code files (all as text/plain for the API)
+  js: "text/plain",
+  ts: "text/plain",
+  jsx: "text/plain",
+  tsx: "text/plain",
+  py: "text/plain",
+  rs: "text/plain",
+  go: "text/plain",
+  java: "text/plain",
+  c: "text/plain",
+  cpp: "text/plain",
+  h: "text/plain",
+  css: "text/plain",
+  html: "text/html",
+  json: "application/json",
+  yaml: "text/plain",
+  yml: "text/plain",
+  toml: "text/plain",
+  xml: "text/plain",
+  csv: "text/csv",
+  // Documents
+  pdf: "application/pdf",
+};
+
+const IMAGE_TYPES = ["image/png", "image/jpeg", "image/gif", "image/webp"];
+const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
+
+function getExtension(filename: string): string {
+  const parts = filename.split(".");
+  return parts.length > 1 ? parts[parts.length - 1].toLowerCase() : "";
+}
+
+function getMimeType(filename: string): string | null {
+  const ext = getExtension(filename);
+  return MIME_TYPES[ext] || null;
+}
+
+function isImageMime(mimeType: string): boolean {
+  return IMAGE_TYPES.includes(mimeType);
+}
+
+function arrayBufferToBase64(buffer: ArrayBuffer): string {
+  const bytes = new Uint8Array(buffer);
+  let binary = "";
+  for (let i = 0; i < bytes.byteLength; i++) {
+    binary += String.fromCharCode(bytes[i]);
+  }
+  return btoa(binary);
+}
 
 interface ChatInputProps {
-  onSend: (content: string, attachments: File[]) => void;
+  onSend: (content: string, attachments: PreparedAttachment[]) => void;
   disabled?: boolean;
   isSending?: boolean;
 }
 
 export function ChatInput({ onSend, disabled, isSending }: ChatInputProps) {
   const [message, setMessage] = useState("");
-  const [attachments, setAttachments] = useState<File[]>([]);
+  const [attachments, setAttachments] = useState<PreparedAttachment[]>([]);
+  const [isLoadingFiles, setIsLoadingFiles] = useState(false);
+  const [fileError, setFileError] = useState<string | null>(null);
   const [isFocused, setIsFocused] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -43,25 +117,85 @@ export function ChatInput({ onSend, disabled, isSending }: ChatInputProps) {
   };
 
   const handleAttach = async () => {
-    if (disabled) return;
+    if (disabled || isLoadingFiles) return;
+    setFileError(null);
+    
     try {
       const selected = await open({
         multiple: true,
         filters: [
-          { name: "All Files", extensions: ["*"] },
           { name: "Images", extensions: ["png", "jpg", "jpeg", "gif", "webp"] },
-          { name: "Documents", extensions: ["pdf", "txt", "md"] },
+          { name: "Documents", extensions: ["pdf", "txt", "md", "html", "csv", "json"] },
+          { name: "Code", extensions: ["js", "ts", "jsx", "tsx", "py", "rs", "go", "java", "c", "cpp", "h", "css", "yaml", "yml", "toml", "xml"] },
         ],
       });
 
-      if (selected) {
-        const paths = Array.isArray(selected) ? selected : [selected];
-        // In Tauri v2, we'd need to read files through the fs plugin
-        // For now, just store the paths
-        // Files selected - paths are stored for later processing
+      if (!selected) return;
+      
+      const paths = Array.isArray(selected) ? selected : [selected];
+      setIsLoadingFiles(true);
+      
+      const newAttachments: PreparedAttachment[] = [];
+      const errors: string[] = [];
+      
+      for (const path of paths) {
+        try {
+          // Get filename from path
+          const filename = path.split(/[/\\]/).pop() || path;
+          const mimeType = getMimeType(filename);
+          
+          if (!mimeType) {
+            errors.push(`Unsupported file type: ${filename}`);
+            continue;
+          }
+          
+          // Read file as binary
+          const fileData = await readFile(path);
+          
+          // Check file size
+          if (fileData.byteLength > MAX_FILE_SIZE) {
+            errors.push(`File too large (max 10MB): ${filename}`);
+            continue;
+          }
+          
+          // Convert to base64
+          const base64 = arrayBufferToBase64(fileData.buffer);
+          
+          // Create preview URL for images
+          let previewUrl: string | undefined;
+          if (isImageMime(mimeType)) {
+            previewUrl = `data:${mimeType};base64,${base64}`;
+          }
+          
+          newAttachments.push({
+            id: crypto.randomUUID(),
+            filename,
+            mimeType,
+            data: base64,
+            path,
+            previewUrl,
+          });
+        } catch (err) {
+          console.error(`Failed to read file ${path}:`, err);
+          const filename = path.split(/[/\\]/).pop() || path;
+          errors.push(`Failed to read: ${filename}`);
+        }
+      }
+      
+      if (errors.length > 0) {
+        setFileError(errors.join("; "));
+        // Auto-dismiss after 5 seconds
+        setTimeout(() => setFileError(null), 5000);
+      }
+      
+      if (newAttachments.length > 0) {
+        setAttachments(prev => [...prev, ...newAttachments]);
       }
     } catch (err) {
       console.error("Failed to open file dialog:", err);
+      setFileError("Failed to open file picker");
+    } finally {
+      setIsLoadingFiles(false);
     }
   };
 
@@ -69,24 +203,50 @@ export function ChatInput({ onSend, disabled, isSending }: ChatInputProps) {
     setAttachments((prev) => prev.filter((_, i) => i !== index));
   };
 
-  const canSend = (message.trim() || attachments.length > 0) && !disabled;
+  const canSend = (message.trim() || attachments.length > 0) && !disabled && !isLoadingFiles;
 
   return (
     <div className="p-4">
+      {/* File error message */}
+      {fileError && (
+        <div className="flex items-center gap-2 mb-3 px-3 py-2 bg-destructive/10 border border-destructive/20 rounded-lg text-sm text-destructive animate-in fade-in slide-in-from-bottom-2 duration-200">
+          <AlertCircle className="w-4 h-4 flex-shrink-0" />
+          <span className="flex-1">{fileError}</span>
+          <button
+            onClick={() => setFileError(null)}
+            className="p-0.5 hover:bg-destructive/10 rounded transition-colors"
+            aria-label="Dismiss error"
+          >
+            <X className="w-3.5 h-3.5" />
+          </button>
+        </div>
+      )}
+
       {/* Attachments preview */}
       {attachments.length > 0 && (
         <div className="flex gap-2 mb-3 flex-wrap animate-in fade-in slide-in-from-bottom-2 duration-200">
           {attachments.map((file, i) => (
             <div
-              key={i}
-              className="flex items-center gap-2 px-3 py-2 bg-muted rounded-lg text-sm group hover:bg-muted/80 transition-colors"
+              key={file.id}
+              className="relative flex items-center gap-2 px-3 py-2 bg-muted rounded-lg text-sm group hover:bg-muted/80 transition-colors"
             >
-              <Paperclip className="w-4 h-4 text-muted-foreground" />
-              <span className="truncate max-w-[150px]">{file.name}</span>
+              {/* Image preview or file icon */}
+              {file.previewUrl ? (
+                <img 
+                  src={file.previewUrl} 
+                  alt={file.filename}
+                  className="w-8 h-8 object-cover rounded"
+                />
+              ) : isImageMime(file.mimeType) ? (
+                <ImageIcon className="w-4 h-4 text-muted-foreground" />
+              ) : (
+                <FileText className="w-4 h-4 text-muted-foreground" />
+              )}
+              <span className="truncate max-w-[150px]">{file.filename}</span>
               <button
                 onClick={() => removeAttachment(i)}
                 className="p-0.5 text-muted-foreground hover:text-foreground hover:bg-background rounded transition-colors"
-                aria-label={`Remove ${file.name}`}
+                aria-label={`Remove ${file.filename}`}
               >
                 <X className="w-3.5 h-3.5" />
               </button>
@@ -108,15 +268,19 @@ export function ChatInput({ onSend, disabled, isSending }: ChatInputProps) {
         {/* Attach button */}
         <button
           onClick={handleAttach}
-          disabled={disabled}
+          disabled={disabled || isLoadingFiles}
           className={cn(
             "p-3 text-muted-foreground hover:text-foreground transition-colors flex-shrink-0",
-            disabled && "cursor-not-allowed"
+            (disabled || isLoadingFiles) && "cursor-not-allowed"
           )}
-          title="Attach files"
+          title="Attach files (images, documents, code)"
           aria-label="Attach files"
         >
-          <Paperclip className="w-5 h-5" />
+          {isLoadingFiles ? (
+            <Spinner size="sm" />
+          ) : (
+            <Paperclip className="w-5 h-5" />
+          )}
         </button>
 
         {/* Text input */}

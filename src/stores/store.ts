@@ -83,6 +83,9 @@ interface Store {
 
   // Messages
   addMessage: (conversationId: string, message: Omit<Message, "id" | "timestamp">) => Message;
+  updateMessage: (conversationId: string, messageId: string, content: string) => void;
+  deleteMessage: (conversationId: string, messageId: string) => void;
+  deleteMessagesAfter: (conversationId: string, messageId: string) => void;
   appendToCurrentMessage: (content: string) => void;
   completeCurrentMessage: () => void;
   currentStreamingMessageId: string | null;
@@ -239,6 +242,82 @@ export const useStore = create<Store>()((set, get) => ({
         }
 
         return message;
+      },
+
+      updateMessage: (conversationId, messageId, content) => {
+        set((state) => ({
+          conversations: state.conversations.map((c) =>
+            c.id === conversationId
+              ? {
+                  ...c,
+                  messages: c.messages.map((m) =>
+                    m.id === messageId ? { ...m, content } : m
+                  ),
+                  updatedAt: new Date(),
+                }
+              : c
+          ),
+        }));
+
+        // Persist the updated message
+        const conversation = get().conversations.find(c => c.id === conversationId);
+        const message = conversation?.messages.find(m => m.id === messageId);
+        if (message) {
+          persistMessage(conversationId, message).catch(err => {
+            console.error('Failed to persist updated message:', err);
+          });
+        }
+      },
+
+      deleteMessage: (conversationId, messageId) => {
+        set((state) => ({
+          conversations: state.conversations.map((c) =>
+            c.id === conversationId
+              ? {
+                  ...c,
+                  messages: c.messages.filter((m) => m.id !== messageId),
+                  updatedAt: new Date(),
+                }
+              : c
+          ),
+        }));
+
+        // Delete from IndexedDB
+        import('../lib/persistence').then(({ deletePersistedMessage }) => {
+          deletePersistedMessage(messageId).catch((err: Error) => {
+            console.error('Failed to delete message from DB:', err);
+          });
+        });
+      },
+
+      deleteMessagesAfter: (conversationId, messageId) => {
+        const conversation = get().conversations.find(c => c.id === conversationId);
+        if (!conversation) return;
+
+        const messageIndex = conversation.messages.findIndex(m => m.id === messageId);
+        if (messageIndex === -1) return;
+
+        const messagesToDelete = conversation.messages.slice(messageIndex + 1);
+        
+        set((state) => ({
+          conversations: state.conversations.map((c) =>
+            c.id === conversationId
+              ? {
+                  ...c,
+                  messages: c.messages.slice(0, messageIndex + 1),
+                  updatedAt: new Date(),
+                }
+              : c
+          ),
+        }));
+
+        // Delete from IndexedDB
+        import('../lib/persistence').then(({ deletePersistedMessages }) => {
+          const messageIds = messagesToDelete.map(m => m.id);
+          deletePersistedMessages(messageIds).catch((err: Error) => {
+            console.error('Failed to delete messages from DB:', err);
+          });
+        });
       },
 
       appendToCurrentMessage: (content) => {

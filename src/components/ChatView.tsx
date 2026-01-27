@@ -1,7 +1,7 @@
 import { useRef, useEffect, useState } from "react";
 import { invoke } from "@tauri-apps/api/core";
 import { useStore } from "../stores/store";
-import { ChatInput } from "./ChatInput";
+import { ChatInput, PreparedAttachment } from "./ChatInput";
 import { MessageBubble } from "./MessageBubble";
 import {
   ArrowDown,
@@ -14,13 +14,23 @@ import {
 import { Button } from "./ui/button";
 
 export function ChatView() {
-  const { currentConversation, addMessage, connected, settings, completeCurrentMessage, currentStreamingMessageId } = useStore();
+  const { 
+    currentConversation, 
+    addMessage, 
+    updateMessage,
+    deleteMessagesAfter,
+    deleteMessage,
+    connected, 
+    settings, 
+    completeCurrentMessage, 
+    currentStreamingMessageId 
+  } = useStore();
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [error, setError] = useState<string | null>(null);
   const [isNearBottom, setIsNearBottom] = useState(true);
   const [isSending, setIsSending] = useState(false);
-  const [lastFailedMessage, setLastFailedMessage] = useState<{ content: string; attachments: File[] } | null>(null);
+  const [lastFailedMessage, setLastFailedMessage] = useState<{ content: string; attachments: PreparedAttachment[] } | null>(null);
 
   // Auto-scroll to bottom on new messages (only if already near bottom)
   useEffect(() => {
@@ -55,21 +65,115 @@ export function ChatView() {
     }
   };
 
-  const handleSendMessage = async (content: string, attachments: File[]) => {
+  // Handle editing a user message - deletes subsequent messages and resends
+  const handleEditMessage = async (messageId: string, newContent: string) => {
+    if (!currentConversation || isSending || currentStreamingMessageId) return;
+
+    // Find the message index
+    const messageIndex = currentConversation.messages.findIndex(m => m.id === messageId);
+    if (messageIndex === -1) return;
+
+    // Delete all messages after this one (including any assistant response)
+    deleteMessagesAfter(currentConversation.id, messageId);
+    
+    // Update the message content
+    updateMessage(currentConversation.id, messageId, newContent);
+
+    setError(null);
+    setIsSending(true);
+
+    try {
+      // Add placeholder for assistant response
+      addMessage(currentConversation.id, {
+        role: "assistant",
+        content: "",
+        isStreaming: true,
+      });
+
+      // Send to gateway with updated message
+      await invoke("send_message", {
+        params: {
+          message: newContent,
+          session_key: currentConversation.id,
+          model: currentConversation.model || settings.defaultModel,
+          thinking: currentConversation.thinkingEnabled ? "low" : null,
+        },
+      });
+    } catch (err: any) {
+      console.error("Failed to send edited message:", err);
+      const errorMsg = err.toString().replace("Error: ", "");
+      setError(errorMsg);
+      setTimeout(() => setError(null), 15000);
+    } finally {
+      setIsSending(false);
+    }
+  };
+
+  // Handle regenerating an assistant response
+  const handleRegenerate = async (messageId: string) => {
+    if (!currentConversation || isSending || currentStreamingMessageId) return;
+
+    // Find the assistant message
+    const messageIndex = currentConversation.messages.findIndex(m => m.id === messageId);
+    if (messageIndex === -1) return;
+
+    // Find the preceding user message
+    const precedingUserMessage = currentConversation.messages
+      .slice(0, messageIndex)
+      .reverse()
+      .find(m => m.role === "user");
+
+    if (!precedingUserMessage) return;
+
+    // Delete the assistant message we're regenerating
+    deleteMessage(currentConversation.id, messageId);
+
+    setError(null);
+    setIsSending(true);
+
+    try {
+      // Add placeholder for new assistant response
+      addMessage(currentConversation.id, {
+        role: "assistant",
+        content: "",
+        isStreaming: true,
+      });
+
+      // Resend the preceding user message
+      await invoke("send_message", {
+        params: {
+          message: precedingUserMessage.content,
+          session_key: currentConversation.id,
+          model: currentConversation.model || settings.defaultModel,
+          thinking: currentConversation.thinkingEnabled ? "low" : null,
+        },
+      });
+    } catch (err: any) {
+      console.error("Failed to regenerate response:", err);
+      const errorMsg = err.toString().replace("Error: ", "");
+      setError(errorMsg);
+      setTimeout(() => setError(null), 15000);
+    } finally {
+      setIsSending(false);
+    }
+  };
+
+  const handleSendMessage = async (content: string, attachments: PreparedAttachment[]) => {
     if (!currentConversation || isSending) return;
     setError(null);
     setLastFailedMessage(null);
     setIsSending(true);
 
     try {
-      // Add user message
+      // Add user message with attachment metadata
       addMessage(currentConversation.id, {
         role: "user",
         content,
-        attachments: attachments.map((f) => ({
-          id: crypto.randomUUID(),
-          filename: f.name,
-          mimeType: f.type,
+        attachments: attachments.map((a) => ({
+          id: a.id,
+          filename: a.filename,
+          mimeType: a.mimeType,
+          data: a.previewUrl ? a.data : undefined, // Only store base64 for images (for preview)
         })),
       });
 
@@ -80,13 +184,19 @@ export function ChatView() {
         isStreaming: true,
       });
 
-      // Send to gateway
+      // Send to gateway with attachments
       await invoke("send_message", {
         params: {
           message: content,
           session_key: currentConversation.id,
           model: currentConversation.model || settings.defaultModel,
           thinking: currentConversation.thinkingEnabled ? "low" : null,
+          attachments: attachments.map((a) => ({
+            id: a.id,
+            filename: a.filename,
+            mimeType: a.mimeType,
+            data: a.data,
+          })),
         },
       });
     } catch (err: any) {
@@ -108,6 +218,11 @@ export function ChatView() {
 
   const hasMessages = currentConversation.messages.length > 0;
 
+  // Find the last assistant message for regenerate button
+  const lastAssistantMessageId = currentConversation.messages
+    .filter(m => m.role === "assistant" && !m.isStreaming)
+    .slice(-1)[0]?.id;
+
   return (
     <div className="flex flex-col flex-1 min-h-0">
       {/* Messages */}
@@ -127,7 +242,12 @@ export function ChatView() {
                   className="animate-in fade-in slide-in-from-bottom-2 duration-300"
                   style={{ animationDelay: `${Math.min(index * 50, 500)}ms` }}
                 >
-                  <MessageBubble message={message} />
+                  <MessageBubble 
+                    message={message} 
+                    onEdit={handleEditMessage}
+                    onRegenerate={handleRegenerate}
+                    isLastAssistantMessage={message.id === lastAssistantMessageId}
+                  />
                 </div>
               ))}
             </div>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, JSX } from "react";
 import { WelcomeStep } from "./steps/WelcomeStep";
 import { DetectionStep } from "./steps/DetectionStep";
 import { NoGatewayStep } from "./steps/NoGatewayStep";

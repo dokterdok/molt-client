@@ -1,5 +1,6 @@
 import "@testing-library/jest-dom";
 import { vi } from "vitest";
+import "fake-indexeddb/auto";
 
 // Mock Tauri APIs for testing
 vi.mock("@tauri-apps/api/core", () => ({

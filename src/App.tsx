@@ -4,6 +4,7 @@ import { invoke } from "@tauri-apps/api/core";
 import { Sidebar } from "./components/Sidebar";
 import { ChatView } from "./components/ChatView";
 import { WelcomeView } from "./components/WelcomeView";
+import { OnboardingFlow } from "./components/onboarding/OnboardingFlow";
 import { useStore } from "./stores/store";
 import { cn } from "./lib/utils";
 import { ToastContainer, useToast } from "./components/ui/toast";
@@ -15,6 +16,7 @@ export default function App() {
   const [isConnecting, setIsConnecting] = useState(true);
   const [reconnectAttempts, setReconnectAttempts] = useState(0);
   const [isLoadingData, setIsLoadingData] = useState(true);
+  const [showOnboarding, setShowOnboarding] = useState(false);
   const { toasts, dismissToast, showError, showSuccess, showWarning } = useToast();
   const { 
     currentConversation,
@@ -25,8 +27,21 @@ export default function App() {
     settings 
   } = useStore();
 
-  // Load persisted data from IndexedDB on mount
+  // Check if this is first launch (onboarding needed)
   useEffect(() => {
+    const onboardingCompleted = localStorage.getItem('molt-onboarding-completed');
+    const onboardingSkipped = localStorage.getItem('molt-onboarding-skipped');
+    const hasSettings = localStorage.getItem('molt-settings');
+    
+    // Show onboarding if never completed and no settings configured
+    if (!onboardingCompleted && !onboardingSkipped && !hasSettings) {
+      setShowOnboarding(true);
+      setIsLoadingData(false);
+      setIsConnecting(false);
+      return;
+    }
+    
+    // Otherwise, load normally
     const loadData = async () => {
       try {
         const { conversations } = await loadPersistedData();
@@ -96,8 +111,14 @@ export default function App() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [sidebarOpen]);
 
-  // Connect to Gateway on mount
+  // Connect to Gateway on mount (skip during onboarding)
   useEffect(() => {
+    // Don't attempt connection during onboarding
+    if (showOnboarding) {
+      setIsConnecting(false);
+      return;
+    }
+
     let reconnectTimer: number | undefined;
     let connectingFlag = false;
     let attempts = 0;
@@ -135,8 +156,8 @@ export default function App() {
         console.error("Failed to connect:", err);
         setIsConnecting(false);
         
-        // Show error on first attempt only
-        if (attempts === 1) {
+        // Show error on first attempt only (not during onboarding)
+        if (attempts === 1 && !showOnboarding) {
           showError("Failed to connect to Gateway. Retrying...");
         }
         
@@ -156,7 +177,7 @@ export default function App() {
     return () => {
       if (reconnectTimer) clearTimeout(reconnectTimer);
     };
-  }, [settings.gatewayUrl, settings.gatewayToken, showError, showSuccess]);
+  }, [settings.gatewayUrl, settings.gatewayToken, showError, showSuccess, showOnboarding]);
 
   // Listen for Gateway events
   useEffect(() => {
@@ -176,7 +197,10 @@ export default function App() {
       }),
       listen("gateway:disconnected", () => {
         setConnected(false);
-        showWarning("Connection lost. Attempting to reconnect...");
+        // Suppress toasts during onboarding
+        if (!showOnboarding) {
+          showWarning("Connection lost. Attempting to reconnect...");
+        }
         // Auto-reconnect after 5 seconds
         setTimeout(async () => {
           setIsConnecting(true);
@@ -185,11 +209,15 @@ export default function App() {
               url: settings.gatewayUrl, 
               token: settings.gatewayToken 
             });
-            showSuccess("Reconnected to Gateway");
+            if (!showOnboarding) {
+              showSuccess("Reconnected to Gateway");
+            }
           } catch (err) {
             console.error("Reconnection failed:", err);
             setIsConnecting(false);
-            showError("Reconnection failed. Will retry...");
+            if (!showOnboarding) {
+              showError("Reconnection failed. Will retry...");
+            }
           }
         }, 5000);
       }),
@@ -207,6 +235,17 @@ export default function App() {
       });
     };
   }, [setConnected, appendToCurrentMessage, completeCurrentMessage, settings.gatewayUrl, settings.gatewayToken]);
+
+  const handleOnboardingComplete = () => {
+    setShowOnboarding(false);
+    // Trigger a connection attempt with new settings
+    setIsConnecting(true);
+  };
+
+  // Show onboarding flow if needed
+  if (showOnboarding) {
+    return <OnboardingFlow onComplete={handleOnboardingComplete} />;
+  }
 
   return (
     <>

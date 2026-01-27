@@ -10,7 +10,7 @@
  */
 
 import { db, type DBMessage, type DBConversation } from './db';
-import { encrypt, decrypt, encryptMessage, decryptMessage } from './encryption';
+import { encrypt, decrypt } from './encryption';
 import type { Conversation, Message } from '../stores/store';
 
 /**

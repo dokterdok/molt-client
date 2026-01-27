@@ -20,7 +20,7 @@ interface SearchResult {
 }
 
 export function SearchDialog({ open, onClose }: SearchDialogProps) {
-  const { conversations, selectConversation } = useStore();
+  const { selectConversation } = useStore();
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<SearchResult[]>([]);
   const [isSearching, setIsSearching] = useState(false);

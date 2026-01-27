@@ -20,6 +20,31 @@ import {
 } from "lucide-react";
 import { ImageRenderer } from "./ImageRenderer";
 
+// Type definitions for ReactMarkdown components
+interface CodeProps {
+  inline?: boolean;
+  className?: string;
+  children?: ReactNode;
+  [key: string]: unknown;
+}
+
+interface LinkProps {
+  href?: string;
+  children?: ReactNode;
+  [key: string]: unknown;
+}
+
+interface ImageProps {
+  src?: string;
+  alt?: string;
+  [key: string]: unknown;
+}
+
+interface TableProps {
+  children?: ReactNode;
+  [key: string]: unknown;
+}
+
 /**
  * Recursively extracts plain text from React children.
  * Handles strings, numbers, arrays, and React elements (e.g., syntax-highlighted spans).
@@ -225,7 +250,7 @@ export function MessageBubble({ message, onEdit, onRegenerate, isLastAssistantMe
                 remarkPlugins={[remarkGfm]}
                 rehypePlugins={[rehypeSanitize, rehypeHighlight]}
                 components={{
-                  code({ inline, className, children, ...props }: any) {
+                  code({ inline, className, children, ...props }: CodeProps) {
                     const match = /language-(\w+)/.exec(className || "");
                     // Extract plain text from children (handles syntax-highlighted spans from rehype-highlight)
                     const code = extractTextFromChildren(children).replace(/\n$/, "");
@@ -271,7 +296,7 @@ export function MessageBubble({ message, onEdit, onRegenerate, isLastAssistantMe
                       </code>
                     );
                   },
-                  a({ href, children, ...props }: any) {
+                  a({ href, children, ...props }: LinkProps) {
                     return (
                       <a
                         href={href}
@@ -284,7 +309,7 @@ export function MessageBubble({ message, onEdit, onRegenerate, isLastAssistantMe
                       </a>
                     );
                   },
-                  img({ src, alt }: any) {
+                  img({ src, alt }: ImageProps) {
                     if (!src) return null;
                     return (
                       <ImageRenderer 
@@ -294,7 +319,7 @@ export function MessageBubble({ message, onEdit, onRegenerate, isLastAssistantMe
                       />
                     );
                   },
-                  table({ children, ...props }: any) {
+                  table({ children, ...props }: TableProps) {
                     return (
                       <div className="overflow-x-auto my-4 rounded-lg border border-border">
                         <table className="w-full" {...props}>

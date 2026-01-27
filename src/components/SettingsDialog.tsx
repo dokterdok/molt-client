@@ -164,9 +164,9 @@ export function SettingsDialog({ open, onClose, onRerunSetup }: SettingsDialogPr
         }
         
         showSuccess("Settings saved successfully");
-      } catch (err: any) {
+      } catch (err: unknown) {
         setConnectionStatus("error");
-        setError(err.toString());
+        setError(String(err));
         setConnected(false);
         // Still save settings even if connection failed
         await updateSettings(formData);
@@ -201,9 +201,9 @@ export function SettingsDialog({ open, onClose, onRerunSetup }: SettingsDialogPr
       
       // Try to fetch models after successful connection
       fetchModels();
-    } catch (err: any) {
+    } catch (err: unknown) {
       setConnectionStatus("error");
-      setError(err.toString());
+      setError(String(err));
     }
   };
 

@@ -1,10 +1,11 @@
-﻿import React, { useState, useEffect, lazy, Suspense } from "react";
+﻿import React, { useState, useEffect, lazy, Suspense, useRef } from "react";
 import { useStore, Conversation } from "../stores/store";
 import { ConfirmDialog } from "./ui/confirm-dialog";
 import { EmptyState } from "./ui/empty-state";
 import { ConversationSkeleton } from "./ui/skeleton";
 import { ScrollShadow } from "./ui/scroll-shadow";
 import { cn } from "../lib/utils";
+import { useVirtualizer } from "@tanstack/react-virtual";
 
 // Lazy load heavy dialogs for better initial load performance
 const SettingsDialog = lazy(() => import("./SettingsDialog").then(m => ({ default: m.SettingsDialog })));

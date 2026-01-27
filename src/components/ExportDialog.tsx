@@ -112,9 +112,9 @@ export function ExportDialog({ open, onClose, conversation }: ExportDialogProps)
         await writeTextFile(filePath, content);
         onClose();
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error("Export failed:", err);
-      setError(err.message || "Failed to export conversation");
+      setError(err instanceof Error ? err.message : "Failed to export conversation");
     } finally {
       setIsExporting(false);
     }
@@ -132,9 +132,9 @@ export function ExportDialog({ open, onClose, conversation }: ExportDialogProps)
       await navigator.clipboard.writeText(content);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error("Copy failed:", err);
-      setError(err.message || "Failed to copy to clipboard");
+      setError(err instanceof Error ? err.message : "Failed to copy to clipboard");
     }
   };
 

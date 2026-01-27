@@ -28,8 +28,8 @@ use tokio_tungstenite::{connect_async, tungstenite::Message as WsMessage};
 // State Management
 // ============================================================================
 
-/// Connection state managed by Tauri (wrapped in Arc for sharing)
-pub struct GatewayStateInner {
+/// Internal connection state
+struct GatewayStateInner {
     /// Current connection state
     connection_state: RwLock<ConnectionState>,
     /// Channel for sending messages to WebSocket
@@ -52,7 +52,7 @@ pub struct GatewayStateInner {
     active_runs: Mutex<HashMap<String, Instant>>,
 }
 
-impl Default for GatewayState {
+impl Default for GatewayStateInner {
     fn default() -> Self {
         Self {
             connection_state: RwLock::new(ConnectionState::Disconnected),
@@ -65,6 +65,19 @@ impl Default for GatewayState {
             shutdown: AtomicBool::new(false),
             reconnect_attempt: AtomicU32::new(0),
             active_runs: Mutex::new(HashMap::new()),
+        }
+    }
+}
+
+/// Connection state managed by Tauri (wrapper with Arc for sharing)
+pub struct GatewayState {
+    inner: Arc<GatewayStateInner>,
+}
+
+impl Default for GatewayState {
+    fn default() -> Self {
+        Self {
+            inner: Arc::new(GatewayStateInner::default()),
         }
     }
 }
@@ -378,23 +391,23 @@ pub async fn connect(
     token: String,
 ) -> Result<ConnectResult, String> {
     // Reset shutdown flag
-    state.shutdown.store(false, Ordering::SeqCst);
-    state.reconnect_attempt.store(0, Ordering::SeqCst);
+    state.inner.shutdown.store(false, Ordering::SeqCst);
+    state.inner.reconnect_attempt.store(0, Ordering::SeqCst);
 
     // Store credentials for reconnection
-    *state.stored_credentials.lock().await = Some(StoredCredentials {
+    *state.inner.stored_credentials.lock().await = Some(StoredCredentials {
         url: url.clone(),
         token: token.clone(),
     });
 
     // Update connection state
-    *state.connection_state.write().await = ConnectionState::Connecting;
+    *state.inner.connection_state.write().await = ConnectionState::Connecting;
     let _ = app.emit("gateway:state", ConnectionState::Connecting);
 
     // Perform actual connection
-    match connect_internal(&app, &state, &url, &token).await {
+    match connect_internal(&app, &state.inner, &url, &token).await {
         Ok(result) => {
-            *state.connection_state.write().await = ConnectionState::Connected {
+            *state.inner.connection_state.write().await = ConnectionState::Connected {
                 session_id: None,
             };
             let _ = app.emit(
@@ -403,13 +416,13 @@ pub async fn connect(
             );
 
             // Drain message queue
-            drain_message_queue(&state).await;
+            drain_message_queue(&state.inner).await;
 
             Ok(result)
         }
         Err(e) => {
             let error_msg = e.user_message();
-            *state.connection_state.write().await = ConnectionState::Failed {
+            *state.inner.connection_state.write().await = ConnectionState::Failed {
                 reason: error_msg.clone(),
                 can_retry: e.is_retryable(),
             };
@@ -423,7 +436,7 @@ pub async fn connect(
 
             // If retryable, start reconnection loop
             if e.is_retryable() && !e.requires_reauth() {
-                start_reconnection_loop(app.clone(), state.inner().clone()).await;
+                start_reconnection_loop(app.clone(), state.inner.clone()).await;
             }
 
             Err(error_msg)
@@ -434,7 +447,7 @@ pub async fn connect(
 /// Internal connection logic
 async fn connect_internal(
     app: &AppHandle,
-    state: &GatewayState,
+    state: &GatewayStateInner,
     url: &str,
     token: &str,
 ) -> Result<ConnectResult, GatewayError> {
@@ -754,7 +767,7 @@ async fn start_stream_timeout_monitor(
 }
 
 /// Start reconnection loop with exponential backoff
-async fn start_reconnection_loop(app: AppHandle, state: Arc<GatewayState>) {
+async fn start_reconnection_loop(app: AppHandle, state: Arc<GatewayStateInner>) {
     tokio::spawn(async move {
         loop {
             let attempt = state.reconnect_attempt.fetch_add(1, Ordering::SeqCst) + 1;
@@ -859,7 +872,7 @@ async fn start_reconnection_loop(app: AppHandle, state: Arc<GatewayState>) {
 }
 
 /// Drain and send queued messages
-async fn drain_message_queue(state: &GatewayState) {
+async fn drain_message_queue(state: &GatewayStateInner) {
     let sender = state.sender.lock().await;
     if let Some(tx) = sender.as_ref() {
         let mut queue = state.message_queue.lock().await;
@@ -899,11 +912,11 @@ async fn drain_message_queue(state: &GatewayState) {
 /// Disconnect from Gateway
 #[tauri::command]
 pub async fn disconnect(state: State<'_, GatewayState>) -> Result<(), String> {
-    state.shutdown.store(true, Ordering::SeqCst);
-    *state.sender.lock().await = None;
-    *state.connection_state.write().await = ConnectionState::Disconnected;
-    *state.pending_requests.lock().await = HashMap::new();
-    state.health_metrics.lock().await.reset();
+    state.inner.shutdown.store(true, Ordering::SeqCst);
+    *state.inner.sender.lock().await = None;
+    *state.inner.connection_state.write().await = ConnectionState::Disconnected;
+    *state.inner.pending_requests.lock().await = HashMap::new();
+    state.inner.health_metrics.lock().await.reset();
     Ok(())
 }
 
@@ -913,7 +926,7 @@ pub async fn send_message(
     state: State<'_, GatewayState>,
     params: ChatParams,
 ) -> Result<String, String> {
-    let connection_state = state.connection_state.read().await.clone();
+    let connection_state = state.inner.connection_state.read().await.clone();
 
     // Build request
     let request_id = uuid::Uuid::new_v4().to_string();
@@ -946,13 +959,13 @@ pub async fn send_message(
 
     // If reconnecting, queue the message
     if matches!(connection_state, ConnectionState::Reconnecting { .. }) {
-        let mut queue = state.message_queue.lock().await;
+        let mut queue = state.inner.message_queue.lock().await;
         queue.push_back(QueuedMessage::new(request_id.clone(), json));
         return Ok(request_id);
     }
 
     // Try to send
-    let sender = state.sender.lock().await;
+    let sender = state.inner.sender.lock().await;
     let sender = sender.as_ref().ok_or("Not connected")?;
 
     sender
@@ -961,7 +974,7 @@ pub async fn send_message(
         .map_err(|e| e.to_string())?;
 
     // Track for dedup
-    state.processed_ids.lock().await.insert(request_id.clone());
+    state.inner.processed_ids.lock().await.insert(request_id.clone());
 
     Ok(request_id)
 }
@@ -969,19 +982,19 @@ pub async fn send_message(
 /// Get connection status
 #[tauri::command]
 pub async fn get_connection_status(state: State<'_, GatewayState>) -> Result<bool, String> {
-    Ok(state.connection_state.read().await.is_connected())
+    Ok(state.inner.connection_state.read().await.is_connected())
 }
 
 /// Get detailed connection state
 #[tauri::command]
 pub async fn get_connection_state(state: State<'_, GatewayState>) -> Result<ConnectionState, String> {
-    Ok(state.connection_state.read().await.clone())
+    Ok(state.inner.connection_state.read().await.clone())
 }
 
 /// Get connection quality
 #[tauri::command]
 pub async fn get_connection_quality(state: State<'_, GatewayState>) -> Result<ConnectionQuality, String> {
-    Ok(state.health_metrics.lock().await.quality())
+    Ok(state.inner.health_metrics.lock().await.quality())
 }
 
 /// Request available models from Gateway
@@ -990,7 +1003,7 @@ pub async fn get_models(
     _app: AppHandle,
     state: State<'_, GatewayState>,
 ) -> Result<Vec<ModelInfo>, String> {
-    let sender_guard = state.sender.lock().await;
+    let sender_guard = state.inner.sender.lock().await;
     let sender = sender_guard.as_ref().ok_or("Not connected to Gateway")?;
 
     let request = GatewayRequest::new("models.list", Some(serde_json::json!({})));
@@ -999,7 +1012,7 @@ pub async fn get_models(
     let (response_tx, response_rx) = oneshot::channel();
 
     {
-        let mut pending = state.pending_requests.lock().await;
+        let mut pending = state.inner.pending_requests.lock().await;
         pending.insert(
             request_id.clone(),
             PendingRequest {
@@ -1041,11 +1054,11 @@ pub async fn get_models(
             Ok(get_fallback_models())
         }
         Ok(Err(_)) => {
-            state.pending_requests.lock().await.remove(&request_id);
+            state.inner.pending_requests.lock().await.remove(&request_id);
             Ok(get_fallback_models())
         }
         Err(_) => {
-            state.pending_requests.lock().await.remove(&request_id);
+            state.inner.pending_requests.lock().await.remove(&request_id);
             Ok(get_fallback_models())
         }
     }
@@ -1142,10 +1155,10 @@ mod tests {
     async fn test_gateway_state_default() {
         let state = GatewayState::default();
 
-        assert!(!state.connection_state.read().await.is_connected());
-        assert!(state.sender.lock().await.is_none());
-        assert!(state.pending_requests.lock().await.is_empty());
-        assert!(state.message_queue.lock().await.is_empty());
+        assert!(!state.inner.connection_state.read().await.is_connected());
+        assert!(state.inner.sender.lock().await.is_none());
+        assert!(state.inner.pending_requests.lock().await.is_empty());
+        assert!(state.inner.message_queue.lock().await.is_empty());
     }
 
     #[tokio::test]
@@ -1153,8 +1166,8 @@ mod tests {
         let state = GatewayState::default();
 
         let msg = QueuedMessage::new("test-1".to_string(), "{}".to_string());
-        state.message_queue.lock().await.push_back(msg);
+        state.inner.message_queue.lock().await.push_back(msg);
 
-        assert_eq!(state.message_queue.lock().await.len(), 1);
+        assert_eq!(state.inner.message_queue.lock().await.len(), 1);
     }
 }

@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef, useCallback } from "react";
 import { invoke } from "@tauri-apps/api/core";
-import { useStore } from "../../../stores/store";
+import { useStore, type ModelInfo } from "../../../stores/store";
 import { cn } from "../../../lib/utils";
 import { Spinner } from "../../ui/spinner";
 import {
@@ -83,8 +83,8 @@ function getErrorHint(errorStr: string): { hint: string; action?: string; comman
 }
 
 // Format raw error message for display
-function formatErrorMessage(err: any): string {
-  const errStr = err?.toString() || "Unknown error";
+function formatErrorMessage(err: unknown): string {
+  const errStr = String(err) || "Unknown error";
   // Remove "Error: " prefix if present for cleaner display
   return errStr.replace(/^Error:\s*/i, "");
 }
@@ -267,7 +267,7 @@ export function GatewaySetupStep({
       }));
 
       // Fetch models (but don't block on it)
-      invoke<any[]>("get_models").then(models => {
+      invoke<ModelInfo[]>("get_models").then(models => {
         if (models && models.length > 0 && isMountedRef.current) {
           useStore.getState().setAvailableModels(models);
         }

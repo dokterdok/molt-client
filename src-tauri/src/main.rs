@@ -5,5 +5,5 @@
 )]
 
 fn main() {
-    molt_client_lib::run()
+    moltzer_client_lib::run()
 }

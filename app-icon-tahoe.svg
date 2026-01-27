@@ -1,0 +1,155 @@
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Define gradients and filters for Liquid Glass effect -->
+  <defs>
+    <!-- Main gradient background (orange to red) -->
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FF7847;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#FF5722;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#D84315;stop-opacity:1" />
+    </linearGradient>
+    
+    <!-- Subtle inner glow -->
+    <radialGradient id="innerGlow" cx="50%" cy="40%" r="60%">
+      <stop offset="0%" style="stop-color:#FFB299;stop-opacity:0.5" />
+      <stop offset="100%" style="stop-color:#FFB299;stop-opacity:0" />
+    </radialGradient>
+    
+    <!-- Specular highlight (Liquid Glass shine) -->
+    <radialGradient id="specular" cx="35%" cy="30%" r="45%">
+      <stop offset="0%" style="stop-color:#FFFFFF;stop-opacity:0.7" />
+      <stop offset="40%" style="stop-color:#FFFFFF;stop-opacity:0.3" />
+      <stop offset="100%" style="stop-color:#FFFFFF;stop-opacity:0" />
+    </radialGradient>
+    
+    <!-- Bottom shadow gradient -->
+    <radialGradient id="bottomShadow" cx="50%" cy="70%" r="50%">
+      <stop offset="0%" style="stop-color:#000000;stop-opacity:0" />
+      <stop offset="100%" style="stop-color:#000000;stop-opacity:0.3" />
+    </radialGradient>
+    
+    <!-- Drop shadow for depth -->
+    <filter id="dropShadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="12"/>
+      <feOffset dx="0" dy="8" result="offsetblur"/>
+      <feComponentTransfer>
+        <feFuncA type="linear" slope="0.4"/>
+      </feComponentTransfer>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    
+    <!-- Soft glow for lobster -->
+    <filter id="softGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    
+    <!-- Rounder macOS 26 Tahoe shape (more circular than Big Sur) -->
+    <clipPath id="iconShape">
+      <path d="M 184 64 
+               C 112 64 64 112 64 184
+               L 64 840
+               C 64 912 112 960 184 960
+               L 840 960
+               C 912 960 960 912 960 840
+               L 960 184
+               C 960 112 912 64 840 64
+               Z" />
+    </clipPath>
+  </defs>
+  
+  <!-- Background with Liquid Glass effect -->
+  <g clip-path="url(#iconShape)">
+    <!-- Base gradient -->
+    <rect width="1024" height="1024" fill="url(#bgGradient)"/>
+    
+    <!-- Inner glow layer -->
+    <rect width="1024" height="1024" fill="url(#innerGlow)"/>
+    
+    <!-- Specular highlight (Liquid Glass shine) -->
+    <ellipse cx="360" cy="300" rx="420" ry="380" fill="url(#specular)"/>
+    
+    <!-- Bottom shadow for depth -->
+    <rect width="1024" height="1024" fill="url(#bottomShadow)"/>
+  </g>
+  
+  <!-- Molt lobster/shrimp icon -->
+  <g filter="url(#softGlow)">
+    <!-- Main body -->
+    <ellipse cx="512" cy="560" rx="140" ry="170" fill="#FFFFFF" opacity="0.96"/>
+    
+    <!-- Head -->
+    <ellipse cx="512" cy="400" rx="100" ry="105" fill="#FFFFFF" opacity="0.96"/>
+    
+    <!-- Eyes with highlights -->
+    <circle cx="470" cy="380" r="20" fill="#1A1A1A"/>
+    <circle cx="554" cy="380" r="20" fill="#1A1A1A"/>
+    <circle cx="476" cy="374" r="8" fill="#FFFFFF" opacity="0.9"/>
+    <circle cx="560" cy="374" r="8" fill="#FFFFFF" opacity="0.9"/>
+    
+    <!-- Antennae -->
+    <path d="M 440 350 Q 400 280 370 240 Q 350 210 340 190" 
+          stroke="#FFFFFF" stroke-width="14" stroke-linecap="round" 
+          fill="none" opacity="0.92" stroke-linejoin="round"/>
+    <path d="M 584 350 Q 624 280 654 240 Q 674 210 684 190" 
+          stroke="#FFFFFF" stroke-width="14" stroke-linecap="round" 
+          fill="none" opacity="0.92" stroke-linejoin="round"/>
+    
+    <!-- Antenna tips -->
+    <circle cx="340" cy="190" r="12" fill="#FFFFFF" opacity="0.92"/>
+    <circle cx="684" cy="190" r="12" fill="#FFFFFF" opacity="0.92"/>
+    
+    <!-- Left claw -->
+    <g opacity="0.94">
+      <ellipse cx="320" cy="520" rx="70" ry="48" fill="#FFFFFF" 
+               transform="rotate(-35 320 520)"/>
+      <!-- Claw pincers -->
+      <path d="M 270 500 L 235 480 L 230 505 L 250 510 Z" fill="#FFFFFF"/>
+      <path d="M 270 535 L 235 555 L 240 530 L 255 527 Z" fill="#FFFFFF"/>
+    </g>
+    
+    <!-- Right claw -->
+    <g opacity="0.94">
+      <ellipse cx="704" cy="520" rx="70" ry="48" fill="#FFFFFF" 
+               transform="rotate(35 704 520)"/>
+      <!-- Claw pincers -->
+      <path d="M 754 500 L 789 480 L 794 505 L 774 510 Z" fill="#FFFFFF"/>
+      <path d="M 754 535 L 789 555 L 784 530 L 769 527 Z" fill="#FFFFFF"/>
+    </g>
+    
+    <!-- Body segments -->
+    <circle cx="512" cy="600" r="45" fill="#FFFFFF" opacity="0.85"/>
+    <circle cx="512" cy="660" r="42" fill="#FFFFFF" opacity="0.83"/>
+    <circle cx="512" cy="715" r="38" fill="#FFFFFF" opacity="0.81"/>
+    
+    <!-- Tail -->
+    <g opacity="0.88">
+      <!-- Main tail segments -->
+      <ellipse cx="490" cy="770" rx="35" ry="60" fill="#FFFFFF" transform="rotate(-15 490 770)"/>
+      <ellipse cx="534" cy="770" rx="35" ry="60" fill="#FFFFFF" transform="rotate(15 534 770)"/>
+      
+      <!-- Tail fan -->
+      <path d="M 420 810 Q 390 840 375 865 L 405 872 Q 425 850 440 825 Z" 
+            fill="#FFFFFF" opacity="0.9"/>
+      <path d="M 460 820 Q 450 855 445 885 L 475 888 Q 478 855 480 830 Z" 
+            fill="#FFFFFF" opacity="0.9"/>
+      <path d="M 512 825 Q 512 860 512 890 L 542 890 Q 542 860 542 830 Z" 
+            fill="#FFFFFF" opacity="0.9"/>
+      <path d="M 564 820 Q 574 855 579 885 L 549 888 Q 546 855 544 830 Z" 
+            fill="#FFFFFF" opacity="0.9"/>
+      <path d="M 604 810 Q 634 840 649 865 L 619 872 Q 599 850 584 825 Z" 
+            fill="#FFFFFF" opacity="0.9"/>
+    </g>
+  </g>
+  
+  <!-- Outer subtle glow for Liquid Glass depth -->
+  <g clip-path="url(#iconShape)">
+    <rect width="1024" height="1024" fill="none" 
+          stroke="url(#specular)" stroke-width="3" opacity="0.3"/>
+  </g>
+</svg>

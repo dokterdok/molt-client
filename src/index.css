@@ -324,29 +324,6 @@ html {
   user-select: none;
 }
 
-/* Better default transitions */
-* {
-  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 150ms;
-}
-
-/* Override for elements that shouldn't transition */
-*:where(:not(button):not(a):not([role="button"])) {
-  transition: none;
-}
-
-/* Restore transitions for interactive elements */
-button,
-a,
-[role="button"],
-input,
-textarea,
-select {
-  transition-property: color, background-color, border-color, opacity, box-shadow, transform;
-  transition-duration: 200ms;
-}
-
 /* Focus styles for accessibility */
 :focus-visible {
   outline: 2px solid hsl(var(--ring));
@@ -363,6 +340,20 @@ select {
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+}
+
+/* Micro-interactions */
+@keyframes button-press {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(0.98);
+  }
+}
+
+.active\:scale-\[0\.98\]:active {
+  animation: button-press 150ms ease-out;
 }
 
 /* Line clamp utilities */

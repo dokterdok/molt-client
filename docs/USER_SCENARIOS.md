@@ -6,7 +6,7 @@ This document outlines optimal UX design for different Molt user personas and sc
 
 ## User Personas
 
-### 1. Power User (like David)
+### 1. Power User (Tech Professional)
 
 **Profile:**
 - Tech-savvy developer or power user
@@ -304,7 +304,7 @@ This document outlines optimal UX design for different Molt user personas and sc
 
 ## UX Recommendations by Scenario
 
-### Power User (David) Recommendations
+### Power User (Alex) Recommendations
 
 #### **Prominent:**
 - **Keyboard shortcuts** - displayed in tooltips, help menu

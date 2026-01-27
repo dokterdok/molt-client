@@ -67,7 +67,7 @@ describe('MessageBubble', () => {
         timestamp: new Date(),
       };
 
-      const { container } = render(<MessageBubble message={message} />);
+      render(<MessageBubble message={message} />);
       
       // Assistant avatar should have lobster emoji
       expect(screen.getByText('🦞')).toBeInTheDocument();

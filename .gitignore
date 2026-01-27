@@ -41,3 +41,11 @@ playwright/.cache
 .env.production.local
 .env.development.local
 .env.test.local
+
+# Internal reports
+FINAL_REPORT.md
+IMPLEMENTATION_REPORT.md
+PROGRESS.md
+READY_FOR_TESTING.md
+*_REPORT.md
+*_AUDIT.md

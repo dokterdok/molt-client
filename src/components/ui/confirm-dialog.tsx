@@ -9,7 +9,7 @@ interface ConfirmDialogProps {
   title: string;
   description: string;
   confirmText?: string;
-  confirmVariant?: "default" | "destructive";
+  confirmVariant?: "primary" | "destructive";
 }
 
 export function ConfirmDialog({
@@ -19,7 +19,7 @@ export function ConfirmDialog({
   title,
   description,
   confirmText = "Confirm",
-  confirmVariant = "default",
+  confirmVariant = "primary",
 }: ConfirmDialogProps) {
   if (!open) return null;
 

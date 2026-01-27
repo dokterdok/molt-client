@@ -306,6 +306,65 @@ function ConversationSection({
   onPin,
   onExport,
 }: ConversationSectionProps) {
+  const parentRef = useRef<HTMLDivElement>(null);
+  
+  // Use virtualization for long lists (>30 items) to improve performance
+  const shouldVirtualize = conversations.length > 30;
+  
+  const virtualizer = useVirtualizer({
+    count: conversations.length,
+    getScrollElement: () => parentRef.current,
+    estimateSize: () => 64, // Estimated height of each conversation item
+    enabled: shouldVirtualize,
+  });
+
+  if (shouldVirtualize) {
+    return (
+      <div className="mb-4">
+        <h3 className="flex items-center gap-1.5 px-2 py-1 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+          {icon || (title === "Pinned" ? <Pin className="w-3 h-3" /> : null)}
+          {title}
+        </h3>
+        <div ref={parentRef} className="space-y-0.5">
+          <div
+            style={{
+              height: `${virtualizer.getTotalSize()}px`,
+              width: '100%',
+              position: 'relative',
+            }}
+          >
+            {virtualizer.getVirtualItems().map((virtualItem) => {
+              const conversation = conversations[virtualItem.index];
+              return (
+                <div
+                  key={conversation.id}
+                  style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    height: `${virtualItem.size}px`,
+                    transform: `translateY(${virtualItem.start}px)`,
+                  }}
+                >
+                  <ConversationItem
+                    conversation={conversation}
+                    isSelected={conversation.id === currentId}
+                    onSelect={() => onSelect(conversation.id)}
+                    onDelete={() => onDelete(conversation.id)}
+                    onPin={() => onPin(conversation.id)}
+                    onExport={() => onExport(conversation)}
+                  />
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Default non-virtualized rendering for shorter lists
   return (
     <div className="mb-4">
       <h3 className="flex items-center gap-1.5 px-2 py-1 text-xs font-semibold text-muted-foreground uppercase tracking-wider">

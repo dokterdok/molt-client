@@ -142,7 +142,7 @@ export function MessageBubble({ message, onEdit, onRegenerate, isLastAssistantMe
       onMouseEnter={() => setShowTimestamp(true)}
       onMouseLeave={() => setShowTimestamp(false)}
       role="article"
-      aria-label={`Message from ${isUser ? "You" : "Moltzer"}`}
+      aria-label={`Message from ${isUser ? "You" : "Moltzer"} sent ${formatDistanceToNow(new Date(message.timestamp), { addSuffix: true })}`}
     >
       {/* Avatar */}
       <div
@@ -195,11 +195,17 @@ export function MessageBubble({ message, onEdit, onRegenerate, isLastAssistantMe
         >
           {isEditing ? (
             <div className="w-full">
+              <label htmlFor={`edit-message-${message.id}`} className="sr-only">
+                Edit message
+              </label>
               <textarea
+                id={`edit-message-${message.id}`}
                 ref={textareaRef}
                 value={editContent}
                 onChange={(e) => setEditContent(e.target.value)}
                 onKeyDown={handleEditKeyDown}
+                aria-label="Edit your message"
+                aria-describedby={`edit-hint-${message.id}`}
                 className={cn(
                   "w-full min-h-[100px] p-3 text-sm rounded-lg border border-primary/50",
                   "bg-background resize-none focus:outline-none focus:ring-2 focus:ring-primary/30",

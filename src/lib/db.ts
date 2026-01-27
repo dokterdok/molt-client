@@ -15,6 +15,8 @@ export interface DBMessage {
   thinkingContent?: string;
   // Searchable text (content + any attachments text)
   searchText: string;
+  // Searchable words for full-text search
+  searchWords?: string[];
 }
 
 export interface DBConversation {

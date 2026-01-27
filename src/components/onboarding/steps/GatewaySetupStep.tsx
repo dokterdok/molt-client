@@ -281,7 +281,7 @@ export function GatewaySetupStep({
           onSuccess();
         }
       }, 1500);
-    } catch (err: any) {
+    } catch (err: unknown) {
       // Check if cancelled
       if (isCancelledRef.current || !isMountedRef.current) {
         return;

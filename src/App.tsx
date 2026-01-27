@@ -9,6 +9,7 @@ import { cn } from "./lib/utils";
 
 export default function App() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [isConnecting, setIsConnecting] = useState(true);
   const { 
     currentConversation, 
     setConnected,
@@ -44,28 +45,80 @@ export default function App() {
 
   // Connect to Gateway on mount
   useEffect(() => {
+    let reconnectTimer: number | undefined;
+    let connectingFlag = false;
+
     const connectToGateway = async () => {
+      if (connectingFlag) return;
+      connectingFlag = true;
+      setIsConnecting(true);
+
       try {
         await invoke("connect", { 
           url: settings.gatewayUrl, 
           token: settings.gatewayToken 
         });
+        // Fetch available models after connection
+        try {
+          const models = await invoke<any[]>("get_models");
+          if (models && models.length > 0) {
+            useStore.getState().setAvailableModels(models);
+          }
+        } catch (err) {
+          console.error("Failed to fetch models:", err);
+        }
+        setIsConnecting(false);
       } catch (err) {
         console.error("Failed to connect:", err);
+        setIsConnecting(false);
+        // Retry connection after 5 seconds
+        reconnectTimer = window.setTimeout(() => {
+          connectingFlag = false;
+          connectToGateway();
+        }, 5000);
+      } finally {
+        connectingFlag = false;
       }
     };
 
     connectToGateway();
-  }, []);
+
+    return () => {
+      if (reconnectTimer) clearTimeout(reconnectTimer);
+    };
+  }, [settings.gatewayUrl, settings.gatewayToken]);
 
   // Listen for Gateway events
   useEffect(() => {
     const unlisten = Promise.all([
-      listen("gateway:connected", () => {
+      listen("gateway:connected", async () => {
         setConnected(true);
+        setIsConnecting(false);
+        // Fetch models on connection
+        try {
+          const models = await invoke<any[]>("get_models");
+          if (models && models.length > 0) {
+            useStore.getState().setAvailableModels(models);
+          }
+        } catch (err) {
+          console.error("Failed to fetch models:", err);
+        }
       }),
       listen("gateway:disconnected", () => {
         setConnected(false);
+        // Auto-reconnect after 5 seconds
+        setTimeout(async () => {
+          setIsConnecting(true);
+          try {
+            await invoke("connect", { 
+              url: settings.gatewayUrl, 
+              token: settings.gatewayToken 
+            });
+          } catch (err) {
+            console.error("Reconnection failed:", err);
+            setIsConnecting(false);
+          }
+        }, 5000);
       }),
       listen<string>("gateway:stream", (event) => {
         appendToCurrentMessage(event.payload);
@@ -80,7 +133,7 @@ export default function App() {
         listeners.forEach((fn) => fn());
       });
     };
-  }, [setConnected, appendToCurrentMessage, completeCurrentMessage]);
+  }, [setConnected, appendToCurrentMessage, completeCurrentMessage, settings.gatewayUrl, settings.gatewayToken]);
 
   return (
     <div className="flex h-screen bg-background text-foreground overflow-hidden">
@@ -129,6 +182,26 @@ export default function App() {
             <h1 className="font-semibold truncate">
               {currentConversation?.title || "Molt"}
             </h1>
+          </div>
+          
+          {/* Connection status */}
+          <div className="flex items-center gap-2">
+            {isConnecting ? (
+              <div className="flex items-center gap-2 text-muted-foreground text-sm animate-in fade-in duration-200">
+                <div className="w-4 h-4 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+                <span className="hidden sm:inline">Connecting...</span>
+              </div>
+            ) : !connected ? (
+              <div className="flex items-center gap-2 text-amber-600 dark:text-amber-400 text-sm animate-in fade-in duration-200">
+                <span className="w-2 h-2 bg-amber-500 rounded-full animate-pulse" />
+                <span className="hidden sm:inline">Reconnecting...</span>
+              </div>
+            ) : (
+              <div className="flex items-center gap-2 text-green-600 dark:text-green-400 text-sm animate-in fade-in duration-200" title="Connected to Gateway">
+                <span className="w-2 h-2 bg-green-500 rounded-full" />
+                <span className="hidden sm:inline">Connected</span>
+              </div>
+            )}
           </div>
         </header>
 

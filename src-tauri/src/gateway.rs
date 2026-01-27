@@ -191,11 +191,48 @@ pub async fn get_models(
     state: State<'_, GatewayState>,
 ) -> Result<Vec<ModelInfo>, String> {
     let sender = state.sender.lock().await;
-    let _sender = sender.as_ref().ok_or("Not connected to Gateway")?;
+    let sender = sender.as_ref().ok_or("Not connected to Gateway")?;
 
-    // TODO: When Gateway supports model listing, send request and wait for response
-    // For now, return empty - the frontend will handle fallback models
-    Ok(vec![])
+    // Create request for models
+    let request_id = uuid::Uuid::new_v4().to_string();
+    let request = GatewayRequest {
+        id: request_id.clone(),
+        method: "models.list".to_string(),
+        params: serde_json::json!({}),
+    };
+
+    let json = serde_json::to_string(&request).map_err(|e| e.to_string())?;
+    
+    // Send request to Gateway
+    sender.send(json).await.map_err(|e| e.to_string())?;
+
+    // TODO: Add response channel to wait for actual model list
+    // For now, return fallback models - Gateway will stream the actual list
+    Ok(get_fallback_models())
+}
+
+/// Fallback models if Gateway doesn't respond
+fn get_fallback_models() -> Vec<ModelInfo> {
+    vec![
+        ModelInfo {
+            id: "anthropic/claude-sonnet-4-5".to_string(),
+            name: "Claude Sonnet 4.5".to_string(),
+            provider: "anthropic".to_string(),
+            is_default: true,
+        },
+        ModelInfo {
+            id: "anthropic/claude-opus-4-5".to_string(),
+            name: "Claude Opus 4.5".to_string(),
+            provider: "anthropic".to_string(),
+            is_default: false,
+        },
+        ModelInfo {
+            id: "anthropic/claude-sonnet-3-5".to_string(),
+            name: "Claude Sonnet 3.5".to_string(),
+            provider: "anthropic".to_string(),
+            is_default: false,
+        },
+    ]
 }
 
 #[cfg(test)]

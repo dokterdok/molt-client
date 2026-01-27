@@ -6,6 +6,7 @@ import { ConfirmDialog } from "./ui/confirm-dialog";
 import { ExportDialog } from "./ExportDialog";
 import { EmptyState } from "./ui/empty-state";
 import { ConversationSkeleton } from "./ui/skeleton";
+import { ScrollShadow } from "./ui/scroll-shadow";
 import { cn } from "../lib/utils";
 import { formatDistanceToNow } from "date-fns";
 import {
@@ -69,9 +70,9 @@ export function Sidebar({ onToggle: _onToggle, onRerunSetup }: SidebarProps) {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [createConversation]);
 
-  // Search across both titles and message content (using debounced query for performance)
+  // Search across both titles and message content
   const filteredConversations = conversations.filter((c) => {
-    const query = debouncedSearchQuery.toLowerCase();
+    const query = searchQuery.toLowerCase();
     if (!query) return true;
     
     // Check title
@@ -176,7 +177,7 @@ export function Sidebar({ onToggle: _onToggle, onRerunSetup }: SidebarProps) {
       </div>
 
       {/* Conversation list */}
-      <div className="flex-1 overflow-y-auto px-2 scrollbar-thin">
+      <ScrollShadow className="flex-1 px-2">
         {conversationsLoading ? (
           <div className="space-y-2 p-2">
             {Array.from({ length: 5 }).map((_, i) => (
@@ -237,7 +238,7 @@ export function Sidebar({ onToggle: _onToggle, onRerunSetup }: SidebarProps) {
             />
           )
         )}
-      </div>
+      </ScrollShadow>
 
       {/* Footer */}
       <div className="p-3 border-t border-border space-y-1">

@@ -598,13 +598,58 @@ molt-backend/                 # Separate repo for team backend
 
 ---
 
+## Encryption at Rest (Personal Edition)
+
+All conversation history encrypted locally with zero user friction:
+
+### Implementation
+
+```
+┌─────────────────────────────────────────────────────┐
+│              OS Keychain                            │
+│  (macOS Keychain / Windows Credential Manager /    │
+│   Linux Secret Service)                            │
+│                                                     │
+│  Stores: 256-bit encryption key                    │
+│  Auto-generated on first launch                    │
+└─────────────────────────────────────────────────────┘
+                      │
+                      ▼
+┌─────────────────────────────────────────────────────┐
+│              SQLCipher Database                     │
+│                                                     │
+│  • All messages encrypted (AES-256)                │
+│  • Conversation metadata encrypted                 │
+│  • Attachments encrypted                           │
+│  • Key never leaves OS keychain                    │
+└─────────────────────────────────────────────────────┘
+```
+
+### Rust Dependencies
+
+```toml
+[dependencies]
+tauri-plugin-stronghold = "2"  # Encrypted storage
+keyring = "2"                   # OS keychain access
+rusqlite = { version = "0.31", features = ["bundled-sqlcipher"] }
+```
+
+### User Experience
+
+- **Zero setup** — Key auto-generated on first launch
+- **No passwords** — OS handles authentication (biometrics, login password)
+- **Transparent** — User never sees encryption, it just works
+- **Portable** — Export includes encrypted blob + key (optional password protection)
+
+---
+
 ## Security Considerations Summary
 
 1. **Authentication**: JWT with short expiry, refresh tokens, optional MFA
 2. **Authorization**: RBAC checked on every request, deny by default
 3. **Audit**: Every action logged with full context
 4. **Tool Control**: Allowlist/denylist per role, dangerous tools restricted
-5. **Data Protection**: Encryption at rest and in transit, PII detection
+5. **Data Protection**: Encryption at rest (SQLCipher + OS keychain) and in transit (TLS)
 6. **Rate Limiting**: Per-user and per-org limits
 7. **Sandboxing**: Code execution in isolated environments
 8. **Monitoring**: Real-time alerts for suspicious activity

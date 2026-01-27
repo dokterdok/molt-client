@@ -22,6 +22,39 @@ interface GatewaySetupStepProps {
 
 type ConnectionState = "idle" | "detecting" | "testing" | "success" | "error";
 
+// Derive a helpful hint based on error content
+function getErrorHint(errorStr: string): string {
+  const lower = errorStr.toLowerCase();
+  
+  if (lower.includes("401") || lower.includes("403") || lower.includes("unauthorized") || lower.includes("forbidden")) {
+    return "The authentication token may be wrong or missing.";
+  }
+  if (lower.includes("400") || lower.includes("bad request")) {
+    return "Check your Gateway URL format (should be ws:// or wss://).";
+  }
+  if (lower.includes("404") || lower.includes("not found")) {
+    return "The Gateway endpoint was not found. Check the URL.";
+  }
+  if (lower.includes("connection refused") || lower.includes("econnrefused")) {
+    return "Make sure Gateway is running and the URL is correct.";
+  }
+  if (lower.includes("timeout") || lower.includes("timed out")) {
+    return "The connection timed out. Check if the Gateway is reachable.";
+  }
+  if (lower.includes("network") || lower.includes("dns") || lower.includes("resolve")) {
+    return "Can't reach the Gateway. Check your network connection.";
+  }
+  
+  return "Make sure Gateway is running and the URL is correct.";
+}
+
+// Format raw error message for display
+function formatErrorMessage(err: any): string {
+  const errStr = err?.toString() || "Unknown error";
+  // Remove "Error: " prefix if present for cleaner display
+  return errStr.replace(/^Error:\s*/i, "");
+}
+
 export function GatewaySetupStep({
   gatewayUrl,
   gatewayToken,
@@ -34,6 +67,7 @@ export function GatewaySetupStep({
   const [isVisible, setIsVisible] = useState(false);
   const [connectionState, setConnectionState] = useState<ConnectionState>("idle");
   const [errorMessage, setErrorMessage] = useState<string>("");
+  const [errorHint, setErrorHint] = useState<string>("");
   const [autoDetected, setAutoDetected] = useState(false);
   const { updateSettings } = useStore();
 
@@ -114,17 +148,10 @@ export function GatewaySetupStep({
     } catch (err: any) {
       setConnectionState("error");
       
-      // Friendly error messages
-      const errorStr = err.toString().toLowerCase();
-      if (errorStr.includes("connection refused") || errorStr.includes("connect")) {
-        setErrorMessage("Can't reach Gateway. Is it running?");
-      } else if (errorStr.includes("timeout")) {
-        setErrorMessage("Connection timed out. Check the URL.");
-      } else if (errorStr.includes("unauthorized") || errorStr.includes("auth")) {
-        setErrorMessage("Authentication failed. Check your token.");
-      } else {
-        setErrorMessage("Connection failed. Check your settings.");
-      }
+      // Show the actual error message with a contextual hint
+      const formattedError = formatErrorMessage(err);
+      setErrorMessage(formattedError);
+      setErrorHint(getErrorHint(formattedError));
     }
   };
 
@@ -298,11 +325,13 @@ export function GatewaySetupStep({
                   </svg>
                   <div>
                     <p className="font-medium text-red-600 dark:text-red-400">
-                      {errorMessage}
+                      Failed to connect: {errorMessage}
                     </p>
-                    <p className="text-sm text-muted-foreground mt-1">
-                      Make sure Gateway is running and the URL is correct.
-                    </p>
+                    {errorHint && (
+                      <p className="text-sm text-muted-foreground mt-1">
+                        {errorHint}
+                      </p>
+                    )}
                   </div>
                 </div>
               </div>

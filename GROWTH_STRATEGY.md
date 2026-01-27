@@ -1,4 +1,4 @@
-﻿# 🚀 Moltzer Growth Strategy
+# ?? Moltzer Growth Strategy
 
 **Document Version:** 1.0  
 **Last Updated:** 2025-01-27  
@@ -10,7 +10,7 @@
 
 Moltzer is a native desktop client for Clawdbot with a clear differentiator: **lightweight, private, yours**. This document outlines viral growth features, launch strategy, and prioritized implementation roadmap.
 
-**Core Challenge:** Moltzer requires Clawdbot Gateway to function—this limits viral spread to Clawdbot users (a niche) unless we create broader appeal or reduce the Gateway dependency for discovery/trial.
+**Core Challenge:** Moltzer requires Clawdbot Gateway to function�this limits viral spread to Clawdbot users (a niche) unless we create broader appeal or reduce the Gateway dependency for discovery/trial.
 
 **Growth Philosophy:** Don't chase vanity metrics. Build genuine value that makes users want to share.
 
@@ -44,10 +44,10 @@ Moltzer is a native desktop client for Clawdbot with a clear differentiator: **l
 
 ### Core Value Propositions (in order of resonance)
 
-1. **"10MB vs 300MB"** — The Electron killer angle
-2. **"Your data never leaves your device"** — Privacy story
-3. **"ChatGPT UI, but for your own AI"** — Familiarity + ownership
-4. **"Native performance, native feel"** — Tauri showcase
+1. **"10MB vs 300MB"** � The Electron killer angle
+2. **"Your data never leaves your device"** � Privacy story
+3. **"ChatGPT UI, but for your own AI"** � Familiarity + ownership
+4. **"Native performance, native feel"** � Tauri showcase
 
 ### What Makes People Tweet About Apps?
 
@@ -70,9 +70,9 @@ Research shows people share apps when they:
 
 | Aspect | Assessment |
 |--------|------------|
-| **Implementation Complexity** | 🔴 High |
-| **Growth Potential** | 🟡 Medium |
-| **Fits Positioning?** | ⚠️ Tension with privacy |
+| **Implementation Complexity** | ?? High |
+| **Growth Potential** | ?? Medium |
+| **Fits Positioning?** | ?? Tension with privacy |
 
 **Why it's complex:**
 - Moltzer is local-first with E2E encryption
@@ -95,9 +95,9 @@ Research shows people share apps when they:
 
 | Aspect | Assessment |
 |--------|------------|
-| **Implementation Complexity** | 🟢 Low-Medium |
-| **Growth Potential** | 🟢 High |
-| **Fits Positioning?** | ✅ Yes |
+| **Implementation Complexity** | ?? Low-Medium |
+| **Growth Potential** | ?? High |
+| **Fits Positioning?** | ? Yes |
 
 **Why this is gold:**
 - Twitter/X is visual-first
@@ -118,27 +118,27 @@ Research shows people share apps when they:
 
 **Design mockup:**
 ```
-┌─────────────────────────────────┐
-│  🦞 Moltzer                        │
-├─────────────────────────────────┤
-│  Me: How do I reverse a linked  │
-│      list in Rust?              │
-│                                 │
-│  Claude: Here's an elegant      │
-│  solution using iterators:      │
-│                                 │
-│  ┌─────────────────────────┐   │
-│  │ fn reverse<T>(head: ...) │   │
-│  │   let mut prev = None;   │   │
-│  │   // ...                 │   │
-│  └─────────────────────────┘   │
-│                                 │
-│         ─────────────────       │
-│         Made with Moltzer          │
-└─────────────────────────────────┘
++---------------------------------+
+�  ?? Moltzer                        �
++---------------------------------�
+�  Me: How do I reverse a linked  �
+�      list in Rust?              �
+�                                 �
+�  Claude: Here's an elegant      �
+�  solution using iterators:      �
+�                                 �
+�  +-------------------------+   �
+�  � fn reverse<T>(head: ...) �   �
+�  �   let mut prev = None;   �   �
+�  �   // ...                 �   �
+�  +-------------------------+   �
+�                                 �
+�         -----------------       �
+�         Made with Moltzer          �
++---------------------------------+
 ```
 
-**Priority:** 🔥 **HIGH** — Ship in v1.1
+**Priority:** ?? **HIGH** � Ship in v1.1
 
 ### 2.3 "Made with Moltzer" Watermark
 
@@ -146,9 +146,9 @@ Research shows people share apps when they:
 
 | Aspect | Assessment |
 |--------|------------|
-| **Implementation Complexity** | 🟢 Very Low |
-| **Growth Potential** | 🟡 Medium |
-| **Fits Positioning?** | ✅ Yes |
+| **Implementation Complexity** | ?? Very Low |
+| **Growth Potential** | ?? Medium |
+| **Fits Positioning?** | ? Yes |
 
 **Options:**
 - On by default, can be disabled
@@ -167,9 +167,9 @@ Research shows people share apps when they:
 
 | Aspect | Assessment |
 |--------|------------|
-| **Implementation Complexity** | 🔴 High |
-| **Growth Potential** | 🟡 Low-Medium |
-| **Fits Positioning?** | ❌ No — contradicts privacy |
+| **Implementation Complexity** | ?? High |
+| **Growth Potential** | ?? Low-Medium |
+| **Fits Positioning?** | ? No � contradicts privacy |
 
 **Problems:**
 - Requires telemetry (breaks privacy promise)
@@ -184,9 +184,9 @@ Research shows people share apps when they:
 
 | Aspect | Assessment |
 |--------|------------|
-| **Implementation Complexity** | 🟢 Low (manual curation) |
-| **Growth Potential** | 🟡 Medium |
-| **Fits Positioning?** | ✅ Yes (if opt-in) |
+| **Implementation Complexity** | ?? Low (manual curation) |
+| **Growth Potential** | ?? Medium |
+| **Fits Positioning?** | ? Yes (if opt-in) |
 
 **Implementation:**
 - Users submit screenshots/exported images
@@ -200,7 +200,7 @@ Research shows people share apps when they:
 - Shows real use cases
 - Low implementation cost
 
-**Priority:** 🟡 Medium — Do after export-as-image ships
+**Priority:** ?? Medium � Do after export-as-image ships
 
 ### 3.3 GitHub Stars / Download Count
 
@@ -208,9 +208,9 @@ Research shows people share apps when they:
 
 | Aspect | Assessment |
 |--------|------------|
-| **Implementation Complexity** | 🟢 Very Low |
-| **Growth Potential** | 🟢 High for developer audience |
-| **Fits Positioning?** | ✅ Yes |
+| **Implementation Complexity** | ?? Very Low |
+| **Growth Potential** | ?? High for developer audience |
+| **Fits Positioning?** | ? Yes |
 
 **Where to show:**
 - GitHub repo prominently
@@ -218,7 +218,7 @@ Research shows people share apps when they:
 - Landing page (moltzer.dev)
 - About dialog in app
 
-**Priority:** 🔥 HIGH — Easy win, do immediately
+**Priority:** ?? HIGH � Easy win, do immediately
 
 ---
 
@@ -249,9 +249,9 @@ Research shows people share apps when they:
 
 | Aspect | Assessment |
 |--------|------------|
-| **Implementation Complexity** | 🟡 Medium |
-| **Growth Potential** | 🟡 Medium |
-| **Fits Positioning?** | ⚠️ Feels consumer-y |
+| **Implementation Complexity** | ?? Medium |
+| **Growth Potential** | ?? Medium |
+| **Fits Positioning?** | ?? Feels consumer-y |
 
 **Problem:** Moltzer targets developers. "Invite friends" flows feel like consumer apps (Dropbox, Robinhood). Developers invite via:
 - Tweeting about tools
@@ -276,9 +276,9 @@ Research shows people share apps when they:
 
 | Aspect | Assessment |
 |--------|------------|
-| **Implementation Complexity** | 🔴 Very High |
-| **Growth Potential** | 🟢 High if executed |
-| **Fits Positioning?** | ⚠️ Requires major architecture change |
+| **Implementation Complexity** | ?? Very High |
+| **Growth Potential** | ?? High if executed |
+| **Fits Positioning?** | ?? Requires major architecture change |
 
 **Problem:** Moltzer is fundamentally single-user, local-first. Team features would require:
 - Backend infrastructure
@@ -295,9 +295,9 @@ Research shows people share apps when they:
 
 | Aspect | Assessment |
 |--------|------------|
-| **Implementation Complexity** | 🟡 Medium |
-| **Growth Potential** | 🟢 High |
-| **Fits Positioning?** | ✅ Yes |
+| **Implementation Complexity** | ?? Medium |
+| **Growth Potential** | ?? High |
+| **Fits Positioning?** | ? Yes |
 
 **Why this works:**
 - No backend needed (GitHub repo of .json files)
@@ -322,7 +322,7 @@ Research shows people share apps when they:
 - System Design
 - SQL Generator
 
-**Priority:** 🟡 Medium — Good for v1.2
+**Priority:** ?? Medium � Good for v1.2
 
 ### 5.3 Clawdbot Gateway Network
 
@@ -370,7 +370,7 @@ This is what Tauri makes possible."
 - Moltzer (10MB native client)
 - Claude API key
 
-Own your AI conversations. 🦞"
+Own your AI conversations. ??"
 ```
 
 ### 6.2 "Moltzer Tip of the Day"
@@ -379,9 +379,9 @@ Own your AI conversations. 🦞"
 
 | Aspect | Assessment |
 |--------|------------|
-| **Implementation Complexity** | 🟢 Very Low |
-| **Growth Potential** | 🟡 Medium (compounds over time) |
-| **Fits Positioning?** | ✅ Yes |
+| **Implementation Complexity** | ?? Very Low |
+| **Growth Potential** | ?? Medium (compounds over time) |
+| **Fits Positioning?** | ? Yes |
 
 **Content ideas:**
 - Keyboard shortcut highlights
@@ -460,20 +460,20 @@ Own your AI conversations. 🦞"
 
 **Product Hunt description:**
 ```
-🦞 Moltzer - Native AI Chat Client
+?? Moltzer - Native AI Chat Client
 
 Tired of Electron bloat? Moltzer is a 10MB native desktop app 
 for chatting with Claude, GPT, and other AI models.
 
-✅ 10x smaller than Electron apps
-✅ Native performance on Mac, Windows, Linux
-✅ End-to-end encrypted conversations
-✅ Beautiful dark/light themes
-✅ Full keyboard navigation
+? 10x smaller than Electron apps
+? Native performance on Mac, Windows, Linux
+? End-to-end encrypted conversations
+? Beautiful dark/light themes
+? Full keyboard navigation
 
 Built with Tauri + React. Your data stays on your device.
 
-Open source: github.com/dokterdok/moltzer-client
+Open source: github.com/dokterdok/molt-client
 ```
 
 ### 7.3 Hacker News Show HN
@@ -481,9 +481,9 @@ Open source: github.com/dokterdok/moltzer-client
 **Target:** Front page, 100+ points
 
 **Title options (A/B test mentally):**
-- "Show HN: Moltzer – 10MB native ChatGPT-style client built with Tauri"
+- "Show HN: Moltzer � 10MB native ChatGPT-style client built with Tauri"
 - "Show HN: I built a native AI chat client that's 30x smaller than Electron apps"
-- "Show HN: Moltzer – Privacy-first desktop client for Claude/GPT"
+- "Show HN: Moltzer � Privacy-first desktop client for Claude/GPT"
 
 **Post body:**
 ```
@@ -544,7 +544,7 @@ Would love feedback, especially on:
 
 **Launch tweets (thread):**
 ```
-1/ Introducing Moltzer 🦞
+1/ Introducing Moltzer ??
 
 A native AI chat client that's 30x smaller than Electron apps.
 
@@ -563,11 +563,11 @@ My whole Moltzer installation: 10MB
 Tauri makes this possible.
 
 3/ Features:
-✅ Streaming responses
-✅ E2E encrypted local storage
-✅ OS keychain integration
-✅ Beautiful themes
-✅ Full keyboard navigation
+? Streaming responses
+? E2E encrypted local storage
+? OS keychain integration
+? Beautiful themes
+? Full keyboard navigation
 
 4/ The catch: You need a Clawdbot Gateway 
 (self-hosted AI proxy).
@@ -581,7 +581,7 @@ GitHub: [link]
 Download: [link]
 
 Give it a star if you appreciate tiny, 
-fast, native apps. 🦞
+fast, native apps. ??
 ```
 
 **Influencer outreach (after launch):**
@@ -602,37 +602,37 @@ fast, native apps. 🦞
 
 | Feature | Priority | Effort | Impact |
 |---------|----------|--------|--------|
-| Fix all failing tests | 🔴 Critical | 2-3 days | Required |
-| Verify Gateway protocol | 🔴 Critical | 1 day | Required |
-| Fix localStorage token leak | 🔴 Critical | 1 hour | Security |
-| Landing page (moltzer.dev) | 🔴 Critical | 2-3 days | Required |
-| README with GIFs | 🔴 Critical | 1 day | First impressions |
-| Social accounts setup | 🟡 High | 2 hours | Required |
+| Fix all failing tests | ?? Critical | 2-3 days | Required |
+| Verify Gateway protocol | ?? Critical | 1 day | Required |
+| Fix localStorage token leak | ?? Critical | 1 hour | Security |
+| Landing page (moltzer.dev) | ?? Critical | 2-3 days | Required |
+| README with GIFs | ?? Critical | 1 day | First impressions |
+| Social accounts setup | ?? High | 2 hours | Required |
 
 ### Phase 2: Growth Features (v1.1)
 
 | Feature | Priority | Effort | Impact |
 |---------|----------|--------|--------|
-| Export as image | 🔴 Critical | 3-4 days | High viral potential |
-| "Made with Moltzer" watermark | 🟢 Easy | 2 hours | Free marketing |
-| One-click tweet button | 🟢 Easy | 1 day | Reduce sharing friction |
-| Keyboard shortcut overlay | 🟡 Medium | 1 day | Power user delight |
+| Export as image | ?? Critical | 3-4 days | High viral potential |
+| "Made with Moltzer" watermark | ?? Easy | 2 hours | Free marketing |
+| One-click tweet button | ?? Easy | 1 day | Reduce sharing friction |
+| Keyboard shortcut overlay | ?? Medium | 1 day | Power user delight |
 
 ### Phase 3: Community (v1.2)
 
 | Feature | Priority | Effort | Impact |
 |---------|----------|--------|--------|
-| Prompt library (GitHub-based) | 🟡 Medium | 1 week | Community building |
-| Community showcase page | 🟢 Easy | 2-3 days | Social proof |
-| Contributor recognition | 🟢 Easy | 1 day | Encourage contributions |
+| Prompt library (GitHub-based) | ?? Medium | 1 week | Community building |
+| Community showcase page | ?? Easy | 2-3 days | Social proof |
+| Contributor recognition | ?? Easy | 1 day | Encourage contributions |
 
 ### Phase 4: Scale (v2.0+)
 
 | Feature | Priority | Effort | Impact |
 |---------|----------|--------|--------|
-| Demo mode (no Gateway needed) | 🔴 High | 2 weeks | Removes trial friction |
-| Share conversation links | 🟡 Medium | 2-3 weeks | Viral sharing |
-| Encrypted cloud sync | 🟡 Medium | 4+ weeks | Retention |
+| Demo mode (no Gateway needed) | ?? High | 2 weeks | Removes trial friction |
+| Share conversation links | ?? Medium | 2-3 weeks | Viral sharing |
+| Encrypted cloud sync | ?? Medium | 4+ weeks | Retention |
 
 ---
 
@@ -696,30 +696,30 @@ Day +7:  Retro, plan v1.1
 
 ```
 Discovery (HN/PH/Reddit/Twitter)
-         ↓
+         ?
     Download & Try
-         ↓
-    ┌────┴────┐
-    │  Good?  │
-    └────┬────┘
-     Yes │ No → Feedback/Churn
-         ↓
+         ?
+    +---------+
+    �  Good?  �
+    +---------+
+     Yes � No ? Feedback/Churn
+         ?
    Use regularly
-         ↓
-    ┌────┴────┐
-    │ Delight │
-    │ moment? │
-    └────┬────┘
-     Yes │ No → Silent retention
-         ↓
+         ?
+    +---------+
+    � Delight �
+    � moment? �
+    +---------+
+     Yes � No ? Silent retention
+         ?
    Share (tweet/screenshot)
-         ↓
+         ?
     Others discover
-         ↓
+         ?
       [Loop]
 ```
 
-**Key insight:** The viral loop has a bottleneck—Clawdbot Gateway requirement. Users can't casually try Moltzer.
+**Key insight:** The viral loop has a bottleneck�Clawdbot Gateway requirement. Users can't casually try Moltzer.
 
 **Solution for v2.0:** Demo mode with limited free tier or sandbox Gateway.
 
@@ -742,11 +742,11 @@ Discovery (HN/PH/Reddit/Twitter)
 
 ## Summary: Top 5 Actions
 
-1. **Ship export-as-image** (v1.1) — Highest viral potential, medium effort
-2. **Nail the launches** (PH + HN + Reddit) — One-time effort, massive impact
-3. **Build prompt library** (v1.2) — Community flywheel
-4. **Add demo mode** (v2.0) — Remove trial friction
-5. **Consistent content** (ongoing) — Tips, benchmarks, user showcases
+1. **Ship export-as-image** (v1.1) � Highest viral potential, medium effort
+2. **Nail the launches** (PH + HN + Reddit) � One-time effort, massive impact
+3. **Build prompt library** (v1.2) � Community flywheel
+4. **Add demo mode** (v2.0) � Remove trial friction
+5. **Consistent content** (ongoing) � Tips, benchmarks, user showcases
 
 ---
 

@@ -1,11 +1,11 @@
 blank_issues_enabled: false
 contact_links:
   - name: 💬 Ask a Question
-    url: https://github.com/dokterdok/moltzer-client/discussions/new?category=q-a
+    url: https://github.com/dokterdok/molt-client/discussions/new?category=q-a
     about: Ask questions and discuss with the community
   - name: 💡 Ideas & Feedback
-    url: https://github.com/dokterdok/moltzer-client/discussions/new?category=ideas
+    url: https://github.com/dokterdok/molt-client/discussions/new?category=ideas
     about: Share ideas and suggestions
   - name: 📚 Documentation
-    url: https://github.com/dokterdok/moltzer-client/wiki
+    url: https://github.com/dokterdok/molt-client/wiki
     about: Read the documentation

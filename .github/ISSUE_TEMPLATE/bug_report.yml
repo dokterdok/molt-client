@@ -61,8 +61,8 @@ body:
   - type: input
     id: version
     attributes:
-      label: Molt Version
-      description: What version of Molt are you using? (Help → About)
+      label: Moltzer Version
+      description: What version of Moltzer are you using? (Help → About)
       placeholder: "1.0.0"
     validations:
       required: true

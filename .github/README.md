@@ -110,7 +110,7 @@ Check build status: [Actions Tab](../../actions)
 
 Add badge to main README:
 ```markdown
-[![CI](https://github.com/dokterdok/moltzer-client/actions/workflows/ci.yml/badge.svg)](https://github.com/dokterdok/moltzer-client/actions/workflows/ci.yml)
+[![CI](https://github.com/dokterdok/molt-client/actions/workflows/ci.yml/badge.svg)](https://github.com/dokterdok/molt-client/actions/workflows/ci.yml)
 ```
 
 ## 🐛 Troubleshooting

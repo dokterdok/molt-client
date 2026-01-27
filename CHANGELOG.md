@@ -82,10 +82,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Release Links
 
-- [Unreleased changes](https://github.com/dokterdok/moltzer-client/compare/v1.0.0...HEAD)
-- [1.0.0](https://github.com/dokterdok/moltzer-client/releases/tag/v1.0.0)
-- [0.9.0-beta](https://github.com/dokterdok/moltzer-client/releases/tag/v0.9.0-beta)
-- [0.1.0-alpha](https://github.com/dokterdok/moltzer-client/releases/tag/v0.1.0-alpha)
+- [Unreleased changes](https://github.com/dokterdok/molt-client/compare/v1.0.0...HEAD)
+- [1.0.0](https://github.com/dokterdok/molt-client/releases/tag/v1.0.0)
+- [0.9.0-beta](https://github.com/dokterdok/molt-client/releases/tag/v0.9.0-beta)
+- [0.1.0-alpha](https://github.com/dokterdok/molt-client/releases/tag/v0.1.0-alpha)
 
 ## Changelog Categories
 

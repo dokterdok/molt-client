@@ -57,7 +57,7 @@ Moltzer client implements **transparent encryption at rest** for all sensitive c
 2. **Key Storage**
    - Stored in OS keychain via Tauri `keyring` crate
    - Service: `com.moltzer.client`
-   - Key name: `moltzer-client-master-key`
+   - Key name: `molt-client-master-key`
    - Protected by OS-level authentication
 
 3. **Key Retrieval**

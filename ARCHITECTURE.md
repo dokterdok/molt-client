@@ -1,4 +1,4 @@
-﻿# Moltzer client Architecture
+# Moltzer client Architecture
 
 ## Overview
 
@@ -8,33 +8,33 @@ Moltzer client is designed to operate in two distinct modes:
 2. **Team Mode** - Connection through Moltzer Backend for org management, RBAC, and audit
 
 ```
-┌─────────────────────────────────────────────────────────────────────┐
-│                         PERSONAL MODE                                │
-│  ┌─────────────┐         ┌─────────────┐         ┌─────────────┐   │
-│  │ Moltzer client │ ──WS──► │   Gateway   │ ──────► │   Moltbot   │   │
-│  │  (Tauri)    │         │  (direct)   │         │             │   │
-│  └─────────────┘         └─────────────┘         └─────────────┘   │
-│        │                                                            │
-│        ▼                                                            │
-│  ┌─────────────┐                                                   │
-│  │  IndexedDB  │  (local storage)                                  │
-│  └─────────────┘                                                   │
-└─────────────────────────────────────────────────────────────────────┘
++---------------------------------------------------------------------+
+�                         PERSONAL MODE                                �
+�  +-------------+         +-------------+         +-------------+   �
+�  � Moltzer client � --WS--? �   Gateway   � ------? �   Moltbot   �   �
+�  �  (Tauri)    �         �  (direct)   �         �             �   �
+�  +-------------+         +-------------+         +-------------+   �
+�        �                                                            �
+�        ?                                                            �
+�  +-------------+                                                   �
+�  �  IndexedDB  �  (local storage)                                  �
+�  +-------------+                                                   �
++---------------------------------------------------------------------+
 
-┌─────────────────────────────────────────────────────────────────────┐
-│                           TEAM MODE                                  │
-│  ┌─────────────┐         ┌─────────────┐         ┌─────────────┐   │
-│  │ Moltzer client │ ──WS──► │Moltzer Backend │ ──WS──► │   Gateway   │   │
-│  │  (Tauri)    │         │  (proxy)    │         │             │   │
-│  └─────────────┘         └─────────────┘         └─────────────┘   │
-│                                │                        │           │
-│                    ┌───────────┼───────────┐           │           │
-│                    ▼           ▼           ▼           ▼           │
-│              ┌──────────┐ ┌─────────┐ ┌─────────┐ ┌─────────┐     │
-│              │PostgreSQL│ │  Redis  │ │  Audit  │ │ Moltbot │     │
-│              │(main DB) │ │(pubsub) │ │  Logs   │ │         │     │
-│              └──────────┘ └─────────┘ └─────────┘ └─────────┘     │
-└─────────────────────────────────────────────────────────────────────┘
++---------------------------------------------------------------------+
+�                           TEAM MODE                                  �
+�  +-------------+         +-------------+         +-------------+   �
+�  � Moltzer client � --WS--? �Moltzer Backend � --WS--? �   Gateway   �   �
+�  �  (Tauri)    �         �  (proxy)    �         �             �   �
+�  +-------------+         +-------------+         +-------------+   �
+�                                �                        �           �
+�                    +-----------+-----------+           �           �
+�                    ?           ?           ?           ?           �
+�              +----------+ +---------+ +---------+ +---------+     �
+�              �PostgreSQL� �  Redis  � �  Audit  � � Moltbot �     �
+�              �(main DB) � �(pubsub) � �  Logs   � �         �     �
+�              +----------+ +---------+ +---------+ +---------+     �
++---------------------------------------------------------------------+
 ```
 
 ---
@@ -45,24 +45,24 @@ Moltzer client is designed to operate in two distinct modes:
 
 ```
 Organizations (workspaces)
-├── Settings (name, logo, billing, etc.)
-├── Members
-│   ├── User reference
-│   ├── Role
-│   └── Custom permission overrides
-├── Roles
-│   ├── Built-in: owner, admin, member, read-only, guest
-│   └── Custom roles with granular permissions
-├── Rooms (shared conversation spaces)
-│   ├── Public rooms (all members can see)
-│   ├── Private rooms (invite-only)
-│   └── Direct messages
-├── Permission Policies
-│   ├── Tool allowlists/denylists
-│   ├── Source access rules
-│   └── Action restrictions
-└── Audit Logs
-    └── Every request/response with full context
++-- Settings (name, logo, billing, etc.)
++-- Members
+�   +-- User reference
+�   +-- Role
+�   +-- Custom permission overrides
++-- Roles
+�   +-- Built-in: owner, admin, member, read-only, guest
+�   +-- Custom roles with granular permissions
++-- Rooms (shared conversation spaces)
+�   +-- Public rooms (all members can see)
+�   +-- Private rooms (invite-only)
+�   +-- Direct messages
++-- Permission Policies
+�   +-- Tool allowlists/denylists
+�   +-- Source access rules
+�   +-- Action restrictions
++-- Audit Logs
+    +-- Every request/response with full context
 ```
 
 ### Database Schema (PostgreSQL)
@@ -408,9 +408,9 @@ DELETE /conversations/:id       - Delete conversation
 
 Chat (WebSocket)
 WS     /ws                      - Main WebSocket connection
-       → { type: 'chat', conversationId, message, ... }
-       ← { type: 'stream', content, ... }
-       ← { type: 'complete', ... }
+       ? { type: 'chat', conversationId, message, ... }
+       ? { type: 'stream', content, ... }
+       ? { type: 'complete', ... }
 
 Search
 GET    /search?q=...            - Full-text search across allowed conversations
@@ -422,7 +422,7 @@ GET    /orgs/:id/audit          - Query audit logs (admin only)
 ### WebSocket Protocol
 
 ```typescript
-// Client → Server
+// Client ? Server
 interface ClientMessage {
   type: 'chat' | 'typing' | 'read_receipt' | 'presence';
   
@@ -437,7 +437,7 @@ interface ClientMessage {
   roomId?: string;
 }
 
-// Server → Client
+// Server ? Client
 interface ServerMessage {
   type: 'stream' | 'complete' | 'error' | 'typing' | 'presence' | 'room_update';
   
@@ -509,7 +509,7 @@ interface Store {
   currentOrg: Organization | null;
   rooms: Room[];
   members: Member[];
-  sharedConversations: Map<string, Conversation[]>; // roomId → conversations
+  sharedConversations: Map<string, Conversation[]>; // roomId ? conversations
   
   // Common
   currentConversation: Conversation | null;
@@ -564,36 +564,36 @@ interface Store {
 ## File Structure (Future)
 
 ```
-moltzer-client/
-├── src/                      # React frontend
-│   ├── components/
-│   ├── hooks/
-│   ├── lib/
-│   │   ├── connection.ts     # Connection abstraction
-│   │   ├── api.ts           # REST API client
-│   │   └── ws.ts            # WebSocket client
-│   ├── stores/
-│   └── ...
-├── src-tauri/                # Rust backend (Tauri)
-│   └── src/
-│       ├── gateway.rs        # Direct gateway connection
-│       └── ...
-└── ...
+molt-client/
++-- src/                      # React frontend
+�   +-- components/
+�   +-- hooks/
+�   +-- lib/
+�   �   +-- connection.ts     # Connection abstraction
+�   �   +-- api.ts           # REST API client
+�   �   +-- ws.ts            # WebSocket client
+�   +-- stores/
+�   +-- ...
++-- src-tauri/                # Rust backend (Tauri)
+�   +-- src/
+�       +-- gateway.rs        # Direct gateway connection
+�       +-- ...
++-- ...
 
 Moltzer-backend/                 # Separate repo for team backend
-├── src/
-│   ├── api/                  # REST endpoints
-│   ├── ws/                   # WebSocket handler
-│   ├── services/
-│   │   ├── auth.ts
-│   │   ├── rbac.ts
-│   │   ├── audit.ts
-│   │   └── gateway_proxy.ts
-│   ├── db/
-│   │   ├── schema.sql
-│   │   └── migrations/
-│   └── ...
-└── ...
++-- src/
+�   +-- api/                  # REST endpoints
+�   +-- ws/                   # WebSocket handler
+�   +-- services/
+�   �   +-- auth.ts
+�   �   +-- rbac.ts
+�   �   +-- audit.ts
+�   �   +-- gateway_proxy.ts
+�   +-- db/
+�   �   +-- schema.sql
+�   �   +-- migrations/
+�   +-- ...
++-- ...
 ```
 
 ---
@@ -605,24 +605,24 @@ All conversation history encrypted locally with zero user friction:
 ### Implementation
 
 ```
-┌─────────────────────────────────────────────────────┐
-│              OS Keychain                            │
-│  (macOS Keychain / Windows Credential Manager /    │
-│   Linux Secret Service)                            │
-│                                                     │
-│  Stores: 256-bit encryption key                    │
-│  Auto-generated on first launch                    │
-└─────────────────────────────────────────────────────┘
-                      │
-                      ▼
-┌─────────────────────────────────────────────────────┐
-│              SQLCipher Database                     │
-│                                                     │
-│  • All messages encrypted (AES-256)                │
-│  • Conversation metadata encrypted                 │
-│  • Attachments encrypted                           │
-│  • Key never leaves OS keychain                    │
-└─────────────────────────────────────────────────────┘
++-----------------------------------------------------+
+�              OS Keychain                            �
+�  (macOS Keychain / Windows Credential Manager /    �
+�   Linux Secret Service)                            �
+�                                                     �
+�  Stores: 256-bit encryption key                    �
+�  Auto-generated on first launch                    �
++-----------------------------------------------------+
+                      �
+                      ?
++-----------------------------------------------------+
+�              SQLCipher Database                     �
+�                                                     �
+�  � All messages encrypted (AES-256)                �
+�  � Conversation metadata encrypted                 �
+�  � Attachments encrypted                           �
+�  � Key never leaves OS keychain                    �
++-----------------------------------------------------+
 ```
 
 ### Rust Dependencies
@@ -636,10 +636,10 @@ rusqlite = { version = "0.31", features = ["bundled-sqlcipher"] }
 
 ### User Experience
 
-- **Zero setup** — Key auto-generated on first launch
-- **No passwords** — OS handles authentication (biometrics, login password)
-- **Transparent** — User never sees encryption, it just works
-- **Portable** — Export includes encrypted blob + key (optional password protection)
+- **Zero setup** � Key auto-generated on first launch
+- **No passwords** � OS handles authentication (biometrics, login password)
+- **Transparent** � User never sees encryption, it just works
+- **Portable** � Export includes encrypted blob + key (optional password protection)
 
 ---
 

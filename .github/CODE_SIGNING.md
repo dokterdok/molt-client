@@ -56,7 +56,7 @@ base64 -i certificate.p12 -o certificate-base64.txt
 
 1. Go to [appleid.apple.com](https://appleid.apple.com/)
 2. Sign in → **Security** → **App-Specific Passwords**
-3. Generate a new password for "Molt CI"
+3. Generate a new password for "Moltzer CI"
 4. Save this password securely
 
 ### Step 4: Configure GitHub Secrets
@@ -237,10 +237,10 @@ TAURI_SIGNING_PRIVATE_KEY_PASSWORD  # Password if you set one (optional)
 npm run tauri build
 
 # Check signature
-codesign -dvv src-tauri/target/release/bundle/macos/Molt.app
+codesign -dvv src-tauri/target/release/bundle/macos/Moltzer.app
 
 # Verify signature
-spctl -a -vv src-tauri/target/release/bundle/macos/Molt.app
+spctl -a -vv src-tauri/target/release/bundle/macos/Moltzer.app
 ```
 
 Successful output should show:

@@ -1,17 +1,17 @@
-﻿# Moltzer Testing Requirements
+# Moltzer Testing Requirements
 
 Comprehensive analysis of testing complexity for all Moltzer features.
 
 **Legend:**
-- 🟢 **AUTONOMOUS**: Can test fully without human interaction
-- 🟡 **SEMI-AUTO**: Needs initial setup, then autonomous
-- 🔴 **MANUAL**: Requires significant human interaction
+- ?? **AUTONOMOUS**: Can test fully without human interaction
+- ?? **SEMI-AUTO**: Needs initial setup, then autonomous
+- ?? **MANUAL**: Requires significant human interaction
 
 ---
 
 ## 1. Gateway Auto-Discovery (DetectionStep)
 
-**Status:** 🟡 SEMI-AUTO
+**Status:** ?? SEMI-AUTO
 
 ### How to Test
 
@@ -64,15 +64,15 @@ test('should show no Gateway screen when detection fails', async ({ page }) => {
 ### Notes
 
 - Can mock WebSocket responses for predictable testing
-- Detection timeout is ~5 seconds (4 URLs × 400ms delay + connection time)
+- Detection timeout is ~5 seconds (4 URLs � 400ms delay + connection time)
 - Test both success and failure paths
-- Verify URL switching (ws:// → wss://)
+- Verify URL switching (ws:// ? wss://)
 
 ---
 
 ## 2. No-Gateway Installation Flow
 
-**Status:** 🔴 MANUAL
+**Status:** ?? MANUAL
 
 ### How to Test
 
@@ -82,7 +82,7 @@ test('should show no Gateway screen when detection fails', async ({ page }) => {
 3. Copy install command for your platform
 4. Open terminal, paste command: `npm install -g clawdbot`
 5. Run `clawdbot gateway start`
-6. Return to app, click "I've installed it — Retry Detection"
+6. Return to app, click "I've installed it � Retry Detection"
 7. Verify detection succeeds
 
 ### Automated E2E (Playwright)
@@ -111,7 +111,7 @@ test('should show installation instructions', async ({ page }) => {
 - **Real Gateway Connection:** Yes (for end-to-end flow)
 - **Real API Keys/Models:** No
 - **OS Features:** Terminal access, npm
-- **Human Actions:** **Required** — install Gateway, run commands
+- **Human Actions:** **Required** � install Gateway, run commands
 
 ### Test Time
 
@@ -130,7 +130,7 @@ test('should show installation instructions', async ({ page }) => {
 
 ## 3. Keychain Token Storage
 
-**Status:** 🟡 SEMI-AUTO
+**Status:** ?? SEMI-AUTO
 
 ### How to Test
 
@@ -139,7 +139,7 @@ test('should show installation instructions', async ({ page }) => {
 2. Enter Gateway token (e.g., `test-token-123`)
 3. Click "Save Changes"
 4. Restart app
-5. Open Settings → verify token is loaded (shows placeholder, not actual value)
+5. Open Settings ? verify token is loaded (shows placeholder, not actual value)
 6. Verify token is stored in OS keychain:
    - **macOS:** `security find-generic-password -s com.moltzer.client`
    - **Windows:** Credential Manager
@@ -177,7 +177,7 @@ test('should store token in keychain', async ({ page }) => {
 
 - **Real Gateway Connection:** No (for storage test)
 - **Real API Keys/Models:** No
-- **OS Features:** **Yes** — Keychain/Credential Manager access
+- **OS Features:** **Yes** � Keychain/Credential Manager access
 - **Human Actions:** May need to approve keychain access on first use (macOS)
 
 ### Test Time
@@ -196,21 +196,21 @@ test('should store token in keychain', async ({ page }) => {
 
 ## 4. WebSocket Connection/Retry
 
-**Status:** 🟡 SEMI-AUTO
+**Status:** ?? SEMI-AUTO
 
 ### How to Test
 
 **Manual Steps:**
 1. **Happy Path:**
    - Start Gateway (`clawdbot gateway start`)
-   - Launch app → should connect automatically
+   - Launch app ? should connect automatically
    - Verify green "Connected" indicator in Settings
 2. **Retry on Disconnect:**
    - Stop Gateway while app is running
    - Observe disconnection
    - Restart Gateway
    - App should attempt to reconnect (currently: requires manual reconnect via Settings)
-3. **Protocol Fallback (ws:// ↔ wss://):**
+3. **Protocol Fallback (ws:// ? wss://):**
    - Try connecting to `ws://` URL
    - If fails, app switches to `wss://` automatically
    - Verify "Connected using wss://" notice in Settings
@@ -266,14 +266,14 @@ test('should fallback to wss:// if ws:// fails', async ({ page }) => {
 
 - Current implementation: Rust (`gateway.rs`) uses `tokio_tungstenite`
 - Protocol fallback is automatic (`try_connect_with_fallback`)
-- Retry logic: **Not yet implemented** — manual reconnection required
+- Retry logic: **Not yet implemented** � manual reconnection required
 - Future: add exponential backoff reconnection
 
 ---
 
 ## 5. Message Streaming
 
-**Status:** 🟢 AUTONOMOUS
+**Status:** ?? AUTONOMOUS
 
 ### How to Test
 
@@ -338,7 +338,7 @@ test('should stream message response', async ({ page }) => {
 
 ## 6. Conversation CRUD
 
-**Status:** 🟢 AUTONOMOUS
+**Status:** ?? AUTONOMOUS
 
 ### How to Test
 
@@ -350,11 +350,11 @@ test('should stream message response', async ({ page }) => {
    - Select conversation from sidebar
    - Verify messages load
 3. **Update:**
-   - Send message → verify conversation updates
+   - Send message ? verify conversation updates
    - Verify title updates (first message)
-   - Pin conversation → verify stays at top
+   - Pin conversation ? verify stays at top
 4. **Delete:**
-   - Hover conversation → click "..." menu → Delete
+   - Hover conversation ? click "..." menu ? Delete
    - Confirm deletion
    - Verify conversation removed from sidebar and IndexedDB
 
@@ -422,7 +422,7 @@ test('should delete conversation', async ({ page }) => {
 ### Notes
 
 - All operations use Zustand store + IndexedDB persistence
-- Deletion is permanent (no undo) — confirm this in tests
+- Deletion is permanent (no undo) � confirm this in tests
 - Pinning: conversations with `isPinned: true` show at top
 - Title generation: first user message (truncated to 40 chars)
 
@@ -430,7 +430,7 @@ test('should delete conversation', async ({ page }) => {
 
 ## 7. Search (Quick Filter + Full Search)
 
-**Status:** 🟢 AUTONOMOUS
+**Status:** ?? AUTONOMOUS
 
 ### How to Test
 
@@ -438,7 +438,7 @@ test('should delete conversation', async ({ page }) => {
 1. **Quick Filter (Sidebar):**
    - Type in "Filter conversations..." input at top of sidebar
    - Verify conversations filter by title and content
-   - Clear filter → all conversations return
+   - Clear filter ? all conversations return
 2. **Global Search (Cmd+K / Ctrl+K):**
    - Press Cmd+K
    - Type search query (e.g., "python")
@@ -519,7 +519,7 @@ test('should search across all messages', async ({ page }) => {
 
 ## 8. Settings Persistence
 
-**Status:** 🟢 AUTONOMOUS
+**Status:** ?? AUTONOMOUS
 
 ### How to Test
 
@@ -532,7 +532,7 @@ test('should search across all messages', async ({ page }) => {
    - Theme (light/dark/system)
 3. Save changes
 4. Restart app
-5. Open Settings → verify all changes persisted
+5. Open Settings ? verify all changes persisted
 
 ### Automated E2E (Playwright)
 
@@ -594,21 +594,21 @@ test('should persist settings across reload', async ({ page }) => {
 
 ## 9. Encryption (E2E)
 
-**Status:** 🟡 SEMI-AUTO
+**Status:** ?? SEMI-AUTO
 
 ### How to Test
 
 **Manual Steps:**
 1. **Verify Encryption:**
    - Send a message
-   - Open browser DevTools → IndexedDB → MoltzerDB → messages
+   - Open browser DevTools ? IndexedDB ? MoltzerDB ? messages
    - Verify `content` field is base64 gibberish (encrypted)
 2. **Verify Decryption:**
    - Reload app
    - Verify messages display correctly (decrypted transparently)
 3. **Verify Master Key:**
-   - Check OS keychain for `moltzer-client-master-key`
-   - **macOS:** `security find-generic-password -s com.moltzer.client -a moltzer-client-master-key`
+   - Check OS keychain for `molt-client-master-key`
+   - **macOS:** `security find-generic-password -s com.moltzer.client -a molt-client-master-key`
    - Verify key exists and is base64 string
 4. **Verify Key Generation:**
    - Delete master key from keychain
@@ -671,7 +671,7 @@ test('should decrypt messages on load', async ({ page }) => {
 
 - **Real Gateway Connection:** No
 - **Real API Keys/Models:** No
-- **OS Features:** **Yes** — Keychain access (via Tauri)
+- **OS Features:** **Yes** � Keychain access (via Tauri)
 - **Human Actions:** May need to approve keychain access on first run
 
 ### Test Time
@@ -686,13 +686,13 @@ test('should decrypt messages on load', async ({ page }) => {
 - Each message has unique IV (12-byte nonce)
 - Encryption/decryption is transparent to users
 - Key generation happens automatically on first message
-- **Important:** No password needed — OS handles auth (biometrics, login password)
+- **Important:** No password needed � OS handles auth (biometrics, login password)
 
 ---
 
 ## 10. Model Selection
 
-**Status:** 🟢 AUTONOMOUS
+**Status:** ?? AUTONOMOUS
 
 ### How to Test
 
@@ -771,7 +771,7 @@ test('should use fallback models when offline', async ({ page }) => {
 
 ## 11. Thinking Mode Toggle
 
-**Status:** 🟢 AUTONOMOUS
+**Status:** ?? AUTONOMOUS
 
 ### How to Test
 
@@ -782,9 +782,9 @@ test('should use fallback models when offline', async ({ page }) => {
 4. Create new conversation
 5. Send message
 6. Verify thinking mode is enabled (if Gateway supports it):
-   - Should show "🧠 Thinking" section
+   - Should show "?? Thinking" section
    - Should show extended reasoning before response
-7. Toggle off → verify new conversations don't use thinking
+7. Toggle off ? verify new conversations don't use thinking
 
 ### Automated E2E (Playwright)
 
@@ -826,7 +826,7 @@ test('should send thinking parameter when enabled', async ({ page }) => {
   await page.keyboard.press('Enter');
   
   // If Gateway supports thinking, should show thinking indicator
-  const thinkingIndicator = page.getByText(/🧠|Thinking/i);
+  const thinkingIndicator = page.getByText(/??|Thinking/i);
   // Note: This may not appear if Gateway doesn't support thinking
 });
 ```
@@ -854,7 +854,7 @@ test('should send thinking parameter when enabled', async ({ page }) => {
 
 ## 12. Keyboard Shortcuts
 
-**Status:** 🟢 AUTONOMOUS
+**Status:** ?? AUTONOMOUS
 
 ### How to Test
 
@@ -870,7 +870,7 @@ Test each shortcut:
 | **Enter** (in input) | Send message |
 | **Shift+Enter** | New line in message |
 | **Esc** (in search) | Close search |
-| **↑/↓** (in search) | Navigate results |
+| **?/?** (in search) | Navigate results |
 
 ### Automated E2E (Playwright)
 
@@ -955,7 +955,7 @@ test('Arrow keys should navigate search results', async ({ page }) => {
 
 ## 13. Dark/Light Theme
 
-**Status:** 🟢 AUTONOMOUS
+**Status:** ?? AUTONOMOUS
 
 ### How to Test
 
@@ -1046,7 +1046,7 @@ test('should persist theme across reload', async ({ page }) => {
 
 ## 14. File Attachments (if implemented)
 
-**Status:** 🔴 MANUAL
+**Status:** ?? MANUAL
 
 ### How to Test
 
@@ -1087,7 +1087,7 @@ test('should upload file attachment', async ({ page }) => {
 - **Real Gateway Connection:** Yes (Gateway must support attachments)
 - **Real API Keys/Models:** Yes (multimodal models like GPT-4 Vision, Claude 3+)
 - **OS Features:** File picker dialog
-- **Human Actions:** **Required** — select files, verify visual rendering
+- **Human Actions:** **Required** � select files, verify visual rendering
 
 ### Test Time
 
@@ -1106,7 +1106,7 @@ test('should upload file attachment', async ({ page }) => {
 
 ## 15. Image Rendering (if implemented)
 
-**Status:** 🔴 MANUAL
+**Status:** ?? MANUAL
 
 ### How to Test
 
@@ -1142,7 +1142,7 @@ test('should render image in message', async ({ page }) => {
 - **Real Gateway Connection:** Optional (can test with static markdown)
 - **Real API Keys/Models:** Optional
 - **OS Features:** No
-- **Human Actions:** **Required** — verify image displays correctly, good quality
+- **Human Actions:** **Required** � verify image displays correctly, good quality
 
 ### Test Time
 
@@ -1164,21 +1164,21 @@ test('should render image in message', async ({ page }) => {
 
 | # | Feature | Status | Gateway? | API Keys? | OS Features? | Human? | Test Time |
 |---|---------|--------|----------|-----------|--------------|--------|-----------|
-| 1 | Gateway Auto-Discovery | 🟡 SEMI | Optional | No | No | None | 10-20s |
-| 2 | No-Gateway Install Flow | 🔴 MANUAL | Yes | No | Terminal | **Required** | 5-10m |
-| 3 | Keychain Token Storage | 🟡 SEMI | No | No | **Keychain** | Approval (first) | 30-60s |
-| 4 | WebSocket Connection/Retry | 🟡 SEMI | **Yes** | No | No | Start/stop | 1-2m |
-| 5 | Message Streaming | 🟢 AUTO | Preferred | Yes | No | None | 5-30s |
-| 6 | Conversation CRUD | 🟢 AUTO | No | No | IndexedDB | None | 2-5m |
-| 7 | Search | 🟢 AUTO | No | No | IndexedDB | None | 1-3m |
-| 8 | Settings Persistence | 🟢 AUTO | No | No | localStorage | None | 30-60s |
-| 9 | Encryption (E2E) | 🟡 SEMI | No | No | **Keychain** | Approval (first) | 1-2m |
-| 10 | Model Selection | 🟢 AUTO | Optional | No | No | None | 30-60s |
-| 11 | Thinking Mode Toggle | 🟢 AUTO | Yes | Yes | No | None | 1-2m |
-| 12 | Keyboard Shortcuts | 🟢 AUTO | No | No | No | None | 3-5m |
-| 13 | Dark/Light Theme | 🟢 AUTO | No | No | System theme | None | 1-2m |
-| 14 | File Attachments | 🔴 MANUAL | Yes | Yes | File picker | **Required** | 10-15m |
-| 15 | Image Rendering | 🔴 MANUAL | Optional | Optional | No | **QA** | 5-10m |
+| 1 | Gateway Auto-Discovery | ?? SEMI | Optional | No | No | None | 10-20s |
+| 2 | No-Gateway Install Flow | ?? MANUAL | Yes | No | Terminal | **Required** | 5-10m |
+| 3 | Keychain Token Storage | ?? SEMI | No | No | **Keychain** | Approval (first) | 30-60s |
+| 4 | WebSocket Connection/Retry | ?? SEMI | **Yes** | No | No | Start/stop | 1-2m |
+| 5 | Message Streaming | ?? AUTO | Preferred | Yes | No | None | 5-30s |
+| 6 | Conversation CRUD | ?? AUTO | No | No | IndexedDB | None | 2-5m |
+| 7 | Search | ?? AUTO | No | No | IndexedDB | None | 1-3m |
+| 8 | Settings Persistence | ?? AUTO | No | No | localStorage | None | 30-60s |
+| 9 | Encryption (E2E) | ?? SEMI | No | No | **Keychain** | Approval (first) | 1-2m |
+| 10 | Model Selection | ?? AUTO | Optional | No | No | None | 30-60s |
+| 11 | Thinking Mode Toggle | ?? AUTO | Yes | Yes | No | None | 1-2m |
+| 12 | Keyboard Shortcuts | ?? AUTO | No | No | No | None | 3-5m |
+| 13 | Dark/Light Theme | ?? AUTO | No | No | System theme | None | 1-2m |
+| 14 | File Attachments | ?? MANUAL | Yes | Yes | File picker | **Required** | 10-15m |
+| 15 | Image Rendering | ?? MANUAL | Optional | Optional | No | **QA** | 5-10m |
 
 ---
 
@@ -1186,33 +1186,33 @@ test('should render image in message', async ({ page }) => {
 
 ### Phase 1: Autonomous Tests (CI/CD)
 Run on every commit:
-- ✅ Conversation CRUD
-- ✅ Search (quick filter + global)
-- ✅ Settings persistence
-- ✅ Keyboard shortcuts
-- ✅ Theme switching
-- ✅ Model selection (offline mode)
+- ? Conversation CRUD
+- ? Search (quick filter + global)
+- ? Settings persistence
+- ? Keyboard shortcuts
+- ? Theme switching
+- ? Model selection (offline mode)
 
 **Runtime:** ~5-10 minutes
 **Environment:** GitHub Actions, no Gateway needed
 
 ### Phase 2: Semi-Auto Tests (Pre-Release)
 Run before releases:
-- ⚠️ Gateway auto-discovery (with mock or local Gateway)
-- ⚠️ WebSocket connection/retry
-- ⚠️ Keychain token storage (Tauri runtime)
-- ⚠️ Encryption (E2E)
-- ⚠️ Message streaming (with local Gateway)
+- ?? Gateway auto-discovery (with mock or local Gateway)
+- ?? WebSocket connection/retry
+- ?? Keychain token storage (Tauri runtime)
+- ?? Encryption (E2E)
+- ?? Message streaming (with local Gateway)
 
 **Runtime:** ~10-20 minutes
 **Environment:** Local dev machine with Gateway running
 
 ### Phase 3: Manual Tests (Before Major Releases)
 Human QA required:
-- 🚫 No-Gateway installation flow (install Clawdbot)
-- 🚫 File attachments (verify visual rendering, multi-file support)
-- 🚫 Image rendering (verify quality, lazy loading, zoom)
-- 🚫 OS-specific keychain approvals (biometric auth, permissions)
+- ?? No-Gateway installation flow (install Clawdbot)
+- ?? File attachments (verify visual rendering, multi-file support)
+- ?? Image rendering (verify quality, lazy loading, zoom)
+- ?? OS-specific keychain approvals (biometric auth, permissions)
 
 **Runtime:** ~30-60 minutes
 **Environment:** Real devices (macOS, Windows, Linux)
@@ -1233,7 +1233,7 @@ Human QA required:
 
 3. **Image Rendering**
    - **Why parked:** Partially implemented (markdown images work, inline display TBD)
-   - **Blocker:** Visual QA required — humans must verify rendering quality
+   - **Blocker:** Visual QA required � humans must verify rendering quality
    - **Recommendation:** Add to manual QA checklist when feature complete
 
 ---

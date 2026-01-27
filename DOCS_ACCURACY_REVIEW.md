@@ -1,4 +1,4 @@
-﻿# Documentation Accuracy Review - Moltzer client
+# Documentation Accuracy Review - Moltzer client
 
 **Review Date:** January 27, 2026  
 **Reviewer:** Subagent (deep-review-docs)  
@@ -8,58 +8,58 @@
 
 ## Executive Summary
 
-Overall documentation quality: **GOOD** ✅
+Overall documentation quality: **GOOD** ?
 
 the Moltzer documentation is generally accurate and well-written. Most technical claims are verified by actual code implementation. However, there are several **inaccuracies**, **outdated references**, and **missing documentation** that need to be addressed.
 
 ### Key Findings:
-- ✅ **Encryption implementation matches claims** - AES-GCM 256-bit, keychain integration verified
-- ✅ **WebSocket auto-fallback (ws/wss) implemented** as documented
-- ✅ **Keyboard shortcuts work** as documented
-- ✅ **IndexedDB + Dexie** for storage confirmed
-- ⚠️ **Installation methods are speculative** - No actual releases exist yet
-- ⚠️ **Several features documented but NOT implemented** (voice, file attachments functional)
-- ⚠️ **GitHub repo URL is wrong** - docs reference `dokterdok/moltzer-client` which doesn't match actual repo structure
-- ⚠️ **External links and references are unverified** (moltzer.dev, social media, support email)
+- ? **Encryption implementation matches claims** - AES-GCM 256-bit, keychain integration verified
+- ? **WebSocket auto-fallback (ws/wss) implemented** as documented
+- ? **Keyboard shortcuts work** as documented
+- ? **IndexedDB + Dexie** for storage confirmed
+- ?? **Installation methods are speculative** - No actual releases exist yet
+- ?? **Several features documented but NOT implemented** (voice, file attachments functional)
+- ?? **GitHub repo URL is wrong** - docs reference `dokterdok/molt-client` which doesn't match actual repo structure
+- ?? **External links and references are unverified** (moltzer.dev, social media, support email)
 
 ---
 
 ## 1. README.md Review
 
-### ✅ Accurate Claims
+### ? Accurate Claims
 
 1. **Tech Stack:**
-   - React 18 ✅ (confirmed in package.json: `"react": "^18.3.1"`)
-   - Tauri v2 ✅ (confirmed: `"@tauri-apps/api": "^2.2.0"`)
-   - Zustand ✅ (`"zustand": "^5.0.3"`)
-   - Dexie ✅ (`"dexie": "^4.0.10"`)
-   - TypeScript ✅ (tsconfig.json exists)
-   - Tailwind CSS ✅ (tailwind.config.js exists)
+   - React 18 ? (confirmed in package.json: `"react": "^18.3.1"`)
+   - Tauri v2 ? (confirmed: `"@tauri-apps/api": "^2.2.0"`)
+   - Zustand ? (`"zustand": "^5.0.3"`)
+   - Dexie ? (`"dexie": "^4.0.10"`)
+   - TypeScript ? (tsconfig.json exists)
+   - Tailwind CSS ? (tailwind.config.js exists)
 
 2. **Encryption:**
-   - AES-GCM 256-bit ✅ (verified in `src/lib/encryption.ts`)
-   - Keychain integration ✅ (verified in `src-tauri/src/keychain.rs`)
-   - Web Crypto API ✅ (used in encryption.ts)
+   - AES-GCM 256-bit ? (verified in `src/lib/encryption.ts`)
+   - Keychain integration ? (verified in `src-tauri/src/keychain.rs`)
+   - Web Crypto API ? (used in encryption.ts)
 
 3. **WebSocket Features:**
-   - Auto fallback ws:// → wss:// ✅ (verified in `src-tauri/src/gateway.rs`)
-   - Streaming responses ✅ (gateway.rs handles stream chunks)
+   - Auto fallback ws:// ? wss:// ? (verified in `src-tauri/src/gateway.rs`)
+   - Streaming responses ? (gateway.rs handles stream chunks)
 
 4. **Keyboard Shortcuts:**
-   - ⌘N / Ctrl+N for new chat ✅ (Sidebar.tsx lines 40-45)
-   - ⌘K / Ctrl+K for search ✅ (Sidebar.tsx lines 35-39)
-   - ⌘, / Ctrl+, for settings ✅ (Sidebar.tsx lines 46-50)
-   - ⌘\ / Ctrl+\ for sidebar toggle ✅ (App.tsx lines 128-141)
-   - Enter to send, Shift+Enter for new line ✅ (ChatInput.tsx)
+   - ?N / Ctrl+N for new chat ? (Sidebar.tsx lines 40-45)
+   - ?K / Ctrl+K for search ? (Sidebar.tsx lines 35-39)
+   - ?, / Ctrl+, for settings ? (Sidebar.tsx lines 46-50)
+   - ?\ / Ctrl+\ for sidebar toggle ? (App.tsx lines 128-141)
+   - Enter to send, Shift+Enter for new line ? (ChatInput.tsx)
 
 5. **Architecture Diagram:**
-   - Structure matches actual project ✅ (src/, src-tauri/, components/, stores/, lib/)
+   - Structure matches actual project ? (src/, src-tauri/, components/, stores/, lib/)
 
-### ⚠️ Inaccurate / Speculative
+### ?? Inaccurate / Speculative
 
 1. **GitHub Repository URL:**
    ```markdown
-   ❌ WRONG: https://github.com/dokterdok/moltzer-client
+   ? WRONG: https://github.com/dokterdok/molt-client
    ```
    - All badges, links, and clone commands reference this URL
    - No evidence this public repo exists or matches the local structure
@@ -67,31 +67,31 @@ the Moltzer documentation is generally accurate and well-written. Most technical
 
 2. **Installation Methods:**
    ```markdown
-   ❌ SPECULATIVE:
+   ? SPECULATIVE:
    - "Download from GitHub Releases" - No releases exist yet
    - "winget install Moltzer.Client" - Not published
-   - "brew install moltzer-client" - Not published
+   - "brew install molt-client" - Not published
    - Version references "1.0.0" but no tagged release
    ```
    - **FIX NEEDED:** Mark these as "Coming soon" or remove until actually released
 
 3. **Binary Size Claims:**
    ```markdown
-   ❌ UNVERIFIED: "~10MB binary (not 300MB like Electron!)"
+   ? UNVERIFIED: "~10MB binary (not 300MB like Electron!)"
    ```
    - No release binaries exist to verify size
    - **FIX NEEDED:** Change to "~10MB (estimated)" or remove until actual build
 
 4. **RAM Usage:**
    ```markdown
-   ❌ UNVERIFIED: "~50MB vs 500MB"
+   ? UNVERIFIED: "~50MB vs 500MB"
    ```
    - No performance testing evidence
    - **FIX NEEDED:** Remove specific numbers or add disclaimer "estimated"
 
 5. **External Links (Unverified):**
    ```markdown
-   ❌ UNVERIFIED:
+   ? UNVERIFIED:
    - https://moltzer.dev (website likely doesn't exist)
    - support@moltzer.dev (email likely doesn't exist)
    - security@moltzer.dev (email likely doesn't exist)
@@ -101,19 +101,19 @@ the Moltzer documentation is generally accurate and well-written. Most technical
 
 6. **Screenshots:**
    ```markdown
-   ⚠️ REFERENCED: `.github/social-preview.png`
+   ?? REFERENCED: `.github/social-preview.png`
    ```
-   - File exists ✅ but referenced as "screenshots" in features section with "(if any)"
+   - File exists ? but referenced as "screenshots" in features section with "(if any)"
    - **MINOR:** Clarify screenshot location or add more screenshots
 
-### ❌ Features Claimed but NOT Implemented
+### ? Features Claimed but NOT Implemented
 
 1. **File Attachments:**
    ```markdown
-   README claims: "Rich markdown → Embedded images (coming soon)"
+   README claims: "Rich markdown ? Embedded images (coming soon)"
    Known Issues: "File attachments: UI exists but not yet functional"
    ```
-   - ✅ HONEST: Correctly marked as "coming soon" in Known Issues
+   - ? HONEST: Correctly marked as "coming soon" in Known Issues
    - BUT: README feature list implies images work
    - **FIX NEEDED:** More clearly mark as "planned" in features section
 
@@ -121,11 +121,11 @@ the Moltzer documentation is generally accurate and well-written. Most technical
    ```markdown
    Roadmap: "[ ] Voice input/output"
    ```
-   - ✅ Correctly marked as NOT implemented in roadmap
+   - ? Correctly marked as NOT implemented in roadmap
    - No code found for voice features
    - **ACCURATE**
 
-### 📝 Missing Documentation
+### ?? Missing Documentation
 
 1. **Actual Installation Instructions:**
    - Should provide instructions for building from source as the PRIMARY method
@@ -139,12 +139,12 @@ the Moltzer documentation is generally accurate and well-written. Most technical
 
 ## 2. SETUP.md Review
 
-### ✅ Accurate Claims
+### ? Accurate Claims
 
 1. **System Requirements:**
-   - macOS 10.15+ ✅ (confirmed in tauri.conf.json: `"minimumSystemVersion": "10.15"`)
-   - Windows 10+ ✅ (reasonable)
-   - Linux WebKit2GTK 4.1+ ✅ (Tauri requirement)
+   - macOS 10.15+ ? (confirmed in tauri.conf.json: `"minimumSystemVersion": "10.15"`)
+   - Windows 10+ ? (reasonable)
+   - Linux WebKit2GTK 4.1+ ? (Tauri requirement)
 
 2. **Gateway Commands:**
    ```bash
@@ -152,45 +152,45 @@ the Moltzer documentation is generally accurate and well-written. Most technical
    clawdbot gateway status
    clawdbot gateway restart
    ```
-   - ✅ These are standard Clawdbot commands (assumed correct)
+   - ? These are standard Clawdbot commands (assumed correct)
 
 3. **Gateway Configuration:**
-   - Default port 18789 ✅ (confirmed in gateway.rs code)
-   - Config location `~/.config/clawdbot/clawdbot.json` ✅ (standard)
+   - Default port 18789 ? (confirmed in gateway.rs code)
+   - Config location `~/.config/clawdbot/clawdbot.json` ? (standard)
 
 4. **Auto Protocol Detection:**
-   - "Moltzer automatically tries both ws:// and wss://" ✅
+   - "Moltzer automatically tries both ws:// and wss://" ?
    - Verified in `gateway.rs` `try_connect_with_fallback()` function
 
-### ⚠️ Inaccurate / Problematic
+### ?? Inaccurate / Problematic
 
 1. **Clawdbot Installation:**
    ```bash
-   ❌ WRONG: npm install -g clawdbot
+   ? WRONG: npm install -g clawdbot
    ```
    - Clawdbot is NOT published to npm as a global package (as far as we know)
    - **FIX NEEDED:** Provide actual Clawdbot installation instructions or link to Clawdbot docs
 
 2. **Docker Instructions:**
    ```bash
-   ❌ SPECULATIVE: docker pull clawdbot/gateway:latest
+   ? SPECULATIVE: docker pull clawdbot/gateway:latest
    ```
    - No evidence this Docker image exists
    - **FIX NEEDED:** Remove or mark as "coming soon"
 
 3. **Gateway GitHub URL:**
    ```bash
-   ❌ WRONG: git clone https://github.com/clawdbot/clawdbot.git
+   ? WRONG: git clone https://github.com/clawdbot/clawdbot.git
    ```
    - No evidence of public "clawdbot/clawdbot" repo
    - **FIX NEEDED:** Update to actual Clawdbot repository or remove
 
 4. **First Launch Auto-Setup:**
    - Claims "Moltzer will guide you through initial setup"
-   - ✅ VERIFIED: `OnboardingFlow.tsx` exists and implements this
-   - ✅ ACCURATE
+   - ? VERIFIED: `OnboardingFlow.tsx` exists and implements this
+   - ? ACCURATE
 
-### 📝 Missing Information
+### ?? Missing Information
 
 1. **Actual Build Instructions:**
    - Should link to CONTRIBUTING.md for building from source
@@ -204,41 +204,41 @@ the Moltzer documentation is generally accurate and well-written. Most technical
 
 ## 3. FEATURES.md Review
 
-### ✅ Accurate Implementation
+### ? Accurate Implementation
 
 1. **Streaming Responses:**
-   - "See AI responses appear in real-time" ✅
+   - "See AI responses appear in real-time" ?
    - Verified in gateway.rs (WebSocket stream handling)
 
 2. **Rich Markdown:**
-   - Syntax highlighting ✅ (`"highlight.js": "^11.11.1"`)
-   - GitHub-flavored markdown ✅ (`"remark-gfm": "^4.0.0"`)
-   - Code blocks with copy button ✅ (MessageBubble.tsx)
+   - Syntax highlighting ? (`"highlight.js": "^11.11.1"`)
+   - GitHub-flavored markdown ? (`"remark-gfm": "^4.0.0"`)
+   - Code blocks with copy button ? (MessageBubble.tsx)
 
 3. **Full-Text Search:**
-   - "IndexedDB-powered" ✅ (db.ts implements search)
+   - "IndexedDB-powered" ? (db.ts implements search)
    - "Sub-100ms search times" - Unverified but plausible
-   - "Searches decrypted content" ✅ (persistence.ts decrypts for search)
+   - "Searches decrypted content" ? (persistence.ts decrypts for search)
 
 4. **Pinned Conversations:**
-   - Pin/unpin functionality ✅ (Sidebar.tsx, store.ts)
-   - "Pinned section stays visible" ✅ (Sidebar.tsx line 82-83)
+   - Pin/unpin functionality ? (Sidebar.tsx, store.ts)
+   - "Pinned section stays visible" ? (Sidebar.tsx line 82-83)
 
 5. **Theme Support:**
-   - Light/Dark/System ✅ (verified in App.tsx theme application)
+   - Light/Dark/System ? (verified in App.tsx theme application)
 
 6. **Keyboard Shortcuts:**
-   - All documented shortcuts verified in code ✅
+   - All documented shortcuts verified in code ?
    - See README review for details
 
-### ❌ Features Documented but NOT Implemented
+### ? Features Documented but NOT Implemented
 
 1. **File Attachments:**
    ```markdown
    Status: UI implemented, functionality coming in v1.1
    ```
-   - ✅ HONEST: Status section correctly says "UI implemented but not yet functional"
-   - ❌ BUT: Earlier section lists file attachment features as if they work
+   - ? HONEST: Status section correctly says "UI implemented but not yet functional"
+   - ? BUT: Earlier section lists file attachment features as if they work
    - Code shows: Attach button exists, dialog opens, but files aren't actually sent
    - **FIX NEEDED:** Clearly mark ALL file attachment features as "Planned for v1.1"
 
@@ -246,7 +246,7 @@ the Moltzer documentation is generally accurate and well-written. Most technical
    ```markdown
    Status: Coming in v1.1
    ```
-   - ✅ Correctly marked as planned
+   - ? Correctly marked as planned
    - No implementation found
    - **ACCURATE**
 
@@ -254,7 +254,7 @@ the Moltzer documentation is generally accurate and well-written. Most technical
    ```markdown
    Status: coming soon
    ```
-   - ✅ Correctly marked
+   - ? Correctly marked
    - Not implemented
    - **ACCURATE**
 
@@ -263,7 +263,7 @@ the Moltzer documentation is generally accurate and well-written. Most technical
    - Regenerate (coming soon)
    - Edit (coming soon)
    ```
-   - ✅ Correctly marked
+   - ? Correctly marked
    - Not implemented
    - **ACCURATE**
 
@@ -271,10 +271,10 @@ the Moltzer documentation is generally accurate and well-written. Most technical
    ```markdown
    "No visual indicator of context usage (Planned for v1.1)"
    ```
-   - ✅ Honest about limitation
+   - ? Honest about limitation
    - **ACCURATE**
 
-### ⚠️ Speculative / Unverified
+### ?? Speculative / Unverified
 
 1. **Performance Numbers:**
    ```markdown
@@ -294,7 +294,7 @@ the Moltzer documentation is generally accurate and well-written. Most technical
    - Likely accurate but unverified
    - **MINOR**
 
-### 📝 Missing Documentation
+### ?? Missing Documentation
 
 1. **Encryption Search Limitation:**
    - FEATURES.md claims search works on encrypted data
@@ -308,41 +308,41 @@ the Moltzer documentation is generally accurate and well-written. Most technical
 
 ## 4. CONTRIBUTING.md Review
 
-### ✅ Accurate Claims
+### ? Accurate Claims
 
 1. **Prerequisites:**
-   - Node.js v18+ ✅ (package.json uses Node 20 in CI)
-   - Rust (latest stable) ✅ (Cargo.toml uses edition 2021)
-   - Tauri CLI ✅ (in devDependencies)
+   - Node.js v18+ ? (package.json uses Node 20 in CI)
+   - Rust (latest stable) ? (Cargo.toml uses edition 2021)
+   - Tauri CLI ? (in devDependencies)
 
 2. **Development Commands:**
    ```bash
-   npm install          ✅ (verified)
-   npm run tauri dev    ✅ (verified in package.json scripts)
-   npm run test         ✅ (vitest configured)
-   npm run lint         ✅ (eslint script exists)
-   npm run format       ✅ (prettier script exists)
+   npm install          ? (verified)
+   npm run tauri dev    ? (verified in package.json scripts)
+   npm run test         ? (vitest configured)
+   npm run lint         ? (eslint script exists)
+   npm run format       ? (prettier script exists)
    ```
 
 3. **Project Structure Diagram:**
    ```
-   src/components/      ✅ (verified)
-   src/stores/          ✅ (verified)
-   src/lib/             ✅ (verified)
-   src-tauri/src/       ✅ (verified)
-   e2e/                 ✅ (Playwright tests exist)
+   src/components/      ? (verified)
+   src/stores/          ? (verified)
+   src/lib/             ? (verified)
+   src-tauri/src/       ? (verified)
+   e2e/                 ? (Playwright tests exist)
    ```
-   - **ACCURATE** ✅
+   - **ACCURATE** ?
 
 4. **Testing:**
-   - E2E tests with Playwright ✅ (e2e/ folder exists with 4 test files)
-   - Unit tests ✅ (vitest configured, test files exist)
+   - E2E tests with Playwright ? (e2e/ folder exists with 4 test files)
+   - Unit tests ? (vitest configured, test files exist)
 
-### ⚠️ Inaccurate
+### ?? Inaccurate
 
 1. **Repository URLs:**
    ```bash
-   ❌ git clone https://github.com/dokterdok/moltzer-client.git
+   ? git clone https://github.com/dokterdok/molt-client.git
    ```
    - Same issue as README - wrong repo URL
    - **FIX NEEDED:** Update to correct repository
@@ -359,7 +359,7 @@ the Moltzer documentation is generally accurate and well-written. Most technical
    - Same unverified emails and links as README
    - **FIX NEEDED:** Use actual contact methods
 
-### 📝 Missing Information
+### ?? Missing Information
 
 1. **Rust Version:**
    - Says "latest stable" but no minimum version specified
@@ -373,37 +373,37 @@ the Moltzer documentation is generally accurate and well-written. Most technical
 
 ## 5. SECURITY.md Review
 
-### ✅ Accurate Claims
+### ? Accurate Claims
 
 1. **Encryption Algorithm:**
-   - "AES-GCM 256-bit" ✅ (verified in encryption.ts: `KEY_LENGTH = 256`, `ALGORITHM = "AES-GCM"`)
-   - "96-bit IV/Nonce" ✅ (encryption.ts: `new Uint8Array(12)` = 96 bits)
-   - "Randomly generated per message" ✅ (crypto.getRandomValues)
+   - "AES-GCM 256-bit" ? (verified in encryption.ts: `KEY_LENGTH = 256`, `ALGORITHM = "AES-GCM"`)
+   - "96-bit IV/Nonce" ? (encryption.ts: `new Uint8Array(12)` = 96 bits)
+   - "Randomly generated per message" ? (crypto.getRandomValues)
 
 2. **Master Key Storage:**
    ```markdown
-   - macOS: Keychain ✅
-   - Windows: Credential Manager ✅
-   - Linux: Secret Service (libsecret) ✅
+   - macOS: Keychain ?
+   - Windows: Credential Manager ?
+   - Linux: Secret Service (libsecret) ?
    ```
    - Verified in keychain.rs using `keyring` crate
-   - **ACCURATE** ✅
+   - **ACCURATE** ?
 
 3. **Key Management Implementation:**
-   - Master key stored in OS keychain ✅ (keychain.rs)
-   - Key cached in memory ✅ (encryption.ts: `let cachedKey: CryptoKey | null`)
-   - Never stored in localStorage ✅ (verified - only retrieved from keychain)
+   - Master key stored in OS keychain ? (keychain.rs)
+   - Key cached in memory ? (encryption.ts: `let cachedKey: CryptoKey | null`)
+   - Never stored in localStorage ? (verified - only retrieved from keychain)
 
 4. **Code Security:**
-   - "Rust Backend: Memory-safe" ✅ (Rust by design)
-   - "No eval()" ✅ (TypeScript code reviewed - no eval usage)
-   - "Tauri sandboxing" ✅ (Tauri security model)
+   - "Rust Backend: Memory-safe" ? (Rust by design)
+   - "No eval()" ? (TypeScript code reviewed - no eval usage)
+   - "Tauri sandboxing" ? (Tauri security model)
 
 5. **Dependency Scanning:**
-   - "Automated security audits via Dependabot" ✅
+   - "Automated security audits via Dependabot" ?
    - Verified: `.github/workflows/dependabot-automerge.yml` exists
 
-### ⚠️ Inaccurate / Unverified
+### ?? Inaccurate / Unverified
 
 1. **Version Support Table:**
    ```markdown
@@ -431,10 +431,10 @@ the Moltzer documentation is generally accurate and well-written. Most technical
    ```markdown
    "Moltzer has not yet undergone a formal third-party security audit"
    ```
-   - ✅ HONEST admission
+   - ? HONEST admission
    - **ACCURATE**
 
-### 📝 Missing Information
+### ?? Missing Information
 
 1. **Key Rotation:**
    - No documentation on how to rotate master encryption key
@@ -452,33 +452,33 @@ the Moltzer documentation is generally accurate and well-written. Most technical
 
 All documented shortcuts were tested against the code:
 
-### ✅ Working (Verified in Code)
+### ? Working (Verified in Code)
 
 | Shortcut | Action | File | Status |
 |----------|--------|------|--------|
-| ⌘N / Ctrl+N | New conversation | Sidebar.tsx:40-45 | ✅ |
-| ⌘K / Ctrl+K | Search messages | Sidebar.tsx:35-39 | ✅ |
-| ⌘, / Ctrl+, | Open settings | Sidebar.tsx:46-50 | ✅ |
-| ⌘\\ / Ctrl+\\ | Toggle sidebar | App.tsx:128-141 | ✅ |
-| Enter | Send message | ChatInput.tsx:33-36 | ✅ |
-| Shift+Enter | New line | ChatInput.tsx:33-36 | ✅ |
-| Esc | Clear input / Close dialogs | ChatInput.tsx, SearchDialog.tsx | ✅ |
-| ↑ / ↓ | Navigate search results | SearchDialog.tsx:68-87 | ✅ |
+| ?N / Ctrl+N | New conversation | Sidebar.tsx:40-45 | ? |
+| ?K / Ctrl+K | Search messages | Sidebar.tsx:35-39 | ? |
+| ?, / Ctrl+, | Open settings | Sidebar.tsx:46-50 | ? |
+| ?\\ / Ctrl+\\ | Toggle sidebar | App.tsx:128-141 | ? |
+| Enter | Send message | ChatInput.tsx:33-36 | ? |
+| Shift+Enter | New line | ChatInput.tsx:33-36 | ? |
+| Esc | Clear input / Close dialogs | ChatInput.tsx, SearchDialog.tsx | ? |
+| ? / ? | Navigate search results | SearchDialog.tsx:68-87 | ? |
 
-### ⚠️ Documented but NOT Verified in Code
+### ?? Documented but NOT Verified in Code
 
 | Shortcut | Action | Status |
 |----------|--------|--------|
 | Delete / Backspace | Delete conversation | Not found in Sidebar.tsx |
 | Space | Pin/unpin conversation | Not found in Sidebar.tsx |
-| ⌘W / Ctrl+W | Close window | Not found (likely Tauri default) |
-| ⌘Q / Ctrl+Q | Quit app | Not found (likely Tauri default) |
-| ⌘H | Hide (macOS) | Not found (likely OS default) |
-| ⌘M | Minimize (macOS) | Not found (likely OS default) |
+| ?W / Ctrl+W | Close window | Not found (likely Tauri default) |
+| ?Q / Ctrl+Q | Quit app | Not found (likely Tauri default) |
+| ?H | Hide (macOS) | Not found (likely OS default) |
+| ?M | Minimize (macOS) | Not found (likely OS default) |
 | F11 | Fullscreen | Not found (likely OS default) |
-| ⌘⌥I / Ctrl+Shift+I | Dev tools | Not found (Tauri default) |
+| ??I / Ctrl+Shift+I | Dev tools | Not found (Tauri default) |
 
-**NOTE:** OS-level shortcuts (⌘W, ⌘Q, F11, etc.) may work via Tauri/OS defaults but are not implemented in app code.
+**NOTE:** OS-level shortcuts (?W, ?Q, F11, etc.) may work via Tauri/OS defaults but are not implemented in app code.
 
 **FIX NEEDED:** Either implement Delete/Space shortcuts or remove from docs.
 
@@ -486,16 +486,16 @@ All documented shortcuts were tested against the code:
 
 ## 7. Installation Instructions Accuracy
 
-### ❌ MAJOR ISSUE: Premature Release Claims
+### ? MAJOR ISSUE: Premature Release Claims
 
 All installation methods in README.md and SETUP.md assume published releases:
 
 ```markdown
-❌ Download from GitHub Releases
-❌ winget install Moltzer.Client
-❌ brew install moltzer-client
-❌ sudo dpkg -i Moltzer-1.0.0.deb
-❌ Download .dmg / .msi / .AppImage
+? Download from GitHub Releases
+? winget install Moltzer.Client
+? brew install molt-client
+? sudo dpkg -i Moltzer-1.0.0.deb
+? Download .dmg / .msi / .AppImage
 ```
 
 **Reality:**
@@ -508,7 +508,7 @@ All installation methods in README.md and SETUP.md assume published releases:
 2. **Make "Build from Source" the PRIMARY installation method**
 3. Add clear instructions linking to CONTRIBUTING.md
 
-### ✅ Build from Source (Should be PRIMARY)
+### ? Build from Source (Should be PRIMARY)
 
 CONTRIBUTING.md provides accurate build instructions:
 ```bash
@@ -517,31 +517,31 @@ npm install
 npm run tauri dev
 ```
 
-This WORKS ✅ and should be the main installation method until releases are published.
+This WORKS ? and should be the main installation method until releases are published.
 
 ---
 
 ## 8. External Dependencies & Links
 
-### ❌ Broken / Unverified Links
+### ? Broken / Unverified Links
 
 **In README.md:**
-- `https://github.com/dokterdok/moltzer-client` - Likely wrong ❌
-- `https://moltzer.dev` - Likely doesn't exist ❌
-- `https://twitter.com/Moltzerclient` - Likely doesn't exist ❌
-- `support@moltzer.dev` - Likely doesn't exist ❌
+- `https://github.com/dokterdok/molt-client` - Likely wrong ?
+- `https://moltzer.dev` - Likely doesn't exist ?
+- `https://twitter.com/Moltzerclient` - Likely doesn't exist ?
+- `support@moltzer.dev` - Likely doesn't exist ?
 
 **In SETUP.md:**
-- `https://github.com/clawdbot/clawdbot` - Unverified ❌
-- `docker pull clawdbot/gateway:latest` - Likely doesn't exist ❌
-- `npm install -g clawdbot` - Likely doesn't exist ❌
+- `https://github.com/clawdbot/clawdbot` - Unverified ?
+- `docker pull clawdbot/gateway:latest` - Likely doesn't exist ?
+- `npm install -g clawdbot` - Likely doesn't exist ?
 
 **In SECURITY.md:**
-- `security@moltzer.dev` - Likely doesn't exist ❌
-- `./ENCRYPTION.md` - ✅ EXISTS (verified)
+- `security@moltzer.dev` - Likely doesn't exist ?
+- `./ENCRYPTION.md` - ? EXISTS (verified)
 
 **In CONTRIBUTING.md:**
-- GitHub issue templates - ❌ Don't exist
+- GitHub issue templates - ? Don't exist
 
 **FIX NEEDED:**
 - Replace all fictitious URLs/emails with real ones
@@ -553,30 +553,30 @@ This WORKS ✅ and should be the main installation method until releases are pub
 
 | Feature | Documented | Implemented | Status |
 |---------|-----------|-------------|--------|
-| **Streaming responses** | ✅ | ✅ | ACCURATE |
-| **Encryption (AES-GCM)** | ✅ | ✅ | ACCURATE |
-| **Keychain integration** | ✅ | ✅ | ACCURATE |
-| **Full-text search** | ✅ | ✅ | ACCURATE |
-| **Markdown rendering** | ✅ | ✅ | ACCURATE |
-| **Syntax highlighting** | ✅ | ✅ | ACCURATE |
-| **Keyboard shortcuts** | ✅ | ✅ (mostly) | MOSTLY ACCURATE |
-| **Dark/light themes** | ✅ | ✅ | ACCURATE |
-| **WebSocket auto-fallback** | ✅ | ✅ | ACCURATE |
-| **Model selection** | ✅ | ✅ | ACCURATE |
-| **Thinking mode** | ✅ | ✅ | ACCURATE |
-| **Pin conversations** | ✅ | ✅ | ACCURATE |
-| **File attachments** | "Coming soon" | ❌ | HONEST (marked as planned) |
-| **Voice input** | "Planned" | ❌ | HONEST (marked as planned) |
-| **Export conversations** | "Planned" | ❌ | HONEST (marked as planned) |
-| **Per-conv models** | "Coming v1.1" | ❌ | HONEST (marked as planned) |
+| **Streaming responses** | ? | ? | ACCURATE |
+| **Encryption (AES-GCM)** | ? | ? | ACCURATE |
+| **Keychain integration** | ? | ? | ACCURATE |
+| **Full-text search** | ? | ? | ACCURATE |
+| **Markdown rendering** | ? | ? | ACCURATE |
+| **Syntax highlighting** | ? | ? | ACCURATE |
+| **Keyboard shortcuts** | ? | ? (mostly) | MOSTLY ACCURATE |
+| **Dark/light themes** | ? | ? | ACCURATE |
+| **WebSocket auto-fallback** | ? | ? | ACCURATE |
+| **Model selection** | ? | ? | ACCURATE |
+| **Thinking mode** | ? | ? | ACCURATE |
+| **Pin conversations** | ? | ? | ACCURATE |
+| **File attachments** | "Coming soon" | ? | HONEST (marked as planned) |
+| **Voice input** | "Planned" | ? | HONEST (marked as planned) |
+| **Export conversations** | "Planned" | ? | HONEST (marked as planned) |
+| **Per-conv models** | "Coming v1.1" | ? | HONEST (marked as planned) |
 
-**Overall:** Features are accurately documented with honest disclaimers about what's not implemented. ✅
+**Overall:** Features are accurately documented with honest disclaimers about what's not implemented. ?
 
 ---
 
 ## 10. Code vs Documentation Gaps
 
-### ✅ Implemented but NOT Documented
+### ? Implemented but NOT Documented
 
 1. **Gateway Discovery:**
    - `src-tauri/src/discovery.rs` exists with full implementation
@@ -585,7 +585,7 @@ This WORKS ✅ and should be the main installation method until releases are pub
    - **FIX NEEDED:** Add to FEATURES.md or SETUP.md
 
 2. **Protocol Switching Notification:**
-   - When ws:// → wss:// fallback happens, user is notified
+   - When ws:// ? wss:// fallback happens, user is notified
    - README mentions auto-fallback but not the user notification
    - **MINOR:** Could be added to SETUP.md troubleshooting
 
@@ -600,7 +600,7 @@ This WORKS ✅ and should be the main installation method until releases are pub
    - **MINOR:** Could expand testing section
 
 5. **Retry Logic with Exponential Backoff:**
-   - Connection retry with backoff delays (5s → 10s → 30s → 60s)
+   - Connection retry with backoff delays (5s ? 10s ? 30s ? 60s)
    - Implemented in App.tsx
    - **NOT documented**
    - **FIX NEEDED:** Add to SETUP.md troubleshooting
@@ -609,7 +609,7 @@ This WORKS ✅ and should be the main installation method until releases are pub
 
 ## Summary of Issues by Severity
 
-### 🔴 CRITICAL (Must Fix Before Release)
+### ?? CRITICAL (Must Fix Before Release)
 
 1. **GitHub repository URLs are wrong** throughout all docs
    - Affects: README.md, SETUP.md, CONTRIBUTING.md, badges, clone commands
@@ -627,7 +627,7 @@ This WORKS ✅ and should be the main installation method until releases are pub
    - npm install, Docker, GitHub clone are speculative
    - Fix: Link to actual Clawdbot documentation or remove
 
-### 🟡 MEDIUM (Should Fix Soon)
+### ?? MEDIUM (Should Fix Soon)
 
 5. **Keyboard shortcuts incomplete**
    - Delete/Space shortcuts documented but not implemented
@@ -645,7 +645,7 @@ This WORKS ✅ and should be the main installation method until releases are pub
    - CONTRIBUTING.md references templates that don't exist
    - Fix: Create templates or remove reference
 
-### 🟢 MINOR (Nice to Have)
+### ?? MINOR (Nice to Have)
 
 9. **Gateway discovery not documented**
    - Feature exists but not mentioned
@@ -697,12 +697,12 @@ This WORKS ✅ and should be the main installation method until releases are pub
 
 Despite the issues above, the documentation has many strengths:
 
-✅ **Honest about limitations** - Clearly marks unimplemented features as "coming soon"  
-✅ **Comprehensive coverage** - All major features documented  
-✅ **Good structure** - Well-organized into README, SETUP, FEATURES, SECURITY, CONTRIBUTING  
-✅ **Technical accuracy** - Actual implementation matches documented architecture  
-✅ **Security transparency** - ENCRYPTION.md and SECURITY.md are detailed and accurate  
-✅ **Developer-friendly** - CONTRIBUTING.md provides clear build instructions  
+? **Honest about limitations** - Clearly marks unimplemented features as "coming soon"  
+? **Comprehensive coverage** - All major features documented  
+? **Good structure** - Well-organized into README, SETUP, FEATURES, SECURITY, CONTRIBUTING  
+? **Technical accuracy** - Actual implementation matches documented architecture  
+? **Security transparency** - ENCRYPTION.md and SECURITY.md are detailed and accurate  
+? **Developer-friendly** - CONTRIBUTING.md provides clear build instructions  
 
 The core technical documentation is **solid**. The main issues are **speculative claims** about releases and infrastructure that don't exist yet.
 
@@ -712,12 +712,12 @@ The core technical documentation is **solid**. The main issues are **speculative
 
 ### Before Public v1.0.0 Release:
 
-1. ✅ Fix all CRITICAL issues (repository URLs, installation methods, external links)
-2. ✅ Add "Pre-release" or "Beta" disclaimer to README
-3. ✅ Create actual GitHub releases with binaries
-4. ✅ Set up real infrastructure (moltzer.dev, support email, etc.) OR remove references
-5. ✅ Test actual binary sizes and update claims
-6. ✅ Configure code signing in CI/CD
+1. ? Fix all CRITICAL issues (repository URLs, installation methods, external links)
+2. ? Add "Pre-release" or "Beta" disclaimer to README
+3. ? Create actual GitHub releases with binaries
+4. ? Set up real infrastructure (moltzer.dev, support email, etc.) OR remove references
+5. ? Test actual binary sizes and update claims
+6. ? Configure code signing in CI/CD
 
 ### Post-Release:
 
@@ -735,15 +735,15 @@ The core technical documentation is **solid**. The main issues are **speculative
 ---
 
 **Files Reviewed:**
-- ✅ README.md
-- ✅ SETUP.md
-- ✅ FEATURES.md
-- ✅ CONTRIBUTING.md
-- ✅ SECURITY.md
-- ✅ ENCRYPTION.md (referenced)
-- ✅ Source code verification (src/, src-tauri/)
-- ✅ Configuration files (package.json, tauri.conf.json, Cargo.toml)
-- ✅ CI/CD workflows (.github/workflows/)
+- ? README.md
+- ? SETUP.md
+- ? FEATURES.md
+- ? CONTRIBUTING.md
+- ? SECURITY.md
+- ? ENCRYPTION.md (referenced)
+- ? Source code verification (src/, src-tauri/)
+- ? Configuration files (package.json, tauri.conf.json, Cargo.toml)
+- ? CI/CD workflows (.github/workflows/)
 
 **Total Issues Found:** 12 (4 Critical, 4 Medium, 4 Minor)
 

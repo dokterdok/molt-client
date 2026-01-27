@@ -1,4 +1,4 @@
-﻿# Moltzer Setup Guide
+# Moltzer Setup Guide
 
 Complete guide to installing and configuring Moltzer and Clawdbot Gateway.
 
@@ -115,7 +115,7 @@ npm start
 ### macOS
 
 **Method 1: Download .dmg**
-1. Go to [Releases](https://github.com/dokterdok/moltzer-client/releases)
+1. Go to [Releases](https://github.com/dokterdok/molt-client/releases)
 2. Download `Moltzer-1.0.0.dmg`
 3. Open the .dmg file
 4. Drag Moltzer to Applications folder
@@ -123,17 +123,17 @@ npm start
 
 **Method 2: Homebrew** *(if available)*
 ```bash
-brew install moltzer-client
+brew install molt-client
 ```
 
 **Note:** First launch may show "Moltzer cannot be opened because the developer cannot be verified"
-- Right-click Moltzer → Open → Open anyway
+- Right-click Moltzer ? Open ? Open anyway
 - This only needs to be done once
 
 ### Windows
 
 **Method 1: Download .msi installer**
-1. Go to [Releases](https://github.com/dokterdok/moltzer-client/releases)
+1. Go to [Releases](https://github.com/dokterdok/molt-client/releases)
 2. Download `Moltzer-1.0.0.msi`
 3. Run the installer
 4. Follow the installation wizard
@@ -141,17 +141,17 @@ brew install moltzer-client
 
 **Method 2: Portable .exe**
 1. Download `Moltzer-1.0.0.exe`
-2. No installation needed — just run it!
+2. No installation needed � just run it!
 
 **Note:** Windows Defender may show a warning (unsigned app)
-- Click "More info" → "Run anyway"
+- Click "More info" ? "Run anyway"
 
 ### Linux
 
 **Method 1: AppImage** *(Recommended)*
 ```bash
 # Download AppImage
-wget https://github.com/dokterdok/moltzer-client/releases/download/v1.0.0/Moltzer-1.0.0.AppImage
+wget https://github.com/dokterdok/molt-client/releases/download/v1.0.0/Moltzer-1.0.0.AppImage
 
 # Make executable
 chmod +x Moltzer-1.0.0.AppImage
@@ -162,7 +162,7 @@ chmod +x Moltzer-1.0.0.AppImage
 
 **Method 2: .deb (Debian/Ubuntu)**
 ```bash
-wget https://github.com/dokterdok/moltzer-client/releases/download/v1.0.0/Moltzer-1.0.0.deb
+wget https://github.com/dokterdok/molt-client/releases/download/v1.0.0/Moltzer-1.0.0.deb
 sudo dpkg -i Moltzer-1.0.0.deb
 Moltzer
 ```
@@ -204,7 +204,7 @@ clawdbot gateway restart
 ```
 
 **Update Moltzer settings:**
-- Open Moltzer → Settings
+- Open Moltzer ? Settings
 - Change Gateway URL to `ws://localhost:8080`
 
 ### Enable/Disable Authentication
@@ -245,10 +245,10 @@ To access Gateway from another machine:
    sudo ufw allow 18789/tcp
    
    # macOS
-   # System Settings → Network → Firewall → Allow port 18789
+   # System Settings ? Network ? Firewall ? Allow port 18789
    
    # Windows
-   # Windows Defender Firewall → Allow app through firewall
+   # Windows Defender Firewall ? Allow app through firewall
    ```
 
 3. **in Moltzer, use the remote IP:**
@@ -266,7 +266,7 @@ To access Gateway from another machine:
 
 ### First Launch Setup
 
-1. **Launch Moltzer** — You'll see the onboarding screen
+1. **Launch Moltzer** � You'll see the onboarding screen
 
 2. **Enter Gateway details:**
    - **Gateway URL:** `ws://localhost:18789` (or your custom URL)
@@ -285,7 +285,7 @@ To access Gateway from another machine:
 
 If you skipped onboarding or need to reconnect:
 
-1. **Open Settings:** Press **⌘,** (Mac) or **Ctrl+,** (Windows/Linux)
+1. **Open Settings:** Press **?,** (Mac) or **Ctrl+,** (Windows/Linux)
 
 2. **Update Gateway connection:**
    - Gateway URL: `ws://localhost:18789`
@@ -434,24 +434,24 @@ journalctl -xe | grep Moltzer
 
 **Symptoms:**
 - No lock icon on messages
-- Settings → Storage shows 0 conversations
+- Settings ? Storage shows 0 conversations
 
 **Solutions:**
 
 1. **Check keychain access:**
    ```bash
    # macOS: Open Keychain Access.app
-   # Search for "moltzer-client-master-key"
+   # Search for "molt-client-master-key"
    
-   # Windows: Control Panel → Credential Manager
+   # Windows: Control Panel ? Credential Manager
    # Look for "com.moltzer.client"
    
    # Linux: Check secret-service
-   secret-tool lookup service com.moltzer.client key moltzer-client-master-key
+   secret-tool lookup service com.moltzer.client key molt-client-master-key
    ```
 
 2. **Reset encryption key** *(deletes all local data)*:
-   - Settings → Advanced → Reset encryption key
+   - Settings ? Advanced ? Reset encryption key
    - Or manually delete from keychain
 
 3. **Check browser compatibility:**
@@ -463,15 +463,15 @@ journalctl -xe | grep Moltzer
 **Check IndexedDB:**
 
 1. Open Developer Tools:
-   - macOS: **⌘⌥I**
+   - macOS: **??I**
    - Windows/Linux: **Ctrl+Shift+I**
 
-2. Go to Application → Storage → IndexedDB
+2. Go to Application ? Storage ? IndexedDB
 3. Look for "MoltzerDB"
 4. Check if conversations and messages exist
 
 **Rebuild index:**
-- Settings → Advanced → Clear local data → Reimport from Gateway
+- Settings ? Advanced ? Clear local data ? Reimport from Gateway
 
 ---
 
@@ -508,9 +508,9 @@ Moltzer stores settings per OS user. To use multiple Gateways:
 
 1. **Create separate OS user accounts**
 2. **Or manually switch settings:**
-   - Settings → Gateway URL → Enter new Gateway
-   - Settings → Auth Token → Enter new token
-   - Test connection → Save
+   - Settings ? Gateway URL ? Enter new Gateway
+   - Settings ? Auth Token ? Enter new token
+   - Test connection ? Save
 
 ### Environment Variables
 
@@ -541,20 +541,20 @@ $env:moltzer_DEVTOOLS=1
 & "C:\Program Files\Moltzer\Moltzer.exe"
 ```
 
-Then press **⌘⌥I** (Mac) or **Ctrl+Shift+I** (Windows/Linux)
+Then press **??I** (Mac) or **Ctrl+Shift+I** (Windows/Linux)
 
 ---
 
 ## Next Steps
 
-- **Read [FEATURES.md](FEATURES.md)** — Explore all Moltzer features
-- **Read [SECURITY.md](SECURITY.md)** — Understand how your data is protected
-- **Join the community** — [GitHub Discussions](https://github.com/dokterdok/moltzer-client/discussions)
+- **Read [FEATURES.md](FEATURES.md)** � Explore all Moltzer features
+- **Read [SECURITY.md](SECURITY.md)** � Understand how your data is protected
+- **Join the community** � [GitHub Discussions](https://github.com/dokterdok/molt-client/discussions)
 
 ---
 
 ## Need Help?
 
-- **GitHub Issues:** [Report a bug](https://github.com/dokterdok/moltzer-client/issues/new)
-- **Discussions:** [Ask a question](https://github.com/dokterdok/moltzer-client/discussions/new)
+- **GitHub Issues:** [Report a bug](https://github.com/dokterdok/molt-client/issues/new)
+- **Discussions:** [Ask a question](https://github.com/dokterdok/molt-client/discussions/new)
 - **Email:** support@moltzer.dev

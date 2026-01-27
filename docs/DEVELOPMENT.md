@@ -72,8 +72,8 @@ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/dokterdok/moltzer-client.git
-cd moltzer-client
+git clone https://github.com/dokterdok/molt-client.git
+cd molt-client
 ```
 
 ### 2. Install Dependencies
@@ -155,7 +155,7 @@ Access the web UI directly at `http://localhost:5173/` for debugging in browser 
 ## Project Structure
 
 ```
-moltzer-client/
+molt-client/
 ├── src/                          # React frontend
 │   ├── components/               # UI components
 │   │   ├── ChatView.tsx
@@ -576,10 +576,10 @@ npm run tauri build
    - Rust logs in terminal
 
 2. **Search existing issues:**
-   https://github.com/dokterdok/moltzer-client/issues
+   https://github.com/dokterdok/molt-client/issues
 
 3. **Ask for help:**
-   - [GitHub Discussions](https://github.com/dokterdok/moltzer-client/discussions)
+   - [GitHub Discussions](https://github.com/dokterdok/molt-client/discussions)
    - [Discord](https://discord.gg/moltzer) (if available)
    - Email: dev@moltzer.dev
 

@@ -1,4 +1,4 @@
-﻿# Moltzer Features
+# Moltzer Features
 
 Complete documentation of all Moltzer features, keyboard shortcuts, and settings.
 
@@ -61,8 +61,8 @@ Supported languages: Python, JavaScript, TypeScript, Rust, Go, Java, C++, SQL, S
 **Tables:**
 | Feature | Supported |
 |---------|-----------|
-| Tables | ✅ |
-| Alignment | ✅ |
+| Tables | ? |
+| Alignment | ? |
 
 **Links and images:**
 - [Clickable links](https://example.com)
@@ -91,10 +91,10 @@ Supported languages: Python, JavaScript, TypeScript, Rust, Go, Java, C++, SQL, S
 ### Message Actions
 
 **Per-message actions:**
-- **Copy message** — Copy full markdown content
-- **Copy code** — Extract all code blocks
-- **Regenerate** *(coming soon)* — Re-run the query
-- **Edit** *(coming soon)* — Modify and resubmit
+- **Copy message** � Copy full markdown content
+- **Copy code** � Extract all code blocks
+- **Regenerate** *(coming soon)* � Re-run the query
+- **Edit** *(coming soon)* � Modify and resubmit
 
 ### Input Features
 
@@ -132,7 +132,7 @@ Supported languages: Python, JavaScript, TypeScript, Rust, Go, Java, C++, SQL, S
 
 **New conversation:**
 - Click "New Chat" button
-- Press **⌘N** (Mac) or **Ctrl+N** (Windows/Linux)
+- Press **?N** (Mac) or **Ctrl+N** (Windows/Linux)
 - Automatically selects the new conversation
 
 **Auto-generated titles:**
@@ -165,7 +165,7 @@ Supported languages: Python, JavaScript, TypeScript, Rust, Go, Java, C++, SQL, S
 - Select conversation
 - Press **Delete** or **Backspace**
 
-**⚠️ Warning:** Deletion is permanent! Encrypted data cannot be recovered.
+**?? Warning:** Deletion is permanent! Encrypted data cannot be recovered.
 
 ### Conversation Context
 
@@ -198,12 +198,12 @@ Supported languages: Python, JavaScript, TypeScript, Rust, Go, Java, C++, SQL, S
 
 **Example:**
 ```
-Type "python" → Shows all conversations mentioning Python
+Type "python" ? Shows all conversations mentioning Python
 ```
 
 ### Global Search
 
-**Open search:** Press **⌘K** (Mac) or **Ctrl+K** (Windows/Linux)
+**Open search:** Press **?K** (Mac) or **Ctrl+K** (Windows/Linux)
 
 **Features:**
 - Full-text search across ALL messages
@@ -232,7 +232,7 @@ Type "python" → Shows all conversations mentioning Python
 - User vs AI indicator
 
 **Navigation:**
-- **↑/↓** arrows to navigate results
+- **?/?** arrows to navigate results
 - **Enter** to jump to conversation
 - **Esc** to close search
 
@@ -242,7 +242,7 @@ Type "python" → Shows all conversations mentioning Python
 
 ### Choosing Models
 
-**Where:** Settings → Default Model
+**Where:** Settings ? Default Model
 
 **Available models:**
 - Fetched automatically from your Gateway
@@ -250,11 +250,11 @@ Type "python" → Shows all conversations mentioning Python
 - Grouped by provider (Anthropic, OpenAI, Google, etc.)
 
 **Popular models:**
-- **Claude Sonnet 4.5** — Balanced intelligence and speed
-- **Claude Opus 4.5** — Maximum intelligence for complex tasks
-- **Claude Haiku 4** — Fast and affordable
-- **GPT-4o** — OpenAI's latest
-- **Gemini 2.5 Pro** — Google's flagship
+- **Claude Sonnet 4.5** � Balanced intelligence and speed
+- **Claude Opus 4.5** � Maximum intelligence for complex tasks
+- **Claude Haiku 4** � Fast and affordable
+- **GPT-4o** � OpenAI's latest
+- **Gemini 2.5 Pro** � Google's flagship
 
 ### Per-Conversation Models
 
@@ -268,7 +268,7 @@ Type "python" → Shows all conversations mentioning Python
 ### Default Model
 
 **Setting the default:**
-1. Open Settings (**⌘,**)
+1. Open Settings (**?,**)
 2. Go to "Chat Settings"
 3. Select from dropdown
 4. Save changes
@@ -301,7 +301,7 @@ Extended reasoning mode that allows Claude to "think" before responding.
 ### Enabling Thinking Mode
 
 **Default for all conversations:**
-1. Settings → Chat Settings
+1. Settings ? Chat Settings
 2. Toggle "Enable Thinking by Default"
 3. Save changes
 
@@ -312,7 +312,7 @@ Extended reasoning mode that allows Claude to "think" before responding.
 ### Thinking Display
 
 **Visual indicators:**
-- 🧠 Thinking indicator during response
+- ?? Thinking indicator during response
 - Collapsible "Thinking" section
 - Final response highlighted
 - Token usage displayed *(if Gateway provides)*
@@ -325,12 +325,12 @@ Extended reasoning mode that allows Claude to "think" before responding.
 
 | Shortcut | Action | Context |
 |----------|--------|---------|
-| **⌘N** / **Ctrl+N** | New conversation | Anywhere |
-| **⌘K** / **Ctrl+K** | Search messages | Anywhere |
-| **⌘,** / **Ctrl+,** | Open settings | Anywhere |
-| **⌘\\** / **Ctrl+\\** | Toggle sidebar | Anywhere |
-| **⌘W** / **Ctrl+W** | Close window | Anywhere |
-| **⌘Q** / **Ctrl+Q** | Quit Moltzer | Anywhere |
+| **?N** / **Ctrl+N** | New conversation | Anywhere |
+| **?K** / **Ctrl+K** | Search messages | Anywhere |
+| **?,** / **Ctrl+,** | Open settings | Anywhere |
+| **?\\** / **Ctrl+\\** | Toggle sidebar | Anywhere |
+| **?W** / **Ctrl+W** | Close window | Anywhere |
+| **?Q** / **Ctrl+Q** | Quit Moltzer | Anywhere |
 
 ### Chat Input Shortcuts
 
@@ -339,13 +339,13 @@ Extended reasoning mode that allows Claude to "think" before responding.
 | **Enter** | Send message |
 | **Shift+Enter** | New line (multi-line) |
 | **Esc** | Clear input |
-| **⌘V** / **Ctrl+V** | Paste (smart formatting) |
+| **?V** / **Ctrl+V** | Paste (smart formatting) |
 
 ### Conversation List Shortcuts
 
 | Shortcut | Action |
 |----------|--------|
-| **↑** / **↓** | Navigate conversations |
+| **?** / **?** | Navigate conversations |
 | **Enter** | Open selected conversation |
 | **Delete** / **Backspace** | Delete conversation |
 | **Space** | Pin/unpin conversation |
@@ -354,18 +354,18 @@ Extended reasoning mode that allows Claude to "think" before responding.
 
 | Shortcut | Action |
 |----------|--------|
-| **↑** / **↓** | Navigate results |
+| **?** / **?** | Navigate results |
 | **Enter** | Jump to conversation |
 | **Esc** | Close search |
-| **⌘K** / **Ctrl+K** | Focus search input |
+| **?K** / **Ctrl+K** | Focus search input |
 
 ### macOS-Specific
 
 | Shortcut | Action |
 |----------|--------|
-| **⌘H** | Hide Moltzer |
-| **⌘M** | Minimize window |
-| **⌘⌥I** | Open developer tools |
+| **?H** | Hide Moltzer |
+| **?M** | Minimize window |
+| **??I** | Open developer tools |
 
 ### Windows/Linux-Specific
 
@@ -413,9 +413,9 @@ Extended reasoning mode that allows Claude to "think" before responding.
 ### Appearance
 
 **Theme:**
-- **Light** — Always light mode
-- **Dark** — Always dark mode
-- **System** — Follows OS preference (recommended)
+- **Light** � Always light mode
+- **Dark** � Always dark mode
+- **System** � Follows OS preference (recommended)
 
 **Theme switching:**
 - Instant theme change on selection
@@ -430,14 +430,14 @@ Extended reasoning mode that allows Claude to "think" before responding.
 ### Advanced Settings
 
 **Developer Tools:**
-- **⌘⌥I** (Mac) or **Ctrl+Shift+I** (Windows/Linux)
+- **??I** (Mac) or **Ctrl+Shift+I** (Windows/Linux)
 - Inspect UI, debug issues
 - View console logs
 
 **Storage:**
 - View encrypted data size
 - Export conversations *(coming soon)*
-- Clear local data (⚠️ permanent!)
+- Clear local data (?? permanent!)
 
 **Updates:**
 - Auto-check for updates *(coming soon)*
@@ -453,14 +453,14 @@ Extended reasoning mode that allows Claude to "think" before responding.
 **What's stored locally:**
 - All conversations (encrypted)
 - All messages (encrypted)
-- Settings (NOT encrypted — no sensitive data)
+- Settings (NOT encrypted � no sensitive data)
 - Model preferences
 - UI state (sidebar, theme, etc.)
 
 **Storage size:**
 - Minimal: ~100KB for 100 messages
 - Typical: 1-5MB for active users
-- No hard limits — IndexedDB can handle gigabytes
+- No hard limits � IndexedDB can handle gigabytes
 
 **Location:**
 - **macOS:** `~/Library/Application Support/com.moltzer.client/`
@@ -637,7 +637,7 @@ Extended reasoning mode that allows Claude to "think" before responding.
 
 ### Known Issues
 
-See [GitHub Issues](https://github.com/dokterdok/moltzer-client/issues) for full list.
+See [GitHub Issues](https://github.com/dokterdok/molt-client/issues) for full list.
 
 ---
 
@@ -645,8 +645,8 @@ See [GitHub Issues](https://github.com/dokterdok/moltzer-client/issues) for full
 
 ### Power User Tips
 
-1. **Quick new chat:** **⌘N** is your friend — use it liberally!
-2. **Search everything:** **⌘K** to find any past conversation
+1. **Quick new chat:** **?N** is your friend � use it liberally!
+2. **Search everything:** **?K** to find any past conversation
 3. **Pin important chats:** Keep your most-used conversations at the top
 4. **Multi-line messages:** Use **Shift+Enter** for code snippets
 5. **Copy code fast:** Hover over code blocks for instant copy button
@@ -675,4 +675,4 @@ See [GitHub Issues](https://github.com/dokterdok/moltzer-client/issues) for full
 - **General help:** See [SETUP.md](SETUP.md)
 - **Security questions:** See [SECURITY.md](SECURITY.md)
 - **Contributing:** See [CONTRIBUTING.md](CONTRIBUTING.md)
-- **Report issues:** [GitHub Issues](https://github.com/dokterdok/moltzer-client/issues)
+- **Report issues:** [GitHub Issues](https://github.com/dokterdok/molt-client/issues)

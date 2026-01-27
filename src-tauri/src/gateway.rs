@@ -581,7 +581,7 @@ async fn handle_validated_frame(
                                 min_protocol: PROTOCOL_VERSION,
                                 max_protocol: PROTOCOL_VERSION,
                                 client: ClientInfo {
-                                    id: "molt".to_string(),
+                                    id: "moltzer".to_string(),
                                     version: env!("CARGO_PKG_VERSION").to_string(),
                                     platform: get_platform(),
                                     mode: "operator".to_string(),
@@ -598,7 +598,7 @@ async fn handle_validated_frame(
                                     token: token.to_string(),
                                 },
                                 locale: "en-US".to_string(),
-                                user_agent: format!("molt/{}", env!("CARGO_PKG_VERSION")),
+                                user_agent: format!("moltzer/{}", env!("CARGO_PKG_VERSION")),
                             })
                             .unwrap(),
                         ),
@@ -1130,7 +1130,7 @@ mod tests {
             min_protocol: 3,
             max_protocol: 3,
             client: ClientInfo {
-                id: "molt".to_string(),
+                id: "moltzer".to_string(),
                 version: "0.1.0".to_string(),
                 platform: "windows".to_string(),
                 mode: "operator".to_string(),
@@ -1144,7 +1144,7 @@ mod tests {
                 token: "test-token".to_string(),
             },
             locale: "en-US".to_string(),
-            user_agent: "molt/0.1.0".to_string(),
+            user_agent: "moltzer/0.1.0".to_string(),
         };
 
         let json = serde_json::to_string(&params).unwrap();

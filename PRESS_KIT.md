@@ -1,4 +1,4 @@
-﻿# 🦞 Moltzer Press Kit
+# ?? Moltzer Press Kit
 
 **Last Updated:** January 2025  
 **Version:** 1.0
@@ -21,30 +21,30 @@
 
 ### Primary Logo (Full)
 ```
-📁 assets/brand/
-├── Moltzer-logo-full.svg          # Vector (scalable)
-├── Moltzer-logo-full-dark.svg     # For light backgrounds
-├── Moltzer-logo-full-light.svg    # For dark backgrounds
-├── Moltzer-logo-full.png          # 1200x400 @ 2x
-└── Moltzer-logo-full-300.png      # 300x100 (web use)
+?? assets/brand/
++-- Moltzer-logo-full.svg          # Vector (scalable)
++-- Moltzer-logo-full-dark.svg     # For light backgrounds
++-- Moltzer-logo-full-light.svg    # For dark backgrounds
++-- Moltzer-logo-full.png          # 1200x400 @ 2x
++-- Moltzer-logo-full-300.png      # 300x100 (web use)
 ```
 
 **Design Specifications:**
-- Icon (🦞 lobster) + "Moltzer" wordmark
+- Icon (?? lobster) + "Moltzer" wordmark
 - Horizontal layout
 - Minimum size: 120px width
 - Clear space: 1x icon height on all sides
 
 ### Icon Only
 ```
-📁 assets/brand/
-├── Moltzer-icon.svg               # Vector
-├── Moltzer-icon-512.png           # 512x512 (high-res)
-├── Moltzer-icon-256.png           # 256x256
-├── Moltzer-icon-128.png           # 128x128
-├── Moltzer-icon-64.png            # 64x64 (favicon)
-├── Moltzer-icon-32.png            # 32x32 (favicon)
-└── Moltzer-icon-16.png            # 16x16 (favicon)
+?? assets/brand/
++-- Moltzer-icon.svg               # Vector
++-- Moltzer-icon-512.png           # 512x512 (high-res)
++-- Moltzer-icon-256.png           # 256x256
++-- Moltzer-icon-128.png           # 128x128
++-- Moltzer-icon-64.png            # 64x64 (favicon)
++-- Moltzer-icon-32.png            # 32x32 (favicon)
++-- Moltzer-icon-16.png            # 16x16 (favicon)
 ```
 
 **Icon Design:**
@@ -54,15 +54,15 @@
 
 ### App Icons (Platform-Specific)
 ```
-📁 assets/icons/
-├── icon.icns                   # macOS
-├── icon.ico                    # Windows
-├── icon.png                    # Linux (512x512)
-├── 32x32.png                   # Windows small
-├── 128x128.png                 # Electron/Tauri
-├── 128x128@2x.png              # Retina
-├── icon.svg                    # Scalable
-└── Square44x44Logo.png         # Windows Store
+?? assets/icons/
++-- icon.icns                   # macOS
++-- icon.ico                    # Windows
++-- icon.png                    # Linux (512x512)
++-- 32x32.png                   # Windows small
++-- 128x128.png                 # Electron/Tauri
++-- 128x128@2x.png              # Retina
++-- icon.svg                    # Scalable
++-- Square44x44Logo.png         # Windows Store
 ```
 
 ---
@@ -92,16 +92,16 @@
 ### Color Usage Guidelines
 
 **DO:**
-- ✅ Use Moltzer Red sparingly for emphasis
-- ✅ Maintain 4.5:1 contrast ratio for accessibility
-- ✅ Use Deep Ocean for dark mode backgrounds
-- ✅ Use Arctic White for light mode backgrounds
+- ? Use Moltzer Red sparingly for emphasis
+- ? Maintain 4.5:1 contrast ratio for accessibility
+- ? Use Deep Ocean for dark mode backgrounds
+- ? Use Arctic White for light mode backgrounds
 
 **DON'T:**
-- ❌ Use Moltzer Red for large text blocks
-- ❌ Combine Moltzer Red with Error Red
-- ❌ Use colors outside the palette in official materials
-- ❌ Apply gradients to the logo
+- ? Use Moltzer Red for large text blocks
+- ? Combine Moltzer Red with Error Red
+- ? Use colors outside the palette in official materials
+- ? Apply gradients to the logo
 
 ### Dark Mode / Light Mode
 
@@ -187,18 +187,18 @@
 ### Writing Examples
 
 **Headlines:**
-- ✅ "The AI chat client for people who actually work"
-- ✅ "One app. Any AI. Native speed."
-- ❌ "Revolutionary AI-powered synergistic solution"
-- ❌ "The BEST AI app EVER!!!"
+- ? "The AI chat client for people who actually work"
+- ? "One app. Any AI. Native speed."
+- ? "Revolutionary AI-powered synergistic solution"
+- ? "The BEST AI app EVER!!!"
 
 **Product Description:**
-- ✅ "Moltzer is a native desktop client for chatting with Claude, GPT, and other AI models. It's fast, lightweight, and keeps your conversations private."
-- ❌ "Moltzer leverages cutting-edge AI technology to provide an unparalleled conversational experience powered by next-generation language models."
+- ? "Moltzer is a native desktop client for chatting with Claude, GPT, and other AI models. It's fast, lightweight, and keeps your conversations private."
+- ? "Moltzer leverages cutting-edge AI technology to provide an unparalleled conversational experience powered by next-generation language models."
 
 **Error Messages:**
-- ✅ "Couldn't connect to the AI. Check your internet and try again."
-- ❌ "Error 502: Gateway timeout exception occurred."
+- ? "Couldn't connect to the AI. Check your internet and try again."
+- ? "Error 502: Gateway timeout exception occurred."
 
 ### Taglines (Approved)
 
@@ -232,11 +232,11 @@
 ### The Solution
 
 Moltzer provides:
-- **Multi-model support** — Claude, GPT, Gemini in one unified interface
-- **Native performance** — ~10MB binary, ~50MB RAM (vs 300MB+ for Electron)
-- **Local-first privacy** — All conversations encrypted and stored locally
-- **Power user features** — Keyboard shortcuts, search, conversation branching
-- **Cross-platform** — Windows, macOS, Linux
+- **Multi-model support** � Claude, GPT, Gemini in one unified interface
+- **Native performance** � ~10MB binary, ~50MB RAM (vs 300MB+ for Electron)
+- **Local-first privacy** � All conversations encrypted and stored locally
+- **Power user features** � Keyboard shortcuts, search, conversation branching
+- **Cross-platform** � Windows, macOS, Linux
 
 ### Key Metrics
 
@@ -261,11 +261,11 @@ Moltzer provides:
 
 | Feature | Moltzer | ChatGPT Desktop | Claude Desktop |
 |---------|------|-----------------|----------------|
-| Multi-model support | ✅ | ❌ | ❌ |
-| Native performance | ✅ (Tauri) | ⚠️ (Electron) | ⚠️ (Electron) |
-| Local encryption | ✅ | ❌ | ❌ |
-| Conversation search | ✅ | ✅ | ✅ |
-| Open source | ✅ | ❌ | ❌ |
+| Multi-model support | ? | ? | ? |
+| Native performance | ? (Tauri) | ?? (Electron) | ?? (Electron) |
+| Local encryption | ? | ? | ? |
+| Conversation search | ? | ? | ? |
+| Open source | ? | ? | ? |
 | Memory footprint | ~50MB | ~500MB | ~400MB |
 
 ### Technology Stack
@@ -281,7 +281,7 @@ Moltzer provides:
 
 ### About the Creator
 
-**David de Wit** — Creator & Lead Developer
+**David de Wit** � Creator & Lead Developer
 
 David is a software engineer and AI enthusiast based in Switzerland. He created Moltzer after growing frustrated with the fragmented experience of using multiple AI assistants across different browser tabs and apps.
 
@@ -304,17 +304,17 @@ David is a software engineer and AI enthusiast based in Switzerland. He created 
 ### Required Screenshots (All Platforms)
 
 ```
-📁 assets/screenshots/
-├── hero-conversation.png       # Main chat interface with conversation
-├── hero-clean.png             # Clean new conversation state
-├── multi-model.png            # Model picker dropdown open
-├── search.png                 # Search functionality
-├── settings.png               # Settings dialog
-├── dark-mode.png              # Full app in dark mode
-├── light-mode.png             # Full app in light mode
-├── code-highlighting.png      # Code block with syntax highlighting
-├── conversation-list.png      # Sidebar with multiple conversations
-└── onboarding.png             # First-run setup screen
+?? assets/screenshots/
++-- hero-conversation.png       # Main chat interface with conversation
++-- hero-clean.png             # Clean new conversation state
++-- multi-model.png            # Model picker dropdown open
++-- search.png                 # Search functionality
++-- settings.png               # Settings dialog
++-- dark-mode.png              # Full app in dark mode
++-- light-mode.png             # Full app in light mode
++-- code-highlighting.png      # Code block with syntax highlighting
++-- conversation-list.png      # Sidebar with multiple conversations
++-- onboarding.png             # First-run setup screen
 ```
 
 ### Screenshot Specifications
@@ -329,16 +329,16 @@ David is a software engineer and AI enthusiast based in Switzerland. He created 
 ### Platform-Specific Screenshots
 
 ```
-📁 assets/screenshots/
-├── macos/
-│   ├── hero-conversation.png
-│   └── ...
-├── windows/
-│   ├── hero-conversation.png
-│   └── ...
-└── linux/
-    ├── hero-conversation.png
-    └── ...
+?? assets/screenshots/
++-- macos/
+�   +-- hero-conversation.png
+�   +-- ...
++-- windows/
+�   +-- hero-conversation.png
+�   +-- ...
++-- linux/
+    +-- hero-conversation.png
+    +-- ...
 ```
 
 ### App Store Screenshots
@@ -361,18 +361,18 @@ David is a software engineer and AI enthusiast based in Switzerland. He created 
 ### All Required Sizes
 
 ```
-📁 assets/icons/
-├── icon-16.png
-├── icon-32.png
-├── icon-48.png
-├── icon-64.png
-├── icon-128.png
-├── icon-256.png
-├── icon-512.png
-├── icon-1024.png       # App Store
-├── icon.icns           # macOS bundle
-├── icon.ico            # Windows bundle
-└── icon.svg            # Scalable source
+?? assets/icons/
++-- icon-16.png
++-- icon-32.png
++-- icon-48.png
++-- icon-64.png
++-- icon-128.png
++-- icon-256.png
++-- icon-512.png
++-- icon-1024.png       # App Store
++-- icon.icns           # macOS bundle
++-- icon.ico            # Windows bundle
++-- icon.svg            # Scalable source
 ```
 
 ### Icon Design Guidelines
@@ -389,15 +389,15 @@ David is a software engineer and AI enthusiast based in Switzerland. He created 
 ### Marketing Visuals Needed
 
 ```
-📁 assets/marketing/
-├── feature-multimodel.png      # Side-by-side model comparison
-├── feature-performance.png     # Binary size/RAM comparison chart
-├── feature-encryption.png      # Lock icon with conversation
-├── feature-keyboard.png        # Keyboard shortcuts overlay
-├── feature-search.png          # Search results highlight
-├── feature-themes.png          # Dark/Light mode split view
-├── infographic-why-Moltzer.png    # Problem/Solution visual
-└── comparison-chart.png        # vs competitors table
+?? assets/marketing/
++-- feature-multimodel.png      # Side-by-side model comparison
++-- feature-performance.png     # Binary size/RAM comparison chart
++-- feature-encryption.png      # Lock icon with conversation
++-- feature-keyboard.png        # Keyboard shortcuts overlay
++-- feature-search.png          # Search results highlight
++-- feature-themes.png          # Dark/Light mode split view
++-- infographic-why-Moltzer.png    # Problem/Solution visual
++-- comparison-chart.png        # vs competitors table
 ```
 
 ### Specifications
@@ -423,9 +423,9 @@ David is a software engineer and AI enthusiast based in Switzerland. He created 
 
 *New open-source app brings ChatGPT, Claude, and Gemini together in a single, lightning-fast interface*
 
-**[CITY, DATE]** — Today marks the launch of **Moltzer**, a revolutionary native desktop application that unifies the AI chat experience. For the first time, users can access ChatGPT, Claude, Gemini, and other leading AI models from a single, blazing-fast desktop client.
+**[CITY, DATE]** � Today marks the launch of **Moltzer**, a revolutionary native desktop application that unifies the AI chat experience. For the first time, users can access ChatGPT, Claude, Gemini, and other leading AI models from a single, blazing-fast desktop client.
 
-Unlike browser-based alternatives or resource-heavy Electron apps, Moltzer uses Tauri technology to deliver native performance. The result: a ~10MB download that uses just ~50MB of RAM—a fraction of competing solutions.
+Unlike browser-based alternatives or resource-heavy Electron apps, Moltzer uses Tauri technology to deliver native performance. The result: a ~10MB download that uses just ~50MB of RAM�a fraction of competing solutions.
 
 **"I built Moltzer because I was tired of juggling browser tabs and watching my laptop slow down,"** said David de Wit, creator of Moltzer. **"Power users deserve a tool that's as fast and focused as they are."**
 
@@ -440,7 +440,7 @@ Unlike browser-based alternatives or resource-heavy Electron apps, Moltzer uses 
 #### Availability:
 
 Moltzer is available today as a free, open-source download from GitHub:  
-**https://github.com/dokterdok/moltzer-client/releases**
+**https://github.com/dokterdok/molt-client/releases**
 
 #### About Moltzer:
 
@@ -459,15 +459,15 @@ https://moltzer.dev/press
 
 ### For Journalists
 
-1. **First multi-model desktop client** — No other native app supports GPT, Claude, AND Gemini in one interface
+1. **First multi-model desktop client** � No other native app supports GPT, Claude, AND Gemini in one interface
 
-2. **10x lighter than Electron** — Moltzer uses ~50MB RAM vs ~500MB for ChatGPT/Claude desktop apps
+2. **10x lighter than Electron** � Moltzer uses ~50MB RAM vs ~500MB for ChatGPT/Claude desktop apps
 
-3. **Privacy by design** — All conversations encrypted locally; data never leaves your device
+3. **Privacy by design** � All conversations encrypted locally; data never leaves your device
 
-4. **Open source** — Full transparency; community can audit and contribute
+4. **Open source** � Full transparency; community can audit and contribute
 
-5. **For power users, not everyone** — Designed for developers, researchers, and professionals who use AI daily
+5. **For power users, not everyone** � Designed for developers, researchers, and professionals who use AI daily
 
 ### Technical Differentiators
 
@@ -478,9 +478,9 @@ https://moltzer.dev/press
 
 ### Market Positioning
 
-- **Not competing with ChatGPT/Claude** — Moltzer is a *client*, not an AI model
-- **Aggregator play** — Like a universal TV remote for AI services
-- **Power tools market** — Positioned with developer tools (VS Code, iTerm, etc.)
+- **Not competing with ChatGPT/Claude** � Moltzer is a *client*, not an AI model
+- **Aggregator play** � Like a universal TV remote for AI services
+- **Power tools market** � Positioned with developer tools (VS Code, iTerm, etc.)
 
 ---
 
@@ -489,19 +489,19 @@ https://moltzer.dev/press
 ### From the Creator
 
 > "The best AI tool is the one that gets out of your way. Moltzer is invisible until you need it, then lightning-fast when you do."
-> — David de Wit, Creator of Moltzer
+> � David de Wit, Creator of Moltzer
 
-> "I'm not building the next ChatGPT. I'm building the best way to *use* ChatGPT—and Claude, and Gemini, and whatever comes next."
-> — David de Wit
+> "I'm not building the next ChatGPT. I'm building the best way to *use* ChatGPT�and Claude, and Gemini, and whatever comes next."
+> � David de Wit
 
 > "Browser tabs are where productivity goes to die. Moltzer is the escape hatch."
-> — David de Wit
+> � David de Wit
 
 ### For Attribution
 
 > "Moltzer represents a new category: the AI client. As AI models become commoditized, the interface layer becomes increasingly valuable."
 
-> "Privacy isn't a feature—it's a right. Moltzer keeps your conversations on your device, encrypted, where they belong."
+> "Privacy isn't a feature�it's a right. Moltzer keeps your conversations on your device, encrypted, where they belong."
 
 > "We're building tools for the AI-native generation of workers who use AI as naturally as email."
 
@@ -574,7 +574,7 @@ https://moltzer.dev/press
 
 Hi [Host Name],
 
-I'm David, creator of Moltzer—the first native desktop app that lets you chat with ChatGPT, Claude, and Gemini in one interface.
+I'm David, creator of Moltzer�the first native desktop app that lets you chat with ChatGPT, Claude, and Gemini in one interface.
 
 **Why your audience would care:**
 - [Tailored angle based on podcast]
@@ -632,19 +632,19 @@ David
 
 **Tweet 1 (Main announcement):**
 ```
-🦞 Introducing Moltzer — the AI chat client for power users
+?? Introducing Moltzer � the AI chat client for power users
 
 One app. Every AI. Native speed.
 
-✅ ChatGPT, Claude, Gemini in one interface
-✅ 10MB binary (not 300MB like Electron)
-✅ Encrypted local storage
-✅ Open source
+? ChatGPT, Claude, Gemini in one interface
+? 10MB binary (not 300MB like Electron)
+? Encrypted local storage
+? Open source
 
-Free download 👇
-https://github.com/dokterdok/moltzer-client
+Free download ??
+https://github.com/dokterdok/molt-client
 
-🧵
+??
 ```
 
 **Tweet 2:**
@@ -664,11 +664,11 @@ So I built it.
 ```
 The tech behind Moltzer:
 
-• Tauri (Rust) — not Electron
-• ~50MB RAM vs ~500MB
-• Native OS webview
-• AES-256 encryption
-• Stores credentials in OS keychain
+� Tauri (Rust) � not Electron
+� ~50MB RAM vs ~500MB
+� Native OS webview
+� AES-256 encryption
+� Stores credentials in OS keychain
 
 Performance matters.
 ```
@@ -677,13 +677,13 @@ Performance matters.
 ```
 Features shipping in v1.0:
 
-✅ Real-time streaming
-✅ Full-text search
-✅ Conversation pinning
-✅ Dark/light themes
-✅ Keyboard shortcuts
-✅ Model picker (10+ models)
-✅ Windows, macOS, Linux
+? Real-time streaming
+? Full-text search
+? Conversation pinning
+? Dark/light themes
+? Keyboard shortcuts
+? Model picker (10+ models)
+? Windows, macOS, Linux
 
 Coming soon: voice, file attachments, export
 ```
@@ -696,16 +696,16 @@ No tracking. No telemetry. No BS.
 
 Your conversations stay on YOUR device.
 
-Star us on GitHub: github.com/dokterdok/moltzer-client
+Star us on GitHub: github.com/dokterdok/molt-client
 
-🦞
+??
 ```
 
 ### Alternative Launch Tweets
 
 **Short & punchy:**
 ```
-🦞 Just shipped Moltzer
+?? Just shipped Moltzer
 
 ChatGPT + Claude + Gemini in one native app
 
@@ -713,18 +713,18 @@ ChatGPT + Claude + Gemini in one native app
 
 Open source.
 
-github.com/dokterdok/moltzer-client
+github.com/dokterdok/molt-client
 ```
 
 **Problem-focused:**
 ```
 Browser tabs are where AI productivity goes to die.
 
-Today I'm launching Moltzer — a single desktop app for ChatGPT, Claude, and Gemini.
+Today I'm launching Moltzer � a single desktop app for ChatGPT, Claude, and Gemini.
 
 Native speed. Local encryption. Actually fast.
 
-🦞 github.com/dokterdok/moltzer-client
+?? github.com/dokterdok/molt-client
 ```
 
 **Technical audience:**
@@ -732,14 +732,14 @@ Native speed. Local encryption. Actually fast.
 New OSS project: Moltzer
 
 A multi-model AI chat client built with:
-• Tauri v2 (Rust backend)
-• React 18 + TypeScript
-• IndexedDB + AES-GCM encryption
-• Zustand state management
+� Tauri v2 (Rust backend)
+� React 18 + TypeScript
+� IndexedDB + AES-GCM encryption
+� Zustand state management
 
 10MB binary. Ships to Win/Mac/Linux.
 
-github.com/dokterdok/moltzer-client
+github.com/dokterdok/molt-client
 ```
 
 ---
@@ -749,25 +749,25 @@ github.com/dokterdok/moltzer-client
 ### Launch Announcement
 
 ```
-🚀 Excited to announce the launch of Moltzer — a project I've been building for the past several months.
+?? Excited to announce the launch of Moltzer � a project I've been building for the past several months.
 
 **The problem:** Using AI for work means juggling ChatGPT, Claude, and other tools across multiple browser tabs. It's slow, cluttered, and resource-heavy.
 
 **The solution:** Moltzer is a native desktop app that brings all your AI conversations into one fast, unified interface.
 
 Key features:
-• Multi-model support (GPT-4, Claude, Gemini, and more)
-• Native performance (~50MB RAM vs 500MB for Electron apps)
-• End-to-end encrypted local storage
-• Keyboard-first design for power users
-• Open source (MIT license)
+� Multi-model support (GPT-4, Claude, Gemini, and more)
+� Native performance (~50MB RAM vs 500MB for Electron apps)
+� End-to-end encrypted local storage
+� Keyboard-first design for power users
+� Open source (MIT license)
 
 I built Moltzer because I wanted a tool that gets out of the way and lets me focus on the conversation, not the interface.
 
 Available now for Windows, macOS, and Linux:
-https://github.com/dokterdok/moltzer-client
+https://github.com/dokterdok/molt-client
 
-Would love to hear your feedback! 🦞
+Would love to hear your feedback! ??
 
 #AI #Productivity #OpenSource #DesktopApps #ChatGPT #Claude #DeveloperTools
 ```
@@ -777,16 +777,16 @@ Would love to hear your feedback! 🦞
 ```
 Just shipped something I've been working on:
 
-🦞 Moltzer — a native desktop client for ChatGPT, Claude, and Gemini
+?? Moltzer � a native desktop client for ChatGPT, Claude, and Gemini
 
 Why? Because power users deserve better than browser tabs.
 
-• One app for all your AI conversations
-• 10x lighter than Electron alternatives
-• Encrypted local storage
-• Open source
+� One app for all your AI conversations
+� 10x lighter than Electron alternatives
+� Encrypted local storage
+� Open source
 
-Free download: github.com/dokterdok/moltzer-client
+Free download: github.com/dokterdok/molt-client
 
 Feedback welcome!
 
@@ -798,14 +798,14 @@ Feedback welcome!
 ```
 Built something new with an interesting tech stack:
 
-🦞 Moltzer — Native AI chat client
+?? Moltzer � Native AI chat client
 
 The architecture:
-• Tauri v2 (Rust) instead of Electron → 10MB vs 300MB binary
-• React 18 + TypeScript frontend
-• IndexedDB with AES-GCM encryption at rest
-• OS keychain integration (macOS Keychain, Windows Credential Manager)
-• WebSocket connection to AI gateway
+� Tauri v2 (Rust) instead of Electron ? 10MB vs 300MB binary
+� React 18 + TypeScript frontend
+� IndexedDB with AES-GCM encryption at rest
+� OS keychain integration (macOS Keychain, Windows Credential Manager)
+� WebSocket connection to AI gateway
 
 The result: A ChatGPT-style interface that uses 50MB RAM instead of 500MB.
 
@@ -813,7 +813,7 @@ Open source, MIT licensed.
 
 If you're interested in desktop app development or the future of AI interfaces, I'd love to connect.
 
-github.com/dokterdok/moltzer-client
+github.com/dokterdok/molt-client
 
 #SoftwareEngineering #Rust #React #AI #DesktopDevelopment
 ```
@@ -846,17 +846,17 @@ github.com/dokterdok/moltzer-client
 ```
 Moltzer is a native desktop app that unifies your AI conversations. Chat with ChatGPT, Claude, Gemini, and more from a single, lightning-fast interface.
 
-🚀 **Why Moltzer?**
-• **Multi-model:** Switch between AI providers with one click
-• **Native speed:** ~10MB binary, ~50MB RAM (not another Electron app)
-• **Private:** End-to-end encrypted local storage
-• **Power tools:** Keyboard shortcuts, search, conversation management
-• **Open source:** MIT licensed, community-driven
+?? **Why Moltzer?**
+� **Multi-model:** Switch between AI providers with one click
+� **Native speed:** ~10MB binary, ~50MB RAM (not another Electron app)
+� **Private:** End-to-end encrypted local storage
+� **Power tools:** Keyboard shortcuts, search, conversation management
+� **Open source:** MIT licensed, community-driven
 
-💡 **Built for:**
+?? **Built for:**
 Developers, researchers, writers, and anyone who uses AI daily and wants a better experience than browser tabs.
 
-🔧 **Tech stack:**
+?? **Tech stack:**
 Tauri v2 (Rust) + React + TypeScript + IndexedDB
 
 Free for Windows, macOS, and Linux.
@@ -865,7 +865,7 @@ Free for Windows, macOS, and Linux.
 ### First Comment (Maker's Comment)
 
 ```
-Hey Product Hunt! 👋
+Hey Product Hunt! ??
 
 I'm David, creator of Moltzer. I built this because I was frustrated with the AI tool experience:
 
@@ -880,7 +880,7 @@ I'd love your feedback! Especially interested in:
 - What features would make you switch?
 - Any models or integrations you'd want supported?
 
-And yes, the name "Moltzer" is a play on "multi-model" + the lobster emoji represents shedding (Moltzering) the old browser-based experience. 🦞
+And yes, the name "Moltzer" is a play on "multi-model" + the lobster emoji represents shedding (Moltzering) the old browser-based experience. ??
 
 Happy to answer any questions!
 ```
@@ -891,12 +891,12 @@ Happy to answer any questions!
 - Moltzer icon on gradient background
 
 **Gallery Images (1270x760):**
-1. Hero shot — Main conversation interface
-2. Multi-model — Model picker dropdown
-3. Performance — Comparison chart vs Electron
-4. Dark mode — Full app in dark theme
-5. Search — Search functionality
-6. Code — Syntax highlighted code block
+1. Hero shot � Main conversation interface
+2. Multi-model � Model picker dropdown
+3. Performance � Comparison chart vs Electron
+4. Dark mode � Full app in dark theme
+5. Search � Search functionality
+6. Code � Syntax highlighted code block
 
 **Video (optional):**
 - 60-90 second demo showing:
@@ -914,7 +914,7 @@ Happy to answer any questions!
 
 **Title:**
 ```
-Show HN: Moltzer – Native multi-model AI chat client (ChatGPT + Claude + Gemini)
+Show HN: Moltzer � Native multi-model AI chat client (ChatGPT + Claude + Gemini)
 ```
 
 **Body:**
@@ -938,8 +938,8 @@ Key features:
 - Local-only storage (no cloud sync)
 - MIT licensed
 
-GitHub: https://github.com/dokterdok/moltzer-client
-Direct download: https://github.com/dokterdok/moltzer-client/releases
+GitHub: https://github.com/dokterdok/molt-client
+Direct download: https://github.com/dokterdok/molt-client/releases
 
 Would love feedback, especially on:
 1. What models/providers should I prioritize?
@@ -959,7 +959,7 @@ Happy to answer technical questions about the Tauri architecture!
 **Title:** I built a native desktop app that combines ChatGPT, Claude, and Gemini in one interface
 
 **Body:**
-After months of juggling browser tabs between different AI services, I built Moltzer — a lightweight desktop client that lets you use all major AI models from one app.
+After months of juggling browser tabs between different AI services, I built Moltzer � a lightweight desktop client that lets you use all major AI models from one app.
 
 **What it does:**
 - Switch between GPT-4, Claude, Gemini, etc. with one click
@@ -1065,9 +1065,9 @@ GitHub: [@dokterdok](https://github.com/dokterdok)
 
 **Resources:**  
 - Website: https://moltzer.dev
-- GitHub: https://github.com/dokterdok/moltzer-client
+- GitHub: https://github.com/dokterdok/molt-client
 - Press Kit: https://moltzer.dev/press
 
 ---
 
-*This press kit is maintained by the Moltzer team. For the latest version, visit https://github.com/dokterdok/moltzer-client/blob/main/PRESS_KIT.md*
+*This press kit is maintained by the Moltzer team. For the latest version, visit https://github.com/dokterdok/molt-client/blob/main/PRESS_KIT.md*

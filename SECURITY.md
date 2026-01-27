@@ -1,10 +1,10 @@
-﻿# Security Policy
+# Security Policy
 
-## 🔒 Security Overview
+## ?? Security Overview
 
 Moltzer takes security and privacy seriously. This document outlines our security practices and how to report vulnerabilities.
 
-## 🛡️ Security Features
+## ??? Security Features
 
 ### End-to-End Encryption
 
@@ -30,14 +30,14 @@ All conversations stored in Moltzer are encrypted using **AES-GCM 256-bit** encr
 - **Dependency Scanning:** Automated security audits via Dependabot
 - **No Eval:** No dynamic code execution or `eval()` usage
 
-## 📋 Supported Versions
+## ?? Supported Versions
 
 | Version | Supported          |
 | ------- | ------------------ |
 | 1.0.x   | :white_check_mark: |
 | < 1.0   | :x:                |
 
-## 🚨 Reporting a Vulnerability
+## ?? Reporting a Vulnerability
 
 **Please do not report security vulnerabilities through public GitHub issues.**
 
@@ -61,7 +61,7 @@ All conversations stored in Moltzer are encrypted using **AES-GCM 256-bit** encr
 3. We'll release a security patch
 4. We'll credit you in the release notes (unless you prefer to remain anonymous)
 
-## 🔍 Security Best Practices for Users
+## ?? Security Best Practices for Users
 
 ### Protect Your Master Key
 
@@ -79,13 +79,13 @@ All conversations stored in Moltzer are encrypted using **AES-GCM 256-bit** encr
 ### General Security
 
 - Download Moltzer only from official sources:
-  - [GitHub Releases](https://github.com/dokterdok/moltzer-client/releases)
+  - [GitHub Releases](https://github.com/dokterdok/molt-client/releases)
   - Official package managers (when available)
 - Verify checksums of downloaded binaries
 - Keep Moltzer and your OS updated
 - Don't install untrusted plugins or extensions
 
-## 🔐 Encryption Details
+## ?? Encryption Details
 
 ### Algorithm
 
@@ -105,14 +105,14 @@ All conversations stored in Moltzer are encrypted using **AES-GCM 256-bit** encr
 - Uses **Web Crypto API** (browser-native cryptography)
 - See `src/lib/encryption.ts` for implementation details
 
-## 📦 Dependency Security
+## ?? Dependency Security
 
 - **Automated Scanning:** Dependabot runs daily
 - **Dependency Pinning:** All dependencies locked in `package-lock.json` and `Cargo.lock`
 - **Minimal Dependencies:** We avoid unnecessary packages
 - **Trusted Sources:** Only use well-maintained, audited libraries
 
-## 🏗️ Build Security
+## ??? Build Security
 
 ### Code Signing
 
@@ -126,7 +126,7 @@ All conversations stored in Moltzer are encrypted using **AES-GCM 256-bit** encr
 - Build scripts are open and auditable
 - See `.github/workflows/release.yml` for build process
 
-## 🔄 Security Updates
+## ?? Security Updates
 
 We'll announce security updates via:
 
@@ -134,19 +134,19 @@ We'll announce security updates via:
 - Release notes
 - Project README
 
-Subscribe to **Watch → Custom → Security alerts** on GitHub to get notified.
+Subscribe to **Watch ? Custom ? Security alerts** on GitHub to get notified.
 
-## 📚 Further Reading
+## ?? Further Reading
 
 - [ENCRYPTION.md](./ENCRYPTION.md) - Detailed encryption documentation
 - [Tauri Security](https://tauri.app/v1/references/architecture/security/) - Framework security model
 - [Web Crypto API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Crypto_API) - Browser cryptography
 
-## ✅ Security Audit
+## ? Security Audit
 
 Moltzer has not yet undergone a formal third-party security audit. If you're interested in sponsoring an audit, please reach out to security@moltzer.dev.
 
-## 🙏 Acknowledgments
+## ?? Acknowledgments
 
 We're grateful to security researchers who responsibly disclose vulnerabilities. Contributors will be credited in release notes (with permission).
 

@@ -156,7 +156,7 @@ Developer setup and workflow guide:
 
 **Changes:**
 - Updated description: "Native cross-platform client for Moltbot" → "Native cross-platform desktop client for Clawdbot - A beautiful ChatGPT-style interface for your personal AI assistant"
-- Name already correct: "moltzer-client"
+- Name already correct: "molt-client"
 - All scripts already documented with clear purposes
 
 ---

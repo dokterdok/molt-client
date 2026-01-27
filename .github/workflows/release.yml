@@ -41,18 +41,18 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ steps.get_version.outputs.version }}
-          name: Molt ${{ steps.get_version.outputs.version }}
+          name: Moltzer ${{ steps.get_version.outputs.version }}
           draft: true
           prerelease: false
           generate_release_notes: true
           body: |
-            ## 🎉 Molt ${{ steps.get_version.outputs.version }}
+            ## 🎉 Moltzer ${{ steps.get_version.outputs.version }}
             
             ### Installation
             
             **macOS:**
             - Download the `.dmg` file for your architecture (Apple Silicon or Intel)
-            - Open the DMG and drag Molt to Applications
+            - Open the DMG and drag Moltzer to Applications
             
             **Windows:**
             - Download the `.msi` installer
@@ -64,7 +64,7 @@ jobs:
             - Run: `./moltzer_*_amd64.AppImage`
             
             ### Auto-Updates
-            Molt will automatically check for updates and prompt you to install them.
+            Moltzer will automatically check for updates and prompt you to install them.
             
             ---
             
@@ -169,7 +169,7 @@ jobs:
           TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
         with:
           tagName: ${{ needs.create-release.outputs.version }}
-          releaseName: 'Molt ${{ needs.create-release.outputs.version }}'
+          releaseName: 'Moltzer ${{ needs.create-release.outputs.version }}'
           releaseBody: 'See release notes for details.'
           releaseDraft: true
           prerelease: false

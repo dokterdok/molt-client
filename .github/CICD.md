@@ -201,7 +201,7 @@ The Moltzer client uses Tauri's built-in updater for seamless updates.
       "active": true,
       "dialog": true,
       "endpoints": [
-        "https://github.com/dokterdok/moltzer-client/releases/latest/download/latest.json"
+        "https://github.com/dokterdok/molt-client/releases/latest/download/latest.json"
       ],
       "pubkey": "YOUR_PUBLIC_KEY_HERE"
     }
@@ -511,7 +511,7 @@ Check usage limits:
 Add to README.md:
 
 ```markdown
-[![CI](https://github.com/dokterdok/moltzer-client/actions/workflows/ci.yml/badge.svg)](https://github.com/dokterdok/moltzer-client/actions/workflows/ci.yml)
+[![CI](https://github.com/dokterdok/molt-client/actions/workflows/ci.yml/badge.svg)](https://github.com/dokterdok/molt-client/actions/workflows/ci.yml)
 ```
 
 ---

@@ -1,73 +1,73 @@
-﻿# Moltzer client - Product Roadmap
+# Moltzer client - Product Roadmap
 
 **Last updated:** 2025-01-23  
 **Status:** Pre-release (1.0.0-dev)
 
 ---
 
-## 📊 Current State Analysis
+## ?? Current State Analysis
 
-### ✅ What's Working Well
+### ? What's Working Well
 
 **Core Infrastructure:**
-- ✅ **Gateway WebSocket Connection** — Robust connection with automatic protocol fallback (ws↔wss), exponential backoff retry logic
-- ✅ **Tauri v2 Backend** — Native Rust backend with efficient WebSocket handling
-- ✅ **React + TypeScript Frontend** — Modern UI with Zustand state management
-- ✅ **Cross-platform Support** — Windows, macOS, Linux builds configured
+- ? **Gateway WebSocket Connection** � Robust connection with automatic protocol fallback (ws?wss), exponential backoff retry logic
+- ? **Tauri v2 Backend** � Native Rust backend with efficient WebSocket handling
+- ? **React + TypeScript Frontend** � Modern UI with Zustand state management
+- ? **Cross-platform Support** � Windows, macOS, Linux builds configured
 
 **Chat Features:**
-- ✅ **Streaming Responses** — Real-time message streaming with proper state handling
-- ✅ **Conversation Management** — Create, delete, select, pin conversations
-- ✅ **Model Selection** — Dynamic model picker with auto-refresh from gateway
-- ✅ **Thinking Mode** — Extended reasoning toggle per conversation
-- ✅ **Markdown Rendering** — Full markdown with GFM (tables, strikethrough) via react-markdown
-- ✅ **Code Highlighting** — Syntax highlighting with copy-to-clipboard for code blocks
-- ✅ **Message Metadata** — Timestamps, model used, relative time display
+- ? **Streaming Responses** � Real-time message streaming with proper state handling
+- ? **Conversation Management** � Create, delete, select, pin conversations
+- ? **Model Selection** � Dynamic model picker with auto-refresh from gateway
+- ? **Thinking Mode** � Extended reasoning toggle per conversation
+- ? **Markdown Rendering** � Full markdown with GFM (tables, strikethrough) via react-markdown
+- ? **Code Highlighting** � Syntax highlighting with copy-to-clipboard for code blocks
+- ? **Message Metadata** � Timestamps, model used, relative time display
 
 **Storage & Security:**
-- ✅ **IndexedDB Persistence** — Dexie-based local database
-- ✅ **End-to-End Encryption** — All messages and conversation titles encrypted at rest (Web Crypto API)
-- ✅ **Search Functionality** — Full-text search across encrypted messages
-- ✅ **Keychain Integration** — Native credential storage (macOS Keychain, Windows Credential Manager, Linux Secret Service)
+- ? **IndexedDB Persistence** � Dexie-based local database
+- ? **End-to-End Encryption** � All messages and conversation titles encrypted at rest (Web Crypto API)
+- ? **Search Functionality** � Full-text search across encrypted messages
+- ? **Keychain Integration** � Native credential storage (macOS Keychain, Windows Credential Manager, Linux Secret Service)
 
 **UX Polish:**
-- ✅ **Onboarding Flow** — First-launch setup wizard for gateway configuration
-- ✅ **Dark/Light/System Theme** — Respects system appearance preferences
-- ✅ **Pinned Conversations** — Keep important chats at the top
-- ✅ **Auto-generated Titles** — Conversations auto-title from first user message
-- ✅ **Connection Status UI** — Visual feedback for connection state, retry countdown
-- ✅ **Keyboard Shortcuts** — `Cmd/Ctrl + \` toggles sidebar, `Cmd/Ctrl + K` opens search
-- ✅ **Toast Notifications** — In-app toast system for errors and success messages
-- ✅ **Window State Persistence** — Remembers window size/position between launches
+- ? **Onboarding Flow** � First-launch setup wizard for gateway configuration
+- ? **Dark/Light/System Theme** � Respects system appearance preferences
+- ? **Pinned Conversations** � Keep important chats at the top
+- ? **Auto-generated Titles** � Conversations auto-title from first user message
+- ? **Connection Status UI** � Visual feedback for connection state, retry countdown
+- ? **Keyboard Shortcuts** � `Cmd/Ctrl + \` toggles sidebar, `Cmd/Ctrl + K` opens search
+- ? **Toast Notifications** � In-app toast system for errors and success messages
+- ? **Window State Persistence** � Remembers window size/position between launches
 
 **Developer Experience:**
-- ✅ **Testing Setup** — Vitest + React Testing Library configured
-- ✅ **Linting & Formatting** — ESLint + Prettier
-- ✅ **TypeScript Strict Mode** — Type-safe development
+- ? **Testing Setup** � Vitest + React Testing Library configured
+- ? **Linting & Formatting** � ESLint + Prettier
+- ? **TypeScript Strict Mode** � Type-safe development
 
 ---
 
-### ⚠️ Gaps vs. Competitors
+### ?? Gaps vs. Competitors
 
 **Compared to ChatGPT Desktop, Cursor, Windsurf, etc.:**
 
-1. **File Attachments** — UI exists but not fully wired up (Tauri fs plugin needed)
-2. **Voice Input/Output** — No voice recording or TTS playback
-3. **Image Display** — Can't render AI-generated images or view uploaded images
-4. **Export/Share** — No way to export conversations or share them with others
-5. **Multi-device Sync** — No cloud sync (desktop-only, no mobile)
-6. **Context Management** — No way to attach persistent context files/folders (like Cursor's @workspace)
-7. **Regenerate Responses** — Can't retry or regenerate last response
-8. **Edit Messages** — Can't edit sent messages and re-run
-9. **Branch Conversations** — No way to fork from a specific message
-10. **System Tray** — App must stay open in dock/taskbar
-11. **Keyboard Navigation** — Limited keyboard-only navigation
-12. **Plugin System** — No extensibility for third-party integrations
-13. **Analytics/Insights** — No usage stats, token counting, or cost tracking
+1. **File Attachments** � UI exists but not fully wired up (Tauri fs plugin needed)
+2. **Voice Input/Output** � No voice recording or TTS playback
+3. **Image Display** � Can't render AI-generated images or view uploaded images
+4. **Export/Share** � No way to export conversations or share them with others
+5. **Multi-device Sync** � No cloud sync (desktop-only, no mobile)
+6. **Context Management** � No way to attach persistent context files/folders (like Cursor's @workspace)
+7. **Regenerate Responses** � Can't retry or regenerate last response
+8. **Edit Messages** � Can't edit sent messages and re-run
+9. **Branch Conversations** � No way to fork from a specific message
+10. **System Tray** � App must stay open in dock/taskbar
+11. **Keyboard Navigation** � Limited keyboard-only navigation
+12. **Plugin System** � No extensibility for third-party integrations
+13. **Analytics/Insights** � No usage stats, token counting, or cost tracking
 
 ---
 
-## 🎯 V1.0 Must-Haves (MVP for Public Release)
+## ?? V1.0 Must-Haves (MVP for Public Release)
 
 **Goal:** Ship a polished, reliable desktop client that covers 80% of daily AI chat needs.
 
@@ -147,7 +147,7 @@
 
 ---
 
-## 🚀 V1.1 Quick Wins (Post-Launch Polish)
+## ?? V1.1 Quick Wins (Post-Launch Polish)
 
 **Goal:** Address user feedback, improve UX, fix bugs. Low-effort, high-impact.
 
@@ -207,7 +207,7 @@
 
 ---
 
-## 🌟 V2.0 Major Features (3-6 Month Horizon)
+## ?? V2.0 Major Features (3-6 Month Horizon)
 
 **Goal:** Transform Moltzer into a team-ready, extensible AI platform.
 
@@ -246,7 +246,7 @@
   - Auto-play toggle
 
 - [ ] **Voice Conversations**
-  - "Walkie-talkie" mode (voice in → voice out)
+  - "Walkie-talkie" mode (voice in ? voice out)
   - Continuous conversation mode
   - Background recording (while multitasking)
 
@@ -337,7 +337,7 @@
 
 ---
 
-## 🔮 Future Considerations (12+ Months)
+## ?? Future Considerations (12+ Months)
 
 **Goal:** Expand Moltzer ecosystem beyond desktop.
 
@@ -350,7 +350,7 @@
   - Push notifications
 
 - [ ] **Mobile-Specific Features**
-  - Camera integration (photo capture → upload)
+  - Camera integration (photo capture ? upload)
   - Siri/Google Assistant shortcuts
   - Widget (recent conversations)
   - Offline mode (queue messages)
@@ -358,7 +358,7 @@
 ### Browser Extension
 
 - [ ] **Chrome/Firefox Extension**
-  - Right-click → "Ask Moltzer"
+  - Right-click ? "Ask Moltzer"
   - Sidebar chat overlay
   - Page context injection
   - Sync with desktop app
@@ -386,7 +386,7 @@
   - Slack bot
   - Discord bot
   - Microsoft Teams integration
-  - Email gateway (email → Moltzer)
+  - Email gateway (email ? Moltzer)
 
 ### Enterprise Features
 
@@ -430,7 +430,7 @@
 
 ---
 
-## 📋 Release Strategy
+## ?? Release Strategy
 
 ### V1.0 MVP (Target: Q1 2025)
 - Focus: Stability, core features, polish
@@ -455,7 +455,7 @@
 
 ---
 
-## 🛠️ Technical Debt & Refactoring
+## ??? Technical Debt & Refactoring
 
 ### Known Issues
 - [ ] Improve test coverage (currently minimal)
@@ -473,7 +473,7 @@
 
 ---
 
-## 🤝 Contributing
+## ?? Contributing
 
 This roadmap is a living document. Contributions welcome!
 
@@ -485,11 +485,11 @@ This roadmap is a living document. Contributions welcome!
 
 ---
 
-## 📞 Feedback
+## ?? Feedback
 
 Have thoughts on this roadmap? Let us know!
 
-- GitHub Discussions: [Roadmap Discussion](https://github.com/dokterdok/moltzer-client/discussions)
+- GitHub Discussions: [Roadmap Discussion](https://github.com/dokterdok/molt-client/discussions)
 - Discord: [Moltzer Community](https://discord.gg/Moltzer) *(placeholder)*
 - Email: feedback@Moltzer.app *(placeholder)*
 

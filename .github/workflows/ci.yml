@@ -5,11 +5,35 @@ on:
     branches: [master, main]
   pull_request:
     branches: [master, main]
+  workflow_dispatch:
 
 env:
   CARGO_TERM_COLOR: always
+  RUST_BACKTRACE: 1
 
 jobs:
+  # Frontend lint and format check
+  lint-frontend:
+    name: Frontend Lint & Format
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Run linter
+        run: npm run lint
+      
+      - name: Check formatting
+        run: npx prettier --check "src/**/*.{ts,tsx,css}"
+
   # Frontend tests
   test-frontend:
     name: Frontend Tests
@@ -26,17 +50,45 @@ jobs:
       - name: Install dependencies
         run: npm ci
       
-      - name: Run linter
-        run: npm run lint || true  # Don't fail on lint warnings for now
-      
       - name: Run tests
         run: npm test -- --run --coverage
       
       - name: Upload coverage
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v4
         with:
           files: ./coverage/coverage-final.json
           fail_ci_if_error: false
+          token: ${{ secrets.CODECOV_TOKEN }}
+
+  # Rust lint and format check
+  lint-rust:
+    name: Rust Lint & Format
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf libssl-dev
+      
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt, clippy
+      
+      - name: Cache Cargo
+        uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: src-tauri
+      
+      - name: Check formatting
+        working-directory: src-tauri
+        run: cargo fmt --all -- --check
+      
+      - name: Run Clippy
+        working-directory: src-tauri
+        run: cargo clippy --all-targets --all-features -- -D warnings
 
   # Rust tests
   test-rust:
@@ -45,7 +97,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       
-      - name: Install system dependencies (Linux)
+      - name: Install system dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf libssl-dev
@@ -58,26 +110,49 @@ jobs:
         with:
           workspaces: src-tauri
       
-      - name: Run Rust tests
+      - name: Run tests
         working-directory: src-tauri
-        run: cargo test --all-features
+        run: cargo test --all-features --verbose
 
-  # Build for all platforms
-  build:
-    name: Build (${{ matrix.platform }})
-    needs: [test-frontend, test-rust]
+  # Security audit
+  audit:
+    name: Security Audit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      
+      - name: Run npm audit
+        run: npm audit --audit-level=high || true
+      
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@stable
+      
+      - name: Install cargo-audit
+        run: cargo install cargo-audit
+      
+      - name: Run cargo audit
+        working-directory: src-tauri
+        run: cargo audit
+
+  # Build smoke test for all platforms
+  build-test:
+    name: Build Test (${{ matrix.platform }})
+    needs: [lint-frontend, test-frontend, lint-rust, test-rust]
     strategy:
       fail-fast: false
       matrix:
         include:
           - platform: 'macos-latest'
-            args: '--target aarch64-apple-darwin'
-          - platform: 'macos-latest'
-            args: '--target x86_64-apple-darwin'
+            target: 'aarch64-apple-darwin'
           - platform: 'ubuntu-22.04'
-            args: ''
+            target: 'x86_64-unknown-linux-gnu'
           - platform: 'windows-latest'
-            args: ''
+            target: 'x86_64-pc-windows-msvc'
     runs-on: ${{ matrix.platform }}
     steps:
       - uses: actions/checkout@v4
@@ -91,9 +166,9 @@ jobs:
       - name: Setup Rust
         uses: dtolnay/rust-toolchain@stable
         with:
-          targets: ${{ matrix.platform == 'macos-latest' && 'aarch64-apple-darwin,x86_64-apple-darwin' || '' }}
+          targets: ${{ matrix.target }}
       
-      - name: Install system dependencies (Ubuntu)
+      - name: Install system dependencies (Linux)
         if: matrix.platform == 'ubuntu-22.04'
         run: |
           sudo apt-get update
@@ -107,41 +182,27 @@ jobs:
       - name: Install dependencies
         run: npm ci
       
+      - name: Build frontend
+        run: npm run build
+      
       - name: Build Tauri app
         uses: tauri-apps/tauri-action@v0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          args: ${{ matrix.args }}
-      
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: molt-${{ matrix.platform }}${{ matrix.args && '-arm64' || '' }}
-          path: |
-            src-tauri/target/release/bundle/
-            src-tauri/target/*/release/bundle/
-          if-no-files-found: ignore
+          args: ${{ matrix.platform == 'macos-latest' && format('--target {0}', matrix.target) || '' }}
 
-  # Release job (only on tag push)
-  release:
-    name: Release
-    if: startsWith(github.ref, 'refs/tags/v')
-    needs: build
+  # All checks passed
+  ci-success:
+    name: CI Success
+    needs: [lint-frontend, test-frontend, lint-rust, test-rust, audit, build-test]
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
+    if: always()
     steps:
-      - uses: actions/checkout@v4
-      
-      - name: Download all artifacts
-        uses: actions/download-artifact@v4
-        with:
-          path: artifacts
-      
-      - name: Create Release
-        uses: softprops/action-gh-release@v1
-        with:
-          draft: true
-          files: artifacts/**/*
-          generate_release_notes: true
+      - name: Check all jobs
+        run: |
+          if [[ "${{ contains(needs.*.result, 'failure') }}" == "true" ]]; then
+            echo "One or more CI jobs failed"
+            exit 1
+          fi
+          echo "All CI jobs passed successfully"

@@ -1,0 +1,231 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag to release (e.g., v1.0.0)'
+        required: true
+        type: string
+
+env:
+  CARGO_TERM_COLOR: always
+  RUST_BACKTRACE: 1
+
+jobs:
+  create-release:
+    name: Create Release
+    runs-on: ubuntu-latest
+    outputs:
+      upload_url: ${{ steps.create_release.outputs.upload_url }}
+      version: ${{ steps.get_version.outputs.version }}
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Get version from tag
+        id: get_version
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            VERSION="${{ github.event.inputs.tag }}"
+          else
+            VERSION=${GITHUB_REF#refs/tags/}
+          fi
+          echo "version=${VERSION}" >> $GITHUB_OUTPUT
+          echo "Version: ${VERSION}"
+      
+      - name: Create GitHub Release
+        id: create_release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.get_version.outputs.version }}
+          name: Molt ${{ steps.get_version.outputs.version }}
+          draft: true
+          prerelease: false
+          generate_release_notes: true
+          body: |
+            ## 🎉 Molt ${{ steps.get_version.outputs.version }}
+            
+            ### Installation
+            
+            **macOS:**
+            - Download the `.dmg` file for your architecture (Apple Silicon or Intel)
+            - Open the DMG and drag Molt to Applications
+            
+            **Windows:**
+            - Download the `.msi` installer
+            - Run the installer and follow the prompts
+            
+            **Linux:**
+            - Download the `.AppImage` file
+            - Make it executable: `chmod +x molt_*_amd64.AppImage`
+            - Run: `./molt_*_amd64.AppImage`
+            
+            ### Auto-Updates
+            Molt will automatically check for updates and prompt you to install them.
+            
+            ---
+            
+            See below for the full changelog and detailed release notes.
+
+  build-release:
+    name: Build (${{ matrix.platform }})
+    needs: create-release
+    permissions:
+      contents: write
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: 'macos-latest'
+            target: 'aarch64-apple-darwin'
+            arch: 'arm64'
+            rust_target: 'aarch64-apple-darwin'
+          - platform: 'macos-latest'
+            target: 'x86_64-apple-darwin'
+            arch: 'x64'
+            rust_target: 'x86_64-apple-darwin'
+          - platform: 'ubuntu-22.04'
+            target: 'x86_64-unknown-linux-gnu'
+            arch: 'amd64'
+            rust_target: 'x86_64-unknown-linux-gnu'
+          - platform: 'windows-latest'
+            target: 'x86_64-pc-windows-msvc'
+            arch: 'x64'
+            rust_target: 'x86_64-pc-windows-msvc'
+    
+    runs-on: ${{ matrix.platform }}
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.rust_target }}
+      
+      - name: Install system dependencies (Linux)
+        if: matrix.platform == 'ubuntu-22.04'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            libwebkit2gtk-4.1-dev \
+            libappindicator3-dev \
+            librsvg2-dev \
+            patchelf \
+            libssl-dev \
+            libayatana-appindicator3-dev
+      
+      - name: Cache Cargo
+        uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: src-tauri
+          key: ${{ matrix.target }}
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Import macOS certificate
+        if: matrix.platform == 'macos-latest'
+        env:
+          APPLE_CERTIFICATE: ${{ secrets.APPLE_CERTIFICATE }}
+          APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
+        run: |
+          if [ -n "$APPLE_CERTIFICATE" ]; then
+            echo "Setting up code signing certificate..."
+            echo $APPLE_CERTIFICATE | base64 --decode > certificate.p12
+            security create-keychain -p actions temp.keychain
+            security default-keychain -s temp.keychain
+            security unlock-keychain -p actions temp.keychain
+            security import certificate.p12 -k temp.keychain -P $APPLE_CERTIFICATE_PASSWORD -T /usr/bin/codesign
+            security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k actions temp.keychain
+            rm certificate.p12
+          else
+            echo "No signing certificate configured, building unsigned"
+          fi
+      
+      - name: Build Tauri app
+        uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # macOS code signing
+          APPLE_SIGNING_IDENTITY: ${{ secrets.APPLE_SIGNING_IDENTITY }}
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_PASSWORD: ${{ secrets.APPLE_PASSWORD }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+          # Windows code signing
+          WINDOWS_CERTIFICATE: ${{ secrets.WINDOWS_CERTIFICATE }}
+          WINDOWS_CERTIFICATE_PASSWORD: ${{ secrets.WINDOWS_CERTIFICATE_PASSWORD }}
+          # Tauri updater key
+          TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
+          TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
+        with:
+          tagName: ${{ needs.create-release.outputs.version }}
+          releaseName: 'Molt ${{ needs.create-release.outputs.version }}'
+          releaseBody: 'See release notes for details.'
+          releaseDraft: true
+          prerelease: false
+          args: ${{ matrix.platform == 'macos-latest' && format('--target {0}', matrix.rust_target) || '' }}
+          includeUpdaterJson: true
+      
+      - name: Cleanup macOS keychain
+        if: matrix.platform == 'macos-latest' && always()
+        run: |
+          if security list-keychains | grep -q "temp.keychain"; then
+            security delete-keychain temp.keychain
+          fi
+
+  generate-updater-json:
+    name: Generate Updater JSON
+    needs: [create-release, build-release]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+      
+      - name: List artifacts
+        run: |
+          echo "Downloaded artifacts:"
+          find artifacts -type f
+      
+      - name: Generate latest.json
+        run: |
+          # This will be generated by tauri-action automatically
+          # We just need to ensure it's included in the release
+          echo "Updater JSON files generated by tauri-action"
+      
+      - name: Upload updater JSON to release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ needs.create-release.outputs.version }}
+          files: |
+            artifacts/**/latest.json
+            artifacts/**/*.sig
+
+  finalize-release:
+    name: Finalize Release
+    needs: [create-release, build-release, generate-updater-json]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Publish Release
+        uses: eregon/publish-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          release_id: ${{ needs.create-release.outputs.upload_url }}

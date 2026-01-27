@@ -1,0 +1,91 @@
+version: 2
+
+updates:
+  # NPM dependencies
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+    open-pull-requests-limit: 10
+    commit-message:
+      prefix: "deps"
+      include: "scope"
+    labels:
+      - "dependencies"
+      - "javascript"
+    groups:
+      # Group Tauri plugin updates together
+      tauri-plugins:
+        patterns:
+          - "@tauri-apps/*"
+      # Group dev dependencies
+      dev-dependencies:
+        dependency-type: "development"
+        update-types:
+          - "minor"
+          - "patch"
+      # Group React dependencies
+      react:
+        patterns:
+          - "react*"
+          - "@types/react*"
+      # Group testing libraries
+      testing:
+        patterns:
+          - "*testing*"
+          - "vitest"
+          - "jsdom"
+    ignore:
+      # Don't update major versions automatically for critical packages
+      - dependency-name: "react"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "react-dom"
+        update-types: ["version-update:semver-major"]
+
+  # Cargo dependencies
+  - package-ecosystem: "cargo"
+    directory: "/src-tauri"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+    open-pull-requests-limit: 10
+    commit-message:
+      prefix: "deps"
+      include: "scope"
+    labels:
+      - "dependencies"
+      - "rust"
+    groups:
+      # Group Tauri updates together
+      tauri-core:
+        patterns:
+          - "tauri*"
+      # Group security updates
+      security:
+        patterns:
+          - "tokio-tungstenite"
+          - "native-tls"
+    ignore:
+      # Don't update Tauri major versions automatically
+      - dependency-name: "tauri"
+        update-types: ["version-update:semver-major"]
+
+  # GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+    commit-message:
+      prefix: "ci"
+    labels:
+      - "dependencies"
+      - "github-actions"
+    groups:
+      actions:
+        patterns:
+          - "*"

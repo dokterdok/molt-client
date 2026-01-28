@@ -239,9 +239,11 @@ code {
   0%,
   100% {
     border-color: hsl(var(--primary) / 0.3);
+    box-shadow: 0 0 0 rgba(251, 146, 60, 0);
   }
   50% {
     border-color: hsl(var(--primary) / 0.6);
+    box-shadow: 0 0 8px rgba(251, 146, 60, 0.15);
   }
 }
 

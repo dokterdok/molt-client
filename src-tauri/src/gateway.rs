@@ -456,11 +456,8 @@ pub async fn connect(
     state.inner.shutdown.store(false, Ordering::SeqCst);
     state.inner.reconnect_attempt.store(0, Ordering::SeqCst);
 
-    // Store credentials for reconnection
-    *state.inner.stored_credentials.lock().await = Some(StoredCredentials {
-        url: url.clone(),
-        token: token.clone(),
-    });
+    // Clear old credentials - will only store after successful connection
+    *state.inner.stored_credentials.lock().await = None;
 
     // Update connection state
     *state.inner.connection_state.write().await = ConnectionState::Connecting;
@@ -469,6 +466,12 @@ pub async fn connect(
     // Perform actual connection
     match connect_internal(&app, &state.inner, &url, &token).await {
         Ok(result) => {
+            // Only store credentials AFTER successful connection
+            *state.inner.stored_credentials.lock().await = Some(StoredCredentials {
+                url: result.used_url.clone(),
+                token: token.clone(),
+            });
+
             *state.inner.connection_state.write().await =
                 ConnectionState::Connected { session_id: None };
             let _ = app.emit(

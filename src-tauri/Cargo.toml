@@ -3,8 +3,8 @@ name = "moltzer-client"
 version = "1.0.0"
 description = "Native cross-platform client for Moltbot"
 authors = ["David Dudok de Wit"]
-license = "MIT"
-repository = "https://github.com/dokterdok/moltzer-client"
+license = "Apache-2.0"
+repository = "https://github.com/AlixHQ/moltzer"
 edition = "2021"
 
 [lib]

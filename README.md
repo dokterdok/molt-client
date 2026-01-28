@@ -6,16 +6,16 @@
 
 ChatGPT-style interface for your personal AI assistant, built with Tauri for true native performance
 
-[![CI](https://github.com/dokterdok/molt-client/actions/workflows/ci.yml/badge.svg)](https://github.com/dokterdok/molt-client/actions/workflows/ci.yml)
-[![Release](https://github.com/dokterdok/molt-client/actions/workflows/release.yml/badge.svg)](https://github.com/dokterdok/molt-client/actions/workflows/release.yml)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Platform](https://img.shields.io/badge/platform-macOS%20%7C%20Windows%20%7C%20Linux-blue)](https://github.com/dokterdok/molt-client/releases)
+[![CI](https://github.com/AlixHQ/moltzer/actions/workflows/ci.yml/badge.svg)](https://github.com/AlixHQ/moltzer/actions/workflows/ci.yml)
+[![Release](https://github.com/AlixHQ/moltzer/actions/workflows/release.yml/badge.svg)](https://github.com/AlixHQ/moltzer/actions/workflows/release.yml)
+[![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Platform](https://img.shields.io/badge/platform-macOS%20%7C%20Windows%20%7C%20Linux-blue)](https://github.com/AlixHQ/moltzer/releases)
 [![Tauri](https://img.shields.io/badge/tauri-v2-orange)](https://tauri.app/)
-[![Version](https://img.shields.io/badge/version-1.0.0-green)](https://github.com/dokterdok/molt-client/releases/latest)
+[![Version](https://img.shields.io/badge/version-1.0.0-green)](https://github.com/AlixHQ/moltzer/releases/latest)
 
 <img src=".github/social-preview.png" alt="Moltzer desktop client showing a conversation interface with Claude AI, featuring a dark theme and modern UI design" width="800" style="border-radius: 12px; box-shadow: 0 8px 32px rgba(0,0,0,0.2);" />
 
-[Download](https://github.com/dokterdok/molt-client/releases) • [Quick Start](#-quick-start) • [Features](#-features) • [Documentation](./SETUP.md) • [Contributing](./CONTRIBUTING.md)
+[Download](https://github.com/AlixHQ/moltzer/releases) • [Quick Start](#-quick-start) • [Features](#-features) • [Documentation](./SETUP.md) • [Contributing](./CONTRIBUTING.md)
 
 </div>
 
@@ -38,7 +38,7 @@ Think of it as "ChatGPT for Clawdbot" — but better, because it's yours.
 
 **Already have Clawdbot Gateway running?**
 
-1. **[Download Moltzer](https://github.com/dokterdok/molt-client/releases)** for your platform
+1. **[Download Moltzer](https://github.com/AlixHQ/moltzer/releases)** for your platform
 2. **Launch the app** and enter your Gateway URL (usually `ws://localhost:18789`)
 3. **Start chatting!** Press **?N** (Mac) or **Ctrl+N** (Windows/Linux) for a new conversation
 
@@ -89,7 +89,7 @@ Think of it as "ChatGPT for Clawdbot" — but better, because it's yours.
 **Windows:**
 ```powershell
 # Download from GitHub Releases
-# https://github.com/dokterdok/molt-client/releases
+# https://github.com/AlixHQ/moltzer/releases
 
 # Or use winget (if published)
 winget install Moltzer.Client
@@ -98,7 +98,7 @@ winget install Moltzer.Client
 **macOS:**
 ```bash
 # Download .dmg from GitHub Releases
-# https://github.com/dokterdok/molt-client/releases
+# https://github.com/AlixHQ/moltzer/releases
 
 # Or use Homebrew (if published)
 brew install molt-client
@@ -107,7 +107,7 @@ brew install molt-client
 **Linux:**
 ```bash
 # Download .AppImage from GitHub Releases
-# https://github.com/dokterdok/molt-client/releases
+# https://github.com/AlixHQ/moltzer/releases
 
 # Make executable and run
 chmod +x Moltzer-1.0.0.AppImage
@@ -280,7 +280,7 @@ Contributions are welcome! Please read [CONTRIBUTING.md](CONTRIBUTING.md) for gu
 
 ```bash
 # Clone the repo
-git clone https://github.com/dokterdok/molt-client.git
+git clone https://github.com/AlixHQ/moltzer.git
 cd molt-client
 
 # Install dependencies
@@ -318,7 +318,7 @@ npm run tauri dev
 - **Voice input:** Not yet implemented
 - **Image generation:** Not yet supported
 
-See [GitHub Issues](https://github.com/dokterdok/molt-client/issues) for full list and workarounds.
+See [GitHub Issues](https://github.com/AlixHQ/moltzer/issues) for full list and workarounds.
 
 ---
 
@@ -359,7 +359,7 @@ See [GitHub Issues](https://github.com/dokterdok/molt-client/issues) for full li
    - Open Task Manager/Activity Monitor
    - If using >500MB RAM, file a bug report
 3. **Update to latest version:**
-   - Check [Releases](https://github.com/dokterdok/molt-client/releases)
+   - Check [Releases](https://github.com/AlixHQ/moltzer/releases)
 
 ### Encryption Issues
 
@@ -415,11 +415,11 @@ See [GitHub Issues](https://github.com/dokterdok/molt-client/issues) for full li
    - Linux: `~/.local/share/Moltzer/logs/`
 
 2. **Report a bug:**
-   - [Open an issue](https://github.com/dokterdok/molt-client/issues/new/choose)
+   - [Open an issue](https://github.com/AlixHQ/moltzer/issues/new/choose)
    - Include: OS version, Moltzer version, error messages, logs
 
 3. **Get help:**
-   - [GitHub Discussions](https://github.com/dokterdok/molt-client/discussions)
+   - [GitHub Discussions](https://github.com/AlixHQ/moltzer/discussions)
    - Email: support@moltzer.dev
 
 ---
@@ -441,8 +441,8 @@ MIT License — see [LICENSE](LICENSE) for details.
 
 ## ?? Support
 
-- **Issues:** [GitHub Issues](https://github.com/dokterdok/molt-client/issues)
-- **Discussions:** [GitHub Discussions](https://github.com/dokterdok/molt-client/discussions)
+- **Issues:** [GitHub Issues](https://github.com/AlixHQ/moltzer/issues)
+- **Discussions:** [GitHub Discussions](https://github.com/AlixHQ/moltzer/discussions)
 - **Email:** support@moltzer.dev
 
 ---
@@ -450,7 +450,7 @@ MIT License — see [LICENSE](LICENSE) for details.
 <div align="center">
   <p>Made with ?? by the Moltzer Community</p>
   <p>
-    <a href="https://github.com/dokterdok/molt-client">GitHub</a> •
+    <a href="https://github.com/AlixHQ/moltzer">GitHub</a> •
     <a href="https://moltzer.dev">Website</a> •
     <a href="https://twitter.com/Moltzerclient">Twitter</a>
   </p>

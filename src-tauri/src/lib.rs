@@ -12,6 +12,7 @@ mod gateway;
 mod keychain;
 mod menu;
 mod protocol;
+mod tray;
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
@@ -37,6 +38,9 @@ pub fn run() {
             {
                 let menu = menu::build_menu(app.handle())?;
                 app.set_menu(menu)?;
+                
+                // Setup system tray
+                tray::setup_tray(app.handle())?;
             }
             
             Ok(())

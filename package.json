@@ -37,7 +37,7 @@
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
     "dexie": "^4.0.10",
-    "dexie-react-hooks": "^1.1.7",
+    "dexie-react-hooks": "^4.2.0",
     "framer-motion": "^12.29.2",
     "highlight.js": "^11.11.1",
     "lucide-react": "^0.563.0",

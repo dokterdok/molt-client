@@ -354,10 +354,10 @@ function TypingIndicator() {
       {[0, 1, 2].map((i) => (
         <span
           key={i}
-          className="w-2 h-2 rounded-full bg-primary/60 animate-bounce"
+          className="w-2 h-2 rounded-full bg-primary/60 animate-bounce will-change-transform"
           style={{
-            animationDelay: `${i * 0.15}s`,
-            animationDuration: "0.6s",
+            animationDelay: `${i * 0.12}s`,
+            animationDuration: "0.5s",
           }}
           aria-hidden="true"
         />

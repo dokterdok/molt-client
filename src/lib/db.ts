@@ -27,6 +27,7 @@ export interface DBConversation {
   model?: string;
   thinkingEnabled: boolean;
   isPinned: boolean;
+  systemPrompt?: string;
 }
 
 export interface DBSettings {

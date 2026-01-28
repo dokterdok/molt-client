@@ -758,7 +758,21 @@ pub async fn connect(
     url: String,
     token: String,
 ) -> Result<ConnectResult, String> {
-    // DEBUG: Log what URL we actually received from frontend
+    // Input validation: ensure URL is valid WebSocket URL
+    if url.is_empty() {
+        return Err("Gateway URL cannot be empty".to_string());
+    }
+    
+    if !url.starts_with("ws://") && !url.starts_with("wss://") {
+        return Err("Invalid WebSocket URL: must start with ws:// or wss://".to_string());
+    }
+    
+    // Validate token is not empty (actual validation happens server-side)
+    if token.trim().is_empty() {
+        return Err("Authentication token cannot be empty".to_string());
+    }
+    
+    // DEBUG: Log what URL we actually received from frontend (without token)
     log_protocol_error("CONNECT CALLED - URL received", &url);
     
     // Reset shutdown flag
@@ -1404,6 +1418,38 @@ pub async fn send_message(
     state: State<'_, GatewayState>,
     params: ChatParams,
 ) -> Result<String, String> {
+    // Input validation: prevent excessively large messages
+    const MAX_MESSAGE_LENGTH: usize = 500_000; // ~500KB
+    const MAX_ATTACHMENTS: usize = 20;
+    const MAX_ATTACHMENT_SIZE: usize = 50_000_000; // 50MB per attachment
+    
+    if params.message.len() > MAX_MESSAGE_LENGTH {
+        return Err(format!(
+            "Message too large: {} characters (max {})",
+            params.message.len(),
+            MAX_MESSAGE_LENGTH
+        ));
+    }
+    
+    if params.attachments.len() > MAX_ATTACHMENTS {
+        return Err(format!(
+            "Too many attachments: {} (max {})",
+            params.attachments.len(),
+            MAX_ATTACHMENTS
+        ));
+    }
+    
+    for (idx, attachment) in params.attachments.iter().enumerate() {
+        if attachment.data.len() > MAX_ATTACHMENT_SIZE {
+            return Err(format!(
+                "Attachment {} too large: {} bytes (max {})",
+                idx,
+                attachment.data.len(),
+                MAX_ATTACHMENT_SIZE
+            ));
+        }
+    }
+    
     let connection_state = state.inner.connection_state.read().await.clone();
 
     // Build request

@@ -165,6 +165,7 @@ export const MarkdownRenderer = memo(function MarkdownRenderer({
         "prose prose-sm dark:prose-invert max-w-none",
         "[&>*:first-child]:mt-0 [&>*:last-child]:mb-0",
       )}
+      style={{ contain: 'content' }}
     >
       <ReactMarkdown
         remarkPlugins={remarkPlugins}

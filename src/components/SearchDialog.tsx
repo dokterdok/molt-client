@@ -31,6 +31,7 @@ export function SearchDialog({ open, onClose }: SearchDialogProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const dialogRef = useRef<HTMLDivElement>(null);
   const resultsRef = useRef<(HTMLButtonElement | null)[]>([]);
+  const resultsContainerRef = useRef<HTMLDivElement>(null);
   useFocusTrap(dialogRef, open);
 
   // Focus input when dialog opens (instant)
@@ -60,17 +61,27 @@ export function SearchDialog({ open, onClose }: SearchDialogProps) {
       const messages = await searchPersistedMessages(searchQuery);
 
       const searchResults: SearchResult[] = messages.map((msg) => {
-        // Extract a snippet around the match
+        // Extract a snippet around the match - optimized
+        const contentLower = msg.content.toLowerCase();
         const queryLower = searchQuery.toLowerCase();
-        const index = msg.content.toLowerCase().indexOf(queryLower);
-        const start = Math.max(0, index - 50);
-        const end = Math.min(
-          msg.content.length,
-          index + searchQuery.length + 50,
-        );
-        let snippet = msg.content.slice(start, end);
-        if (start > 0) snippet = "..." + snippet;
-        if (end < msg.content.length) snippet = snippet + "...";
+        const matchIndex = contentLower.indexOf(queryLower);
+
+        let snippet: string;
+        if (matchIndex === -1) {
+          // Fallback: show start of message
+          snippet = msg.content.slice(0, 100);
+          if (msg.content.length > 100) snippet += "...";
+        } else {
+          // Show context around match (50 chars before, 50 after)
+          const start = Math.max(0, matchIndex - 50);
+          const end = Math.min(
+            msg.content.length,
+            matchIndex + searchQuery.length + 50,
+          );
+          snippet = msg.content.slice(start, end);
+          if (start > 0) snippet = "..." + snippet;
+          if (end < msg.content.length) snippet += "...";
+        }
 
         return {
           conversationId: msg.conversationId,
@@ -106,6 +117,13 @@ export function SearchDialog({ open, onClose }: SearchDialogProps) {
     }, 150);
     return () => clearTimeout(timer);
   }, [query, performSearch]);
+
+  // Reset scroll position when results change
+  useEffect(() => {
+    if (resultsContainerRef.current) {
+      resultsContainerRef.current.scrollTop = 0;
+    }
+  }, [results]);
 
   // Keyboard navigation with smooth scrolling
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -234,7 +252,7 @@ export function SearchDialog({ open, onClose }: SearchDialogProps) {
         </div>
 
         {/* Results */}
-        <div className="max-h-[60vh] overflow-y-auto">
+        <div ref={resultsContainerRef} className="max-h-[60vh] overflow-y-auto">
           {isSearching && query.length > 0 ? (
             <div className="flex items-center justify-center py-8">
               <div className="animate-spin w-5 h-5 border-2 border-primary border-t-transparent rounded-full" />

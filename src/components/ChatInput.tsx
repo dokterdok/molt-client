@@ -213,7 +213,7 @@ export function ChatInput({ onSend, disabled, isSending }: ChatInputProps) {
           const mimeType = getMimeType(filename);
 
           if (!mimeType) {
-            errors.push(`Can't attach ${filename} — unsupported file type`);
+            errors.push(`${filename}: Unsupported file type. Try images, PDFs, or code files.`);
             continue;
           }
 
@@ -223,7 +223,7 @@ export function ChatInput({ onSend, disabled, isSending }: ChatInputProps) {
           // Check file size
           if (fileData.byteLength > MAX_FILE_SIZE) {
             const sizeMB = (fileData.byteLength / (1024 * 1024)).toFixed(1);
-            errors.push(`${filename} is too large (${sizeMB}MB, max 10MB)`);
+            errors.push(`${filename}: Too large (${sizeMB}MB). Maximum file size is 10MB.`);
             continue;
           }
 
@@ -247,7 +247,7 @@ export function ChatInput({ onSend, disabled, isSending }: ChatInputProps) {
         } catch (err) {
           console.error(`Failed to read file ${path}:`, err);
           const filename = path.split(/[/\\]/).pop() || path;
-          errors.push(`Couldn't read ${filename}`);
+          errors.push(`${filename}: Unable to read file. Check file permissions.`);
         }
       }
 
@@ -265,7 +265,7 @@ export function ChatInput({ onSend, disabled, isSending }: ChatInputProps) {
       }
     } catch (err) {
       console.error("Failed to open file dialog:", err);
-      setFileError("Couldn't open file picker. Please try again.");
+      setFileError("Unable to open file picker. Try restarting the app if this persists.");
     } finally {
       setIsLoadingFiles(false);
     }

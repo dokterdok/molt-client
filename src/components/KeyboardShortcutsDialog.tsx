@@ -5,7 +5,7 @@
  * Improves discoverability and helps keyboard-only users navigate efficiently.
  */
 
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 import { cn } from "../lib/utils";
 import { useFocusTrap } from "../hooks/useFocusTrap";
 import { Keyboard, X } from "lucide-react";
@@ -56,6 +56,20 @@ export function KeyboardShortcutsDialog({ open, onClose }: KeyboardShortcutsDial
   const dialogRef = useRef<HTMLDivElement>(null);
   useFocusTrap(dialogRef, open);
 
+  // Keyboard shortcut: Escape to close
+  useEffect(() => {
+    if (!open) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        onClose();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [open, onClose]);
+
   if (!open) return null;
 
   return (
@@ -64,12 +78,7 @@ export function KeyboardShortcutsDialog({ open, onClose }: KeyboardShortcutsDial
       <div
         className="absolute inset-0 bg-black/50 backdrop-blur-sm animate-in fade-in duration-200"
         onClick={onClose}
-        onKeyDown={(e) => {
-          if (e.key === "Escape") onClose();
-        }}
-        role="button"
-        tabIndex={-1}
-        aria-label="Close dialog"
+        aria-hidden="true"
       />
 
       {/* Dialog */}

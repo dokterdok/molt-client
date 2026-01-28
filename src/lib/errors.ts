@@ -151,11 +151,89 @@ export function translateError(error: string | Error): UserFriendlyError {
     };
   }
 
+  // Context length / token errors
+  if (
+    lowerError.includes("context length") ||
+    lowerError.includes("token limit") ||
+    lowerError.includes("too long") ||
+    lowerError.includes("maximum context")
+  ) {
+    return {
+      title: "Message too long",
+      message: "This conversation has exceeded the model's context limit.",
+      suggestion: "Try starting a new conversation or use a model with a larger context window.",
+    };
+  }
+
+  // API key / credentials errors
+  if (
+    lowerError.includes("api key") ||
+    lowerError.includes("invalid key") ||
+    lowerError.includes("credentials")
+  ) {
+    return {
+      title: "Invalid API credentials",
+      message: "The API key or credentials aren't working.",
+      suggestion: "Check your API key in Settings or contact your administrator.",
+    };
+  }
+
+  // Server errors (500s)
+  if (
+    lowerError.includes("500") ||
+    lowerError.includes("502") ||
+    lowerError.includes("503") ||
+    lowerError.includes("504") ||
+    lowerError.includes("internal server error") ||
+    lowerError.includes("bad gateway") ||
+    lowerError.includes("service unavailable")
+  ) {
+    return {
+      title: "Server error",
+      message: "The Gateway or AI service is having issues.",
+      suggestion: "This is usually temporary. Wait a moment and try again.",
+    };
+  }
+
+  // Content filtering / safety
+  if (
+    lowerError.includes("content policy") ||
+    lowerError.includes("content filter") ||
+    lowerError.includes("safety") ||
+    lowerError.includes("inappropriate")
+  ) {
+    return {
+      title: "Content blocked",
+      message: "This message was blocked by content safety filters.",
+      suggestion: "Try rephrasing your message to avoid triggering safety policies.",
+    };
+  }
+
+  // File/attachment errors
+  if (
+    lowerError.includes("file") &&
+    (lowerError.includes("too large") || lowerError.includes("size"))
+  ) {
+    return {
+      title: "File too large",
+      message: "The attached file exceeds the size limit.",
+      suggestion: "Try a smaller file or compress it before attaching.",
+    };
+  }
+
+  if (lowerError.includes("unsupported") && lowerError.includes("file")) {
+    return {
+      title: "Unsupported file type",
+      message: "This file format isn't supported.",
+      suggestion: "Check the supported file types in the attachment picker.",
+    };
+  }
+
   // Default fallback - still show something useful
   return {
     title: "Something went wrong",
     message: errorString.split("\n")[0].slice(0, 100), // First line, max 100 chars
-    suggestion: "Try again or check Settings.",
+    suggestion: "Try again or check Settings if the problem persists.",
   };
 }
 

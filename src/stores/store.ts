@@ -260,13 +260,16 @@ export const useStore = create<Store>()((set, get) => ({
           ),
         }));
 
-        // Persist to IndexedDB
-        const conversation = get().conversations.find(c => c.id === id);
-        if (conversation) {
-          updatePersistedConversation(conversation).catch(err => {
-            console.error('Failed to update conversation in DB:', err);
-          });
-        }
+        // Persist to IndexedDB (queued after any pending create)
+        enqueuePersistence(id, () => {
+          const conversation = get().conversations.find(c => c.id === id);
+          if (conversation) {
+            return updatePersistedConversation(conversation).catch(err => {
+              console.error('Failed to update conversation in DB:', err);
+            });
+          }
+          return Promise.resolve();
+        });
       },
 
       pinConversation: (id) => {

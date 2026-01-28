@@ -23,7 +23,6 @@ use std::sync::Arc;
 use std::time::{Duration, Instant};
 use tauri::{AppHandle, Emitter, State};
 use tokio::sync::{mpsc, oneshot, Mutex, RwLock};
-use tokio::net::TcpStream;
 use tokio_tungstenite::{connect_async_tls_with_config, tungstenite::Message as WsMessage, Connector};
 
 // ============================================================================

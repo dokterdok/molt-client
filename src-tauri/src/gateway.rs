@@ -1,11 +1,91 @@
 //! Gateway WebSocket client for communicating with Clawdbot Gateway
 //!
-//! Implements the Clawdbot Gateway WebSocket protocol v3 with:
-//! - Robust error handling and classification
-//! - Automatic reconnection with exponential backoff
-//! - Message queuing during reconnection
-//! - Health monitoring with ping/pong
-//! - Request-level and streaming timeouts
+//! # Overview
+//!
+//! This module implements a production-ready WebSocket client that communicates with
+//! the Clawdbot Gateway server using protocol version 3. It provides reliable,
+//! resilient communication with comprehensive error handling.
+//!
+//! # Features
+//!
+//! ## Connection Management
+//! - **Automatic protocol fallback**: Tries ws:// and wss:// automatically
+//! - **IPv4-first strategy**: Works around IPv6 issues on macOS with Tailscale
+//! - **Automatic reconnection**: Exponential backoff with configurable attempts
+//! - **Credential storage**: Remembers URL and token for reconnection
+//!
+//! ## Message Handling
+//! - **Request/Response pattern**: Maps requests to responses by ID
+//! - **Event streaming**: Handles real-time chat events
+//! - **Message queuing**: Queues messages during reconnection
+//! - **Deduplication**: Prevents duplicate message sends
+//!
+//! ## Reliability
+//! - **Health monitoring**: Periodic ping/pong checks
+//! - **Timeout detection**: Both request-level and stream-level
+//! - **Error classification**: Distinguishes retryable vs. fatal errors
+//! - **State machine**: Clear connection states (Connecting, Connected, Reconnecting, etc.)
+//!
+//! ## Security & Validation
+//! - **Input validation**: Message size, attachment limits
+//! - **URL validation**: Ensures valid WebSocket URLs
+//! - **Token handling**: Secure credential management (never logged)
+//!
+//! # Architecture
+//!
+//! ```text
+//! ┌─────────────┐
+//! │   Frontend  │
+//! │  (Tauri)    │
+//! └─────┬───────┘
+//!       │ Tauri commands
+//!       ▼
+//! ┌─────────────────────────────────────────┐
+//! │          Gateway State                  │
+//! │  - Connection state (RwLock)            │
+//! │  - Message queue (Mutex)                │
+//! │  - Pending requests (Mutex)             │
+//! │  - Health metrics (Mutex)               │
+//! └─────┬───────────────────────────────────┘
+//!       │
+//!       ▼
+//! ┌─────────────────────────────────────────┐
+//! │     WebSocket Connection                │
+//! │  - Outgoing message channel             │
+//! │  - Incoming message handler             │
+//! │  - Background tasks (ping, timeout)     │
+//! └─────┬───────────────────────────────────┘
+//!       │
+//!       ▼
+//! ┌─────────────────────────────────────────┐
+//! │      Clawdbot Gateway Server            │
+//! └─────────────────────────────────────────┘
+//! ```
+//!
+//! # Usage
+//!
+//! The module exposes Tauri commands for the frontend:
+//!
+//! - `connect()`: Establish connection to Gateway
+//! - `disconnect()`: Close connection gracefully
+//! - `send_message()`: Send chat message with attachments
+//! - `get_models()`: Fetch available AI models
+//! - `get_connection_state()`: Query current state
+//! - `get_connection_quality()`: Get connection health
+//!
+//! # Concurrency Model
+//!
+//! State is protected with async-aware locks (RwLock, Mutex) from tokio.
+//! Multiple background tasks run concurrently:
+//!
+//! - **Outgoing message task**: Sends queued messages to WebSocket
+//! - **Incoming message task**: Receives and routes messages from WebSocket
+//! - **Ping monitor task**: Sends periodic pings and tracks health
+//! - **Stream timeout task**: Detects stalled AI responses
+//! - **Request cleanup task**: Removes expired pending requests
+//! - **Reconnection task**: Handles automatic reconnection with backoff
+//!
+//! All tasks respect the shutdown flag and exit gracefully on disconnect.
 
 #![allow(dead_code)]
 

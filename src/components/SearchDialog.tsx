@@ -389,27 +389,40 @@ export function SearchDialog({ open, onClose }: SearchDialogProps) {
   );
 }
 
-// Highlight matching text in search results - optimized
+// Highlight matching text in search results - optimized with multi-word support
 const HighlightedText = React.memo(
   ({ text, query }: { text: string; query: string }) => {
     if (!query.trim()) return <>{text}</>;
 
-    const parts = text.split(new RegExp(`(${escapeRegex(query)})`, "gi"));
+    // Split query into words for multi-word highlighting
+    const queryWords = query
+      .toLowerCase()
+      .split(/\s+/)
+      .filter((w) => w.length > 0);
+
+    if (queryWords.length === 0) return <>{text}</>;
+
+    // Create pattern for all query words
+    const pattern = queryWords.map((w) => escapeRegex(w)).join("|");
+    const parts = text.split(new RegExp(`(${pattern})`, "gi"));
 
     return (
       <>
-        {parts.map((part, i) =>
-          part.toLowerCase() === query.toLowerCase() ? (
+        {parts.map((part, i) => {
+          const isMatch = queryWords.some(
+            (word) => part.toLowerCase() === word.toLowerCase(),
+          );
+          return isMatch ? (
             <mark
               key={i}
-              className="bg-yellow-300 dark:bg-yellow-500/40 text-foreground font-medium rounded px-0.5"
+              className="bg-yellow-300 dark:bg-yellow-500/40 text-foreground font-semibold rounded px-0.5"
             >
               {part}
             </mark>
           ) : (
             <React.Fragment key={i}>{part}</React.Fragment>
-          ),
-        )}
+          );
+        })}
       </>
     );
   },

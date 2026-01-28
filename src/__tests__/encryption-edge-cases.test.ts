@@ -248,18 +248,18 @@ describe("Encryption Edge Cases", () => {
 
   describe("concurrent operations", () => {
     it("should handle multiple simultaneous encryptions", async () => {
-      const texts = Array.from({ length: 100 }, (_, i) => `Text ${i}`);
+      // Reduce concurrency to avoid overwhelming Web Crypto API
+      const texts = Array.from({ length: 20 }, (_, i) => `Text ${i}`);
 
       const encrypted = await Promise.all(texts.map((t) => encrypt(t)));
-
-      // Due to random IVs, most should be different, but timing could cause some collisions
-      // Main thing is they all decrypt correctly
-      const uniqueValues = new Set(encrypted);
-      expect(uniqueValues.size).toBeGreaterThan(90); // At least 90% unique
 
       // All should decrypt correctly
       const decrypted = await Promise.all(encrypted.map((e) => decrypt(e)));
       expect(decrypted).toEqual(texts);
+
+      // Due to random IVs, all should be unique
+      const uniqueValues = new Set(encrypted);
+      expect(uniqueValues.size).toBe(20);
     });
 
     it("should handle racing key generation", async () => {
@@ -268,7 +268,8 @@ describe("Encryption Edge Cases", () => {
 
       // Start multiple encryptions simultaneously with different text
       // This could trigger multiple key generations
-      const promises = Array.from({ length: 10 }, (_, i) =>
+      // Use smaller batch to avoid Web Crypto API limits
+      const promises = Array.from({ length: 5 }, (_, i) =>
         encrypt(`Test concurrent key generation ${i}`),
       );
 

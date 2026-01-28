@@ -435,7 +435,7 @@ export function ChatView() {
                   key={message.id}
                   className="animate-message-in"
                   style={{
-                    animationDelay: `${Math.min(index * 50, 500)}ms`,
+                    animationDelay: `${Math.min(index * 30, 300)}ms`,
                     animationFillMode: "backwards",
                   }}
                 >

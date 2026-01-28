@@ -99,6 +99,50 @@ Added CSS containment to prevent layout shifts:
 - **Tooltip clarity:** Added "(Esc)" to stop button for discoverability
 - **Animation consistency:** All animations now use optimized cubic-bezier curves
 
+### 11. **Subtle Glow Effect on Streaming Border**
+**New:** Added soft glow that pulses with the border
+- Creates visual hierarchy for active streaming
+- 8px glow at 15% opacity at peak
+- Synced with border pulse animation
+- Very subtle, not distracting
+
+### 12. **Message List Appearance Optimization**
+**Before:** 50ms stagger, max 500ms delay
+**After:** 30ms stagger, max 300ms delay
+- Messages appear faster on conversation load
+- Feels more immediate and responsive
+- Still maintains pleasant cascade effect
+
+### 13. **State Update Optimization**
+Improved `appendToCurrentMessage` efficiency:
+- Uses explicit return object instead of implicit
+- Better structure for Zustand to optimize
+- Reduces unnecessary re-renders
+
+---
+
+## Performance Improvements Summary
+
+### Timing Optimizations:
+- Cursor blink: 0.9s (smooth, natural)
+- Border pulse: 0.8s (responsive)
+- Scroll throttle: 16ms / 60 FPS (smooth tracking)
+- Message fade-in: 200ms (snappy)
+- Typing indicator: 0.5s bounce (energetic)
+- Stop button transition: 150ms (crisp)
+
+### Visual Enhancements:
+- GPU-accelerated animations (will-change hints)
+- CSS containment for layout stability
+- Subtle glow on streaming border
+- Instant scroll during streaming (no jank)
+
+### Interaction Improvements:
+- Esc key to stop generation
+- Active state on stop button (tactile)
+- Faster message cascade on load
+- Optimized state updates
+
 ---
 
 ## Next Iteration Focus

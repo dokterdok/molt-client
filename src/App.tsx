@@ -7,6 +7,7 @@ import { Sidebar } from "./components/Sidebar";
 import { ChatView } from "./components/ChatView";
 import { WelcomeView } from "./components/WelcomeView";
 import { OnboardingFlow } from "./components/onboarding/OnboardingFlow";
+import { UpdateNotification } from "./components/UpdateNotification";
 import { useStore, type ModelInfo } from "./stores/store";
 import { cn } from "./lib/utils";
 import { ToastContainer, useToast } from "./components/ui/toast";
@@ -41,6 +42,7 @@ export default function App() {
   const [cancelConnection, setCancelConnection] = useState<(() => void) | null>(
     null,
   );
+  const [hasUpdateDismissed, setHasUpdateDismissed] = useState(false);
   const { toasts, dismissToast, showError, showSuccess } = useToast();
   const {
     currentConversation,
@@ -638,6 +640,7 @@ export default function App() {
   return (
     <>
       <ToastContainer toasts={toasts} onDismiss={dismissToast} />
+      <UpdateNotification onUpdateDismissed={() => setHasUpdateDismissed(true)} />
       {/* Skip to main content link for keyboard navigation */}
       <a
         href="#main-content"
@@ -680,6 +683,7 @@ export default function App() {
             <Sidebar
               onToggle={() => setSidebarOpen(!sidebarOpen)}
               onRerunSetup={handleRerunSetup}
+              hasUpdateAvailable={hasUpdateDismissed}
             />
           </div>
         </div>

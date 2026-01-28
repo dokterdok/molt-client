@@ -88,6 +88,12 @@ Download the latest release for your platform:
 - **Native menus** — Standard shortcuts that just work
 - **Dark/Light themes** — Follows your system preference
 
+### Always Up-to-Date
+- **Auto-update** — New versions install seamlessly
+- **Non-intrusive** — Updates never interrupt your work
+- **Secure** — All updates cryptographically signed
+- **You're in control** — Choose when to update
+
 ---
 
 ## Keyboard Shortcuts
@@ -111,6 +117,14 @@ npm run tauri build
 ```
 
 Requires: Node.js 18+, Rust 1.70+
+
+### For Maintainers
+
+**Release Process & Auto-Updates:** See [docs/UPDATER.md](./docs/UPDATER.md) for complete documentation on:
+- Setting up code signing
+- Creating releases
+- Auto-update configuration
+- Testing update flow
 
 ---
 

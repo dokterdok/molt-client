@@ -80,11 +80,11 @@
   "plugins": {
     "updater": {
       "active": true,
-      "dialog": true,
+      "dialog": false,
       "endpoints": [
         "https://github.com/AlixHQ/moltzer-community/releases/latest/download/latest.json"
       ],
-      "pubkey": "YOUR_PUBLIC_KEY_HERE"
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDYxRDQ0NkI4NTA5RDhGRTUKUldRdGw1M3hiY3B6N3BwazZ4cHNCblBXVndIL0xTMGJ2c2R5VnFuUWxsdGY3NDE4WDFON0VBUEE="
     }
   }
 }

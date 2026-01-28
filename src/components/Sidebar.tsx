@@ -45,9 +45,10 @@ const isMacOS =
 interface SidebarProps {
   onToggle: () => void;
   onRerunSetup?: () => void;
+  hasUpdateAvailable?: boolean;
 }
 
-export function Sidebar({ onToggle: _onToggle, onRerunSetup }: SidebarProps) {
+export function Sidebar({ onToggle: _onToggle, onRerunSetup, hasUpdateAvailable }: SidebarProps) {
   const {
     conversations,
     conversationsLoading,
@@ -281,8 +282,15 @@ export function Sidebar({ onToggle: _onToggle, onRerunSetup }: SidebarProps) {
           onClick={() => setSettingsOpen(true)}
           variant="ghost"
           size="sm"
-          className="w-full justify-start text-muted-foreground hover:text-foreground"
-          leftIcon={<Settings className="w-4 h-4" />}
+          className="w-full justify-start text-muted-foreground hover:text-foreground relative"
+          leftIcon={
+            <div className="relative">
+              <Settings className="w-4 h-4" />
+              {hasUpdateAvailable && (
+                <span className="absolute -top-1 -right-1 w-2 h-2 bg-blue-600 dark:bg-blue-500 rounded-full border border-background animate-pulse" />
+              )}
+            </div>
+          }
           aria-label="Open settings"
         >
           <span className="flex-1 text-left">Settings</span>

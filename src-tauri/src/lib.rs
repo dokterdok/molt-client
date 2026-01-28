@@ -13,6 +13,7 @@ mod keychain;
 mod menu;
 mod protocol;
 mod tray;
+mod updater;
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
@@ -21,7 +22,8 @@ pub fn run() {
         .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_fs::init())
         .plugin(tauri_plugin_notification::init())
-        .plugin(tauri_plugin_shell::init());
+        .plugin(tauri_plugin_shell::init())
+        .plugin(tauri_plugin_updater::Builder::new().build());
 
     #[cfg(not(any(target_os = "android", target_os = "ios")))]
     {
@@ -32,6 +34,7 @@ pub fn run() {
         .setup(|app| {
             use tauri::Manager;
             app.manage(gateway::GatewayState::default());
+            app.manage(updater::UpdaterState::default());
 
             // Build and set native menu bar
             #[cfg(desktop)]
@@ -48,6 +51,29 @@ pub fn run() {
                     let _ = quickinput.hide();
                 }
             }
+
+            // Setup updater - periodic checks and network listener
+            updater::setup_periodic_checks(app.handle());
+            updater::setup_network_listener(app.handle());
+
+            // Check for updates on startup (async, non-blocking)
+            let app_handle = app.handle().clone();
+            tauri::async_runtime::spawn(async move {
+                use crate::updater::check_for_updates;
+                // Wait a bit to let the app fully initialize
+                tokio::time::sleep(tokio::time::Duration::from_secs(10)).await;
+                match check_for_updates(app_handle.clone()).await {
+                    Ok(info) if info.available => {
+                        println!("Update available on startup: v{}", info.version);
+                    }
+                    Ok(_) => {
+                        println!("No updates available on startup");
+                    }
+                    Err(e) => {
+                        eprintln!("Startup update check failed: {}", e);
+                    }
+                }
+            });
 
             Ok(())
         })
@@ -66,6 +92,10 @@ pub fn run() {
             keychain::keychain_set,
             keychain::keychain_delete,
             discovery::discover_gateways,
+            updater::check_for_updates,
+            updater::install_update,
+            updater::get_update_status,
+            updater::dismiss_update,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

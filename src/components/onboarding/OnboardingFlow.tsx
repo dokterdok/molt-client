@@ -227,20 +227,20 @@ export function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
 
   return (
     <div className="fixed inset-0 z-50 bg-background flex flex-col">
-      {/* Drag region for window movement (macOS titlebar overlay) */}
-      {isMacOS && (
-        <div
-          className="absolute inset-x-0 top-0 h-8 z-10"
-          data-tauri-drag-region
-        />
-      )}
-
-      {/* Progress bar */}
-      <div className={cn("h-1 bg-muted", isMacOS && "mt-7")}>
-        <div
-          className="h-full bg-gradient-to-r from-orange-500 to-red-500 transition-all duration-500 ease-out"
-          style={{ width: `${progress}%` }}
-        />
+      {/* Draggable header region - works on all platforms */}
+      <div
+        className={cn("relative z-10", isMacOS && "pt-7")}
+        data-tauri-drag-region
+      >
+        {/* Progress bar */}
+        <div className="h-1 bg-muted">
+          <div
+            className="h-full bg-gradient-to-r from-orange-500 to-red-500 transition-all duration-500 ease-out"
+            style={{ width: `${progress}%` }}
+          />
+        </div>
+        {/* Extended drag area for easier window movement */}
+        <div className="h-8" data-tauri-drag-region />
       </div>
 
       {/* Step content */}

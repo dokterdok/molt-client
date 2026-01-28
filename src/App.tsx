@@ -1,11 +1,8 @@
-﻿import { useEffect, useState, useRef } from "react";
+﻿import { useEffect, useState, useRef, lazy, Suspense } from "react";
 import { listen } from "@tauri-apps/api/event";
 import { invoke } from "@tauri-apps/api/core";
 import { register, unregister } from "@tauri-apps/plugin-global-shortcut";
 import { Window } from "@tauri-apps/api/window";
-import { Sidebar } from "./components/Sidebar";
-import { ChatView } from "./components/ChatView";
-import { WelcomeView } from "./components/WelcomeView";
 import { OnboardingFlow } from "./components/onboarding/OnboardingFlow";
 import { UpdateNotification } from "./components/UpdateNotification";
 import { useStore, type ModelInfo } from "./stores/store";
@@ -14,6 +11,24 @@ import { ToastContainer, useToast } from "./components/ui/toast";
 import { Spinner } from "./components/ui/spinner";
 import { loadPersistedData } from "./lib/persistence";
 import { translateError, getErrorTitle } from "./lib/errors";
+
+// Lazy load main app components for better initial load time
+// These will be preloaded during onboarding
+const Sidebar = lazy(() =>
+  import("./components/Sidebar").then((module) => ({
+    default: module.Sidebar,
+  }))
+);
+const ChatView = lazy(() =>
+  import("./components/ChatView").then((module) => ({
+    default: module.ChatView,
+  }))
+);
+const WelcomeView = lazy(() =>
+  import("./components/WelcomeView").then((module) => ({
+    default: module.WelcomeView,
+  }))
+);
 
 // Check if running on macOS (for traffic light padding)
 const isMacOS =
@@ -30,12 +45,27 @@ interface ConnectResult {
   protocol_switched: boolean;
 }
 
+// Check if onboarding is needed BEFORE rendering (prevents UI flash)
+function checkOnboardingNeeded(): boolean {
+  const onboardingCompleted = localStorage.getItem("moltz-onboarding-completed");
+  const onboardingSkipped = localStorage.getItem("moltz-onboarding-skipped");
+  
+  // If completed or skipped, no onboarding needed
+  if (onboardingCompleted || onboardingSkipped) {
+    return false;
+  }
+  
+  // Otherwise, onboarding is needed
+  return true;
+}
+
 export default function App() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [isConnecting, setIsConnecting] = useState(true);
   const [reconnectAttempts, setReconnectAttempts] = useState(0);
   const [isLoadingData, setIsLoadingData] = useState(true);
-  const [showOnboarding, setShowOnboarding] = useState(false);
+  // Initialize showOnboarding immediately to prevent flash
+  const [showOnboarding, setShowOnboarding] = useState(() => checkOnboardingNeeded());
   const [retryCountdown, setRetryCountdown] = useState<number | null>(null);
   const [retryNowFn, setRetryNowFn] = useState<(() => void) | null>(null);
   const [connectionError, setConnectionError] = useState<string | null>(null);
@@ -59,7 +89,7 @@ export default function App() {
   // Track the URL we're currently connecting with to prevent re-triggers
   const lastAttemptedUrlRef = useRef<string | null>(null);
 
-  // Check if this is first launch (onboarding needed)
+  // Load persisted data and validate onboarding status
   useEffect(() => {
     const APP_VERSION = "1.0.0"; // Should match package.json version
     const storedVersion = localStorage.getItem("moltz-app-version");
@@ -98,16 +128,10 @@ export default function App() {
       }
     };
 
-    // Check if onboarding is needed AFTER loading settings
-    const checkOnboarding = async () => {
+    // Validate onboarding status after loading settings
+    const validateOnboarding = async () => {
       await loadData();
 
-      const onboardingCompleted = localStorage.getItem(
-        "moltz-onboarding-completed",
-      );
-      const onboardingSkipped = localStorage.getItem(
-        "moltz-onboarding-skipped",
-      );
       const currentSettings = useStore.getState().settings;
 
       // Check if Gateway URL is actually configured (not empty, not just whitespace, valid format)
@@ -117,19 +141,15 @@ export default function App() {
         (currentSettings.gatewayUrl.startsWith("ws://") ||
           currentSettings.gatewayUrl.startsWith("wss://"));
 
-      // ALWAYS show onboarding if Gateway URL is not configured
-      // Otherwise, respect the onboarding completed/skipped flags
-      const needsOnboarding =
-        !hasValidGatewayUrl || (!onboardingCompleted && !onboardingSkipped);
-
-      if (needsOnboarding) {
+      // If no valid Gateway URL exists, force onboarding
+      if (!hasValidGatewayUrl && !showOnboarding) {
         setShowOnboarding(true);
         setIsConnecting(false);
       }
     };
 
-    checkOnboarding();
-  }, [showError]);
+    validateOnboarding();
+  }, [showError, showOnboarding]);
 
   // Apply theme on mount and when settings change
   useEffect(() => {
@@ -616,6 +636,22 @@ export default function App() {
     showSuccess,
   ]);
 
+  // Preload heavy components during onboarding for smooth transition
+  useEffect(() => {
+    if (showOnboarding) {
+      // Start preloading main app components in the background
+      // This happens while user is completing onboarding steps
+      const preloadTimer = setTimeout(() => {
+        // Trigger lazy imports to start loading
+        import("./components/Sidebar");
+        import("./components/ChatView");
+        import("./components/WelcomeView");
+      }, 2000); // Start after 2s to let onboarding UI settle
+
+      return () => clearTimeout(preloadTimer);
+    }
+  }, [showOnboarding]);
+
   const handleOnboardingComplete = () => {
     setShowOnboarding(false);
     // Clear progress
@@ -680,11 +716,19 @@ export default function App() {
             role="navigation"
             aria-label="Conversation sidebar"
           >
-            <Sidebar
-              onToggle={() => setSidebarOpen(!sidebarOpen)}
-              onRerunSetup={handleRerunSetup}
-              hasUpdateAvailable={hasUpdateDismissed}
-            />
+            <Suspense
+              fallback={
+                <div className="flex items-center justify-center h-full">
+                  <Spinner size="md" />
+                </div>
+              }
+            >
+              <Sidebar
+                onToggle={() => setSidebarOpen(!sidebarOpen)}
+                onRerunSetup={handleRerunSetup}
+                hasUpdateAvailable={hasUpdateDismissed}
+              />
+            </Suspense>
           </div>
         </div>
 
@@ -865,7 +909,15 @@ export default function App() {
 
           {/* Chat or Welcome */}
           <main id="main-content" className="flex-1 min-h-0 relative">
-            {currentConversation ? <ChatView /> : <WelcomeView />}
+            <Suspense
+              fallback={
+                <div className="flex items-center justify-center h-full">
+                  <Spinner size="lg" />
+                </div>
+              }
+            >
+              {currentConversation ? <ChatView /> : <WelcomeView />}
+            </Suspense>
 
             {/* Data loading overlay */}
             {isLoadingData && (

@@ -453,28 +453,32 @@ export function SearchDialog({ open, onClose }: SearchDialogProps) {
               <p className="text-xs text-muted-foreground mb-4">
                 Search across all your messages, even encrypted ones
               </p>
-              <div id="search-instructions" className="flex gap-2 mt-2 text-xs">
-                <kbd
-                  className="px-2 py-1 bg-muted rounded"
-                  aria-label="Arrow keys"
-                >
-                  ↑↓
-                </kbd>
-                <span>Navigate</span>
-                <kbd
-                  className="px-2 py-1 bg-muted rounded"
-                  aria-label="Enter key"
-                >
-                  Enter
-                </kbd>
-                <span>Select</span>
-                <kbd
-                  className="px-2 py-1 bg-muted rounded"
-                  aria-label="Escape key"
-                >
-                  Esc
-                </kbd>
-                <span>Close</span>
+              <div
+                id="search-instructions"
+                className="flex flex-col gap-3 mt-2 text-xs"
+              >
+                <div className="flex gap-2 justify-center">
+                  <kbd className="px-2 py-1 bg-muted rounded" aria-label="Arrow keys">
+                    ↑↓
+                  </kbd>
+                  <span>Navigate</span>
+                  <kbd className="px-2 py-1 bg-muted rounded" aria-label="Enter key">
+                    Enter
+                  </kbd>
+                  <span>Select</span>
+                  <kbd className="px-2 py-1 bg-muted rounded" aria-label="Escape key">
+                    Esc
+                  </kbd>
+                  <span>Close</span>
+                </div>
+                <div className="flex gap-2 justify-center">
+                  <kbd className="px-2 py-1 bg-muted rounded">Alt+A</kbd>
+                  <span>All</span>
+                  <kbd className="px-2 py-1 bg-muted rounded">Alt+U</kbd>
+                  <span>You</span>
+                  <kbd className="px-2 py-1 bg-muted rounded">Alt+M</kbd>
+                  <span>Moltz</span>
+                </div>
               </div>
             </div>
           )}

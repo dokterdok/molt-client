@@ -53,8 +53,12 @@ export function ImageRenderer({
     width: number;
     height: number;
   } | null>(null);
+  const lightboxRef = useRef<HTMLDivElement>(null);
 
   const sanitizedSrc = sanitizeUrl(src);
+
+  // Focus trap for lightbox
+  useFocusTrap(lightboxRef, isExpanded);
 
   const handleLoad = useCallback((e: SyntheticEvent<HTMLImageElement>) => {
     const img = e.currentTarget;

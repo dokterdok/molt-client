@@ -1028,7 +1028,7 @@ async fn connect_internal(
     });
 
     // Start ping/pong health monitor
-    start_health_monitor(app.clone(), tx.clone(), health_metrics.clone(), Arc::new(state.shutdown.clone())).await;
+    start_health_monitor(app.clone(), tx.clone(), health_metrics.clone(), state_arc.clone()).await;
 
     // Start streaming timeout monitor
     start_stream_timeout_monitor(app.clone(), active_runs.clone(), state_arc.clone()).await;

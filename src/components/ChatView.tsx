@@ -103,12 +103,23 @@ export function ChatView() {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
-  const handleStopGenerating = () => {
+  const handleStopGenerating = useCallback(() => {
     if (currentStreamingMessageId) {
       completeCurrentMessage();
       setIsSending(false);
     }
-  };
+  }, [currentStreamingMessageId, completeCurrentMessage]);
+
+  // Keyboard shortcut: Esc to stop generating
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && currentStreamingMessageId) {
+        handleStopGenerating();
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [currentStreamingMessageId, handleStopGenerating]);
 
   const handleRetry = () => {
     if (lastFailedMessage) {
@@ -435,16 +446,17 @@ export function ChatView() {
         </div>
       </div>
 
-      {/* Stop generating button */}
+      {/* Stop generating button (with Esc shortcut) */}
       {currentStreamingMessageId && (
-        <div className="absolute bottom-24 left-1/2 -translate-x-1/2 animate-in fade-in slide-in-from-bottom-2 duration-200">
+        <div className="absolute bottom-24 left-1/2 -translate-x-1/2 animate-in fade-in slide-in-from-bottom-2 duration-200 z-20">
           <Button
             onClick={handleStopGenerating}
             variant="destructive"
             size="sm"
             className="shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-150 active:scale-95"
             leftIcon={<StopCircle className="w-4 h-4" />}
-            aria-label="Stop generating response"
+            aria-label="Stop generating response (Esc)"
+            title="Stop generating (Esc)"
           >
             Stop generating
           </Button>

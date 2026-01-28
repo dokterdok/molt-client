@@ -769,11 +769,11 @@ export default function App() {
                   <span className="absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75 animate-ping" />
                   <span className="relative inline-flex w-2 h-2 rounded-full bg-amber-500" />
                 </span>
-                <span className="font-medium flex-shrink-0">Offline Mode</span>
+                <span className="font-medium flex-shrink-0">You're offline</span>
                 {retryCountdown !== null ? (
                   <>
                     <span className="hidden sm:inline truncate">
-                      — Retry in {retryCountdown}s
+                      — Reconnecting in {retryCountdown}s
                     </span>
                     <span className="sm:hidden">— {retryCountdown}s</span>
                   </>
@@ -789,7 +789,7 @@ export default function App() {
                     onClick={retryNowFn}
                     className="px-2 py-0.5 text-xs font-medium bg-amber-600 hover:bg-amber-700 text-white rounded transition-colors"
                   >
-                    Retry
+                    Reconnect
                   </button>
                 )}
               </div>

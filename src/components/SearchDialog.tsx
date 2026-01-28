@@ -177,6 +177,7 @@ export function SearchDialog({ open, onClose }: SearchDialogProps) {
       <div
         className="absolute inset-0 bg-black/50 backdrop-blur-sm animate-in fade-in duration-100"
         onClick={onClose}
+        aria-hidden="true"
       />
 
       {/* Dialog */}

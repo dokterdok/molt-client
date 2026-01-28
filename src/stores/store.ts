@@ -426,8 +426,9 @@ export const useStore = create<Store>()((set, get) => ({
   },
 
   deleteMessage: (conversationId, messageId) => {
-    set((state) => ({
-      conversations: state.conversations.map((c) =>
+    const state = get();
+    set((prevState) => ({
+      conversations: prevState.conversations.map((c) =>
         c.id === conversationId
           ? {
               ...c,
@@ -436,6 +437,11 @@ export const useStore = create<Store>()((set, get) => ({
             }
           : c,
       ),
+      // Clear streaming message ID if we're deleting the streaming message
+      currentStreamingMessageId:
+        prevState.currentStreamingMessageId === messageId
+          ? null
+          : prevState.currentStreamingMessageId,
     }));
 
     // Delete from IndexedDB (queued after any pending create)

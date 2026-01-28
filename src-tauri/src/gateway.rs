@@ -1356,15 +1356,14 @@ async fn drain_message_queue(state: &GatewayStateInner) {
         }
 
         // Cleanup old processed IDs (keep last 1000)
-        if processed.len() > 1000 {
-            let to_remove: Vec<_> = processed
-                .iter()
-                .take(processed.len() - 1000)
-                .cloned()
-                .collect();
-            for id in to_remove {
-                processed.remove(&id);
-            }
+        // If we have too many, just clear and start fresh - simpler and more efficient
+        // than trying to remove oldest items from a HashSet (which has no ordering)
+        if processed.len() > 10_000 {
+            log_protocol_error("MessageQueue", &format!(
+                "Processed IDs set grew to {}, clearing to prevent unbounded growth",
+                processed.len()
+            ));
+            processed.clear();
         }
     }
 }

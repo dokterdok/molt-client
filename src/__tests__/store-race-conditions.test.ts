@@ -112,13 +112,14 @@ describe("Store Race Conditions", () => {
       const conv = store.createConversation();
 
       // Verify it's selected
-      expect(store.currentConversationId).toBe(conv.id);
+      let freshStore = useStore.getState();
+      expect(freshStore.currentConversationId).toBe(conv.id);
 
       // Delete it
       store.deleteConversation(conv.id);
 
       // Should deselect
-      const freshStore = useStore.getState();
+      freshStore = useStore.getState();
       expect(freshStore.currentConversationId).toBeNull();
     });
 

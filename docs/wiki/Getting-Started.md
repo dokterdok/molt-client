@@ -70,6 +70,7 @@ Moltz needs Gateway to actually talk to AI. Install it:
 ```bash
 npm install -g clawdbot
 clawdbot setup
+clawdbot gateway start
 ```
 
 **Don't have Node.js?** [Install it first](https://nodejs.org/) (takes 2 minutes).

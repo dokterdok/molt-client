@@ -82,6 +82,18 @@ export async function loadPersistedData(): Promise<{
         );
       }
 
+      // Decrypt system prompt if present
+      let systemPrompt: string | undefined;
+      if (dbConv.systemPrompt) {
+        try {
+          systemPrompt = await decrypt(dbConv.systemPrompt);
+        } catch {
+          console.warn(
+            `Could not decrypt system prompt for ${dbConv.id}, ignoring`,
+          );
+        }
+      }
+
       conversations.push({
         id: dbConv.id,
         title,
@@ -91,6 +103,7 @@ export async function loadPersistedData(): Promise<{
         model: dbConv.model,
         thinkingEnabled: dbConv.thinkingEnabled,
         isPinned: dbConv.isPinned,
+        systemPrompt,
       });
     }
 
@@ -124,6 +137,9 @@ export async function persistConversation(
       model: conversation.model,
       thinkingEnabled: conversation.thinkingEnabled,
       isPinned: conversation.isPinned,
+      systemPrompt: conversation.systemPrompt
+        ? await encrypt(conversation.systemPrompt)
+        : undefined,
     };
 
     // Encrypt and save messages

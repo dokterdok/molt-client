@@ -53,7 +53,7 @@ describe("Keychain", () => {
 
   describe("getGatewayToken", () => {
     it("should return the stored token", async () => {
-      keychainStore["com.Moltz.client:gateway_token"] = "my-secret-token";
+      keychainStore["com.moltz.client:gateway_token"] = "my-secret-token";
 
       const token = await getGatewayToken();
       expect(token).toBe("my-secret-token");
@@ -79,7 +79,7 @@ describe("Keychain", () => {
       await getGatewayToken();
 
       expect(invoke).toHaveBeenCalledWith("keychain_get", {
-        service: "com.Moltz.client",
+        service: "com.moltz.client",
         key: "gateway_token",
       });
     });
@@ -89,7 +89,7 @@ describe("Keychain", () => {
     it("should store a token in the keychain", async () => {
       await setGatewayToken("new-token-123");
 
-      expect(keychainStore["com.Moltz.client:gateway_token"]).toBe(
+      expect(keychainStore["com.moltz.client:gateway_token"]).toBe(
         "new-token-123",
       );
     });
@@ -98,36 +98,36 @@ describe("Keychain", () => {
       await setGatewayToken("test-token");
 
       expect(invoke).toHaveBeenCalledWith("keychain_set", {
-        service: "com.Moltz.client",
+        service: "com.moltz.client",
         key: "gateway_token",
         value: "test-token",
       });
     });
 
     it("should overwrite an existing token", async () => {
-      keychainStore["com.Moltz.client:gateway_token"] = "old-token";
+      keychainStore["com.moltz.client:gateway_token"] = "old-token";
 
       await setGatewayToken("new-token");
 
-      expect(keychainStore["com.Moltz.client:gateway_token"]).toBe(
+      expect(keychainStore["com.moltz.client:gateway_token"]).toBe(
         "new-token",
       );
     });
 
     it("should delete the token when setting to empty string", async () => {
-      keychainStore["com.Moltz.client:gateway_token"] = "existing-token";
+      keychainStore["com.moltz.client:gateway_token"] = "existing-token";
 
       await setGatewayToken("");
 
       // Should have called delete, not set with empty
-      expect(keychainStore["com.Moltz.client:gateway_token"]).toBeUndefined();
+      expect(keychainStore["com.moltz.client:gateway_token"]).toBeUndefined();
     });
 
     it("should handle special characters in token", async () => {
       const specialToken = "tk_!@#$%^&*()_+-=[]{}|;:'\",.<>?/~`";
       await setGatewayToken(specialToken);
 
-      expect(keychainStore["com.Moltz.client:gateway_token"]).toBe(
+      expect(keychainStore["com.moltz.client:gateway_token"]).toBe(
         specialToken,
       );
     });
@@ -136,17 +136,17 @@ describe("Keychain", () => {
       const longToken = "x".repeat(10000);
       await setGatewayToken(longToken);
 
-      expect(keychainStore["com.Moltz.client:gateway_token"]).toBe(longToken);
+      expect(keychainStore["com.moltz.client:gateway_token"]).toBe(longToken);
     });
   });
 
   describe("deleteGatewayToken", () => {
     it("should delete the stored token", async () => {
-      keychainStore["com.Moltz.client:gateway_token"] = "to-delete";
+      keychainStore["com.moltz.client:gateway_token"] = "to-delete";
 
       await deleteGatewayToken();
 
-      expect(keychainStore["com.Moltz.client:gateway_token"]).toBeUndefined();
+      expect(keychainStore["com.moltz.client:gateway_token"]).toBeUndefined();
     });
 
     it("should not throw when token does not exist", async () => {
@@ -158,7 +158,7 @@ describe("Keychain", () => {
       await deleteGatewayToken();
 
       expect(invoke).toHaveBeenCalledWith("keychain_delete", {
-        service: "com.Moltz.client",
+        service: "com.moltz.client",
         key: "gateway_token",
       });
     });

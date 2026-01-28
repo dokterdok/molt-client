@@ -103,7 +103,7 @@ describe("Settings Persistence", () => {
 
       // Verify the saved data
       const savedJson = localStorageMock.setItem.mock.calls.find(
-        (call: [string, string]) => call[0] === "Moltz-settings",
+        (call: [string, string]) => call[0] === "moltz-settings",
       );
       expect(savedJson).toBeDefined();
 
@@ -120,9 +120,9 @@ describe("Settings Persistence", () => {
         gatewayUrl: "ws://test:8080",
       });
 
-      // Find the Moltz-settings call
+      // Find the moltz-settings call
       const savedJson = localStorageMock.setItem.mock.calls.find(
-        (call: [string, string]) => call[0] === "Moltz-settings",
+        (call: [string, string]) => call[0] === "moltz-settings",
       );
       expect(savedJson).toBeDefined();
 
@@ -158,7 +158,7 @@ describe("Settings Persistence", () => {
     it("should load settings from localStorage on loadSettings", async () => {
       // Pre-populate localStorage with saved settings
       localStorageMock._setStore({
-        "Moltz-settings": JSON.stringify({
+        "moltz-settings": JSON.stringify({
           gatewayUrl: "ws://saved-server:9090",
           theme: "light",
           defaultModel: "google/gemini-2.5-pro",
@@ -202,7 +202,7 @@ describe("Settings Persistence", () => {
 
     it("should handle corrupted JSON in localStorage", async () => {
       localStorageMock._setStore({
-        "Moltz-settings": "this-is-not-valid-json{{{",
+        "moltz-settings": "this-is-not-valid-json{{{",
       });
 
       const store = useStore.getState();
@@ -219,7 +219,7 @@ describe("Settings Persistence", () => {
     it("should migrate token from localStorage to keychain", async () => {
       // Simulate legacy settings with token in localStorage
       localStorageMock._setStore({
-        "Moltz-settings": JSON.stringify({
+        "moltz-settings": JSON.stringify({
           gatewayUrl: "ws://legacy:8080",
           gatewayToken: "legacy-token-in-storage", // Old format: token in localStorage
           theme: "dark",
@@ -234,7 +234,7 @@ describe("Settings Persistence", () => {
 
       // Token should be removed from localStorage
       const updatedJson = localStorageMock.setItem.mock.calls.find(
-        (call: [string, string]) => call[0] === "Moltz-settings",
+        (call: [string, string]) => call[0] === "moltz-settings",
       );
       if (updatedJson) {
         const updatedSettings = JSON.parse(updatedJson[1]);
@@ -312,7 +312,7 @@ describe("Settings Persistence", () => {
     it("should handle partial localStorage data (missing fields)", async () => {
       // Simulate localStorage with only some fields
       localStorageMock._setStore({
-        "Moltz-settings": JSON.stringify({
+        "moltz-settings": JSON.stringify({
           gatewayUrl: "ws://partial:8080",
           // theme is missing
           // defaultModel is missing
@@ -334,7 +334,7 @@ describe("Settings Persistence", () => {
     it("should handle keychain read failure gracefully", async () => {
       // keychain will throw for non-existent keys (default mock behavior)
       localStorageMock._setStore({
-        "Moltz-settings": JSON.stringify({
+        "moltz-settings": JSON.stringify({
           gatewayUrl: "ws://keychain-fail:8080",
         }),
       });

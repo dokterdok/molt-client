@@ -238,7 +238,8 @@ describe("Sidebar", () => {
       const filterInput = screen.getByLabelText("Filter conversations");
       await user.type(filterInput, "xyznonexistent");
 
-      expect(screen.getByText("No matches")).toBeInTheDocument();
+      expect(screen.getByText("No matches found")).toBeInTheDocument();
+      expect(screen.getByText("Try a different search term")).toBeInTheDocument();
     });
 
     it("should show all conversations when filter is empty", async () => {

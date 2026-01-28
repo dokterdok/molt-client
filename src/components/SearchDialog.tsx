@@ -32,14 +32,16 @@ export function SearchDialog({ open, onClose }: SearchDialogProps) {
   const dialogRef = useRef<HTMLDivElement>(null);
   useFocusTrap(dialogRef, open);
 
-  // Focus input when dialog opens
+  // Focus input when dialog opens (instant)
   useEffect(() => {
     if (open) {
-      const focusTimer = setTimeout(() => inputRef.current?.focus(), 100);
+      // Immediate focus - no delay needed
+      requestAnimationFrame(() => {
+        inputRef.current?.focus();
+      });
       setQuery("");
       setResults([]);
       setSelectedIndex(0);
-      return () => clearTimeout(focusTimer);
     }
   }, [open]);
 
@@ -96,11 +98,11 @@ export function SearchDialog({ open, onClose }: SearchDialogProps) {
     }
   }, []);
 
-  // Debounced search (300ms for better UX)
+  // Debounced search (150ms - more responsive)
   useEffect(() => {
     const timer = setTimeout(() => {
       performSearch(query);
-    }, 300);
+    }, 150);
     return () => clearTimeout(timer);
   }, [query, performSearch]);
 

@@ -244,6 +244,20 @@ code {
   }
 }
 
+@keyframes cursor-blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.3;
+  }
+}
+
+.animate-cursor-blink {
+  animation: cursor-blink 0.9s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
 @keyframes message-fade-in {
   0% {
     opacity: 0;
@@ -287,9 +301,9 @@ code {
   animation: typing-bounce 1.4s infinite ease-in-out both;
 }
 
-/* Streaming message border pulse (P1: 1.0s duration) */
+/* Streaming message border pulse (P1: optimized for responsiveness) */
 .animate-streaming-pulse {
-  animation: streaming-pulse 1s ease-in-out infinite;
+  animation: streaming-pulse 0.8s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
 /* Message fade-in with spring curve (P1: 250ms with spring) */

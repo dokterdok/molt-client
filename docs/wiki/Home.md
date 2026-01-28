@@ -1,99 +1,196 @@
-# Moltz Documentation
+# Welcome to Moltz
 
-**Version 1.0.0** | [GitHub](https://github.com/AlixHQ/moltz) | [Download](https://github.com/AlixHQ/moltz/releases)
+**Native AI chat for your desktop. Fast, private, and actually useful.**
 
 ---
 
-## Welcome to Moltz
+## Start Here
 
-Moltz is a **native desktop AI chat application** that brings the familiar ChatGPT/Claude.ai experience to your computer—but faster, more private, and actually built for desktop use.
+**Brand new?** [Get up and running in 5 minutes →](./Quick-Start.md)
 
-Think of it as your AI assistant that lives on your machine, not in a browser tab. Built with Tauri, React, and Rust.
+**Installed but confused?** [Getting Started guide →](./Getting-Started.md)
 
-**Why Moltz?**
-- **⚡ Native Speed** — Real desktop app, not a glorified browser wrapper
-- **🔒 Your Data** — Conversations encrypted and stored locally on your device
-- **🎯 Any Model** — Claude, GPT, Gemini, or local models via Clawdbot Gateway
-- **⌨️ Global Hotkey** — Hit a key combo, Moltz appears instantly
-- **✈️ Offline Mode** — Read and search past conversations without internet
-- **😌 Familiar UX** — Same chat experience you already know
+**Just exploring?** Keep reading!
+
+---
+
+## What is Moltz?
+
+You know ChatGPT and Claude.ai? Moltz is like that, but as a real desktop app.
+
+**What you get:**
+- **Familiar interface** - Same chat experience you already know
+- **Fast** - Native app, not a browser wrapped in Electron
+- **Private** - Everything stays on your computer, encrypted
+- **Flexible** - Works with Claude, GPT, Gemini, or local models
+- **Always there** - Global hotkey summons it from anywhere
+
+**What you don't get:**
+- Cloud sync (yet - coming Q2 2026)
+- Mobile apps (yet - iOS/Android in beta Q2 2026)
+- Web version (it's desktop-only on purpose)
+
+---
+
+## I Want To...
+
+**[...get started →](./Quick-Start.md)**  
+5-minute install guide.
+
+**[...learn keyboard shortcuts →](./Configuration.md#keyboard-shortcuts)**  
+Become a power user.
+
+**[...understand how it works →](./Architecture.md)**  
+Technical deep-dive for developers.
+
+**[...fix a problem →](./Troubleshooting.md)**  
+Real solutions, not "restart your computer."
+
+**[...customize settings →](./Configuration.md)**  
+Themes, fonts, shortcuts - make it yours.
+
+**[...see what's coming next →](./Roadmap.md)**  
+Feature roadmap Q1-Q4 2026.
+
+**[...contribute code →](./Developer-Guide.md)**  
+Build features, fix bugs, improve docs.
+
+**[...report a bug →](https://github.com/AlixHQ/moltz/issues)**  
+We're listening.
 
 ---
 
 ## Documentation Structure
 
-### 🚀 Getting Started
-- **[Quick Start](./Quick-Start.md)** — Get running in 5 minutes ⚡
-- **[Getting Started](./Getting-Started.md)** — Full installation guide
-- **[User Guide](./User-Guide.md)** — Using Moltz day-to-day
-- **[Configuration](./Configuration.md)** — Settings and customization
-- **[Troubleshooting](./Troubleshooting.md)** — Common issues and solutions
+### For Users
 
-### 🏗️ Architecture & Development
-- **[Architecture](./Architecture.md)** — System design and components
-- **[Developer Guide](./Developer-Guide.md)** — Building and developing
-- **[Contributing](./Contributing.md)** — How to contribute to Moltz
+**[Quick Start](./Quick-Start.md)** - Install and run in 5 minutes  
+**[Getting Started](./Getting-Started.md)** - Detailed setup guide  
+**[User Guide](./User-Guide.md)** - How to use Moltz daily  
+**[Configuration](./Configuration.md)** - All settings explained  
+**[Troubleshooting](./Troubleshooting.md)** - Fix common problems  
+**[Features](./Features.md)** - What Moltz can do
 
-### 📊 Features & Roadmap
-- **[Features](./Features.md)** — Complete feature list
-- **[Roadmap](./Roadmap.md)** — Planned features and milestones
-- **[Changelog](./Changelog.md)** — Version history
+### For Developers
 
-### 🔒 Security & Performance
-- **[Security](./Security.md)** — Security audit findings and encryption
-- **[Performance](./Performance.md)** — Performance optimization and benchmarks
+**[Architecture](./Architecture.md)** - How Moltz is built  
+**[Developer Guide](./Developer-Guide.md)** - Build from source  
+**[Contributing](./Contributing.md)** - How to contribute  
+**[Security](./Security.md)** - Encryption, audits, best practices  
+**[Performance](./Performance.md)** - Benchmarks and optimizations
 
----
+### For Everyone
 
-## Quick Links
-
-| I want to... | Go to... |
-|-------------|----------|
-| Get started in 5 minutes | [Quick Start](./Quick-Start.md) ⚡ |
-| Full installation guide | [Getting Started](./Getting-Started.md) |
-| Connect to Clawdbot Gateway | [Getting Started → Connection Setup](./Getting-Started.md#connection-setup) |
-| Search conversations | [User Guide → Search](./User-Guide.md#search) |
-| Set up keyboard shortcuts | [Configuration → Shortcuts](./Configuration.md#keyboard-shortcuts) |
-| Build from source | [Developer Guide → Building](./Developer-Guide.md#building-from-source) |
-| Report a bug | [Contributing → Issues](./Contributing.md#reporting-issues) |
-| Understand the architecture | [Architecture](./Architecture.md) |
-| Check security practices | [Security](./Security.md) |
+**[Roadmap](./Roadmap.md)** - What's coming next  
+**[Changelog](./Changelog.md)** - Version history
 
 ---
 
-## About This Documentation
+## Frequently Asked Questions
 
-This wiki is maintained by the Moltz team and community contributors. If you find errors or want to improve the documentation, please:
+### Is this free?
 
-1. Open an issue on [GitHub Issues](https://github.com/AlixHQ/moltz/issues)
-2. Submit a pull request with improvements
-3. Ask questions in [GitHub Discussions](https://github.com/AlixHQ/moltz/discussions)
+Yes. Moltz is open-source (Apache 2.0 license).
 
-**Last updated:** January 2025  
-**Documentation version:** 1.0.0
+You pay for AI provider costs (Claude, GPT API keys), not for Moltz itself.
+
+### Does it send my data to your servers?
+
+No. We don't have servers.
+
+Everything is stored locally on your computer, encrypted. Your conversations never leave your device unless you explicitly export them.
+
+### Do I need Clawdbot Gateway?
+
+Yes. Gateway handles AI provider connections and API keys.
+
+Moltz → Gateway → AI providers (Claude, GPT, etc.)
+
+Think of Gateway like a router for AI requests.
+
+### Can I use it offline?
+
+You can read old conversations offline. Sending new messages requires internet (Gateway needs to reach AI providers).
+
+### Which AI models does it support?
+
+Whatever your Gateway is configured for:
+- Claude (Sonnet, Opus, Haiku)
+- OpenAI (GPT-4, GPT-4o, GPT-3.5)
+- Google (Gemini)
+- Local models (via Ollama or similar)
+
+Model selection UI coming in v1.1.
+
+### Is it safe?
+
+Messages are encrypted at rest (AES-256-GCM). Gateway tokens stored in your system keychain, not localStorage.
+
+We did a [security audit](./Security.md) - read the findings.
+
+### What platforms does it run on?
+
+- macOS 11+ (Apple Silicon and Intel)
+- Windows 10/11 (64-bit)
+- Linux (Debian, Ubuntu, Fedora, AppImage)
+
+### Can I sync between computers?
+
+Not yet. Cloud sync is coming in Q2 2026 (optional, end-to-end encrypted).
+
+For now: Export conversations on one machine, import on another.
+
+---
+
+## Get Help
+
+**Something broken?** [Troubleshooting Guide](./Troubleshooting.md)
+
+**Still stuck?** [Ask in Discussions](https://github.com/AlixHQ/moltz/discussions)
+
+**Found a bug?** [Open an issue](https://github.com/AlixHQ/moltz/issues)
+
+**Want to chat?** Discord coming soon
 
 ---
 
 ## System Requirements
 
-| Platform | Requirements |
-|----------|-------------|
-| **macOS** | macOS 11 (Big Sur) or later • Apple Silicon or Intel • 4GB RAM • 200MB disk space |
-| **Windows** | Windows 10/11 (64-bit) • 4GB RAM • 200MB disk space |
-| **Linux** | Ubuntu 20.04+ / Debian 11+ / equivalent • 4GB RAM • 200MB disk space |
+**Minimum:**
+- macOS 11, Windows 10, or modern Linux
+- 4 GB RAM
+- 500 MB disk space
 
-**Clawdbot Gateway:** Required for AI model access — [Installation Guide](https://github.com/clawdbot/clawdbot)
+**Recommended:**
+- macOS 13+, Windows 11, or latest Linux LTS
+- 8 GB RAM
+- 2 GB disk space (for conversation storage)
+
+**Need Clawdbot Gateway too:**
+- Node.js 18+
+- Additional 100 MB disk space
 
 ---
 
-## License
+## About This Documentation
 
-Moltz is open-source software licensed under the [Apache 2.0 License](https://github.com/AlixHQ/moltz/blob/main/LICENSE).
+**Comprehensive?** We tried. If something's missing, [tell us](https://github.com/AlixHQ/moltz/issues).
+
+**Found a typo?** [Edit on GitHub](https://github.com/AlixHQ/moltz/tree/main/docs/wiki) and submit a PR.
+
+**Want to translate?** [Contributing guide](./Contributing.md#translations)
 
 ---
 
-## Support
+## Quick Links
 
-- **Issues:** [GitHub Issues](https://github.com/AlixHQ/moltz/issues)
-- **Discussions:** [GitHub Discussions](https://github.com/AlixHQ/moltz/discussions)
-- **Email:** support@alix.com
+- [GitHub Repository](https://github.com/AlixHQ/moltz)
+- [Download Latest Release](https://github.com/AlixHQ/moltz/releases/latest)
+- [Report Security Issue](mailto:security@alix.com)
+- [Clawdbot Gateway](https://github.com/clawdbot/clawdbot)
+
+---
+
+**Last updated:** January 2026
+
+**Ready to start?** [Quick Start →](./Quick-Start.md)

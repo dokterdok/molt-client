@@ -837,9 +837,11 @@ async fn connect_internal(
 
     // Reset health metrics
     state.health_metrics.lock().await.reset();
+    log_protocol_error("Connection", "Health metrics reset, initializing connection state");
 
     // CRITICAL-8: Reset shutdown flag for new connection
     state.shutdown.store(false, Ordering::SeqCst);
+    log_protocol_error("Connection", "Shutdown flag cleared, ready for new connection");
 
     // Spawn task to handle outgoing messages
     let app_clone = app.clone();

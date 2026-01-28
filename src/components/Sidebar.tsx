@@ -253,14 +253,14 @@ export function Sidebar({ onToggle: _onToggle, onRerunSetup, hasUpdateAvailable 
           (searchQuery ? (
             <EmptyState
               icon={<Search className="w-8 h-8" strokeWidth={1.5} />}
-              title="No matches"
-              description={`No conversations match "${searchQuery}"`}
+              title="No matches found"
+              description={`Try a different search term`}
             />
           ) : (
             <EmptyState
               icon={<MessageSquare className="w-8 h-8" strokeWidth={1.5} />}
-              title="No conversations yet"
-              description="Start a new chat to begin"
+              title="Ready to chat?"
+              description="Create your first conversation to get started"
               action={
                 <Button
                   onClick={handleNewChat}
@@ -269,7 +269,7 @@ export function Sidebar({ onToggle: _onToggle, onRerunSetup, hasUpdateAvailable 
                   leftIcon={<Plus className="w-4 h-4" />}
                   aria-label="Create your first conversation"
                 >
-                  New Chat
+                  Start Chatting
                 </Button>
               }
             />

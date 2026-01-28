@@ -59,10 +59,10 @@
   }
 }
 
-/* Custom scrollbar */
+/* Custom scrollbar — slim, premium feel */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 5px;
+  height: 5px;
 }
 
 ::-webkit-scrollbar-track {
@@ -70,17 +70,24 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background: hsl(var(--muted-foreground) / 0.2);
-  border-radius: 4px;
+  background: hsl(var(--muted-foreground) / 0.15);
+  border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: hsl(var(--muted-foreground) / 0.4);
+  background: hsl(var(--muted-foreground) / 0.35);
 }
 
 /* Thin scrollbar variant */
 .scrollbar-thin::-webkit-scrollbar {
-  width: 6px;
+  width: 4px;
+}
+
+/* border-3 utility for custom widths */
+@layer utilities {
+  .border-3 {
+    border-width: 3px;
+  }
 }
 
 /* Code highlighting */
@@ -90,6 +97,11 @@ pre {
 
 code {
   @apply font-mono text-sm;
+}
+
+/* Inline code in prose — subtle colored background */
+.prose code:not(pre code) {
+  @apply bg-muted/60 text-primary/90 px-1.5 py-0.5 rounded-md text-[0.85em];
 }
 
 /* Prose styling */
@@ -110,7 +122,7 @@ code {
 }
 
 .prose blockquote {
-  @apply border-l-4 border-primary/30 pl-4 italic my-4 text-muted-foreground;
+  @apply border-l-[3px] border-primary/40 pl-4 italic my-4 text-muted-foreground bg-muted/30 rounded-r-md py-2;
 }
 
 .prose table {

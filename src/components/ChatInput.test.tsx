@@ -182,7 +182,7 @@ describe('ChatInput', () => {
       const input = screen.getByPlaceholderText('Message Moltzer...');
       await user.click(input);
       
-      const inputContainer = container.querySelector('.border-primary\\/50');
+      const inputContainer = container.querySelector('.border-primary\\/40');
       expect(inputContainer).toBeInTheDocument();
     });
 

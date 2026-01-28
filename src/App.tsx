@@ -696,7 +696,7 @@ export default function App() {
                 />
               </svg>
             </button>
-            <h1 className="font-semibold truncate select-none" data-tauri-drag-region>
+            <h1 className="font-semibold text-sm truncate select-none" data-tauri-drag-region>
               {currentConversation?.title || "Moltzer"}
             </h1>
           </div>

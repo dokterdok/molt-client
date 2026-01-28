@@ -153,7 +153,7 @@ export function ExportDialog({ open, onClose, conversation }: ExportDialogProps)
           aria-modal="true"
           aria-labelledby="export-dialog-title"
           aria-describedby="export-dialog-description"
-          className="bg-background border border-border rounded-xl shadow-2xl w-full max-w-md animate-in fade-in zoom-in-95 duration-200"
+          className="bg-background border border-border rounded-2xl shadow-2xl w-full max-w-md animate-in fade-in zoom-in-95 duration-200"
           onClick={(e) => e.stopPropagation()}
         >
           {/* Header */}

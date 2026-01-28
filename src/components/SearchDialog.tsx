@@ -135,7 +135,7 @@ export function SearchDialog({ open, onClose }: SearchDialogProps) {
         role="dialog"
         aria-modal="true"
         aria-labelledby="search-dialog-title"
-        className="relative bg-background rounded-xl shadow-2xl w-full max-w-2xl mx-4 overflow-hidden animate-in fade-in slide-in-from-top-4 duration-200"
+        className="relative bg-background rounded-2xl shadow-2xl w-full max-w-2xl mx-4 overflow-hidden animate-in fade-in slide-in-from-top-4 duration-200 border border-border/50"
       >
         <h2 id="search-dialog-title" className="sr-only">Search messages</h2>
         {/* Security notice */}

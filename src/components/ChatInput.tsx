@@ -251,7 +251,7 @@ export function ChatInput({ onSend, disabled, isSending }: ChatInputProps) {
           {attachments.map((file, i) => (
             <div
               key={file.id}
-              className="relative flex items-center gap-2 px-3 py-2 bg-muted rounded-lg text-sm group hover:bg-muted/80 transition-colors"
+              className="relative flex items-center gap-2 px-3 py-2 bg-muted/60 border border-border/50 rounded-xl text-sm group hover:bg-muted transition-colors"
             >
               {/* Image preview or file icon */}
               {file.previewUrl ? (
@@ -281,10 +281,10 @@ export function ChatInput({ onSend, disabled, isSending }: ChatInputProps) {
       {/* Input row */}
       <div
         className={cn(
-          "relative flex items-end gap-2 rounded-2xl border bg-background/50 transition-all duration-200",
+          "relative flex items-end gap-2 rounded-2xl border bg-background/60 transition-colors duration-200",
           isFocused
-            ? "border-primary/50 ring-2 ring-primary/20 shadow-lg"
-            : "border-border hover:border-border/80",
+            ? "border-primary/40 ring-2 ring-primary/15 shadow-md shadow-primary/5"
+            : "border-border hover:border-border/70",
           disabled && "opacity-50 cursor-not-allowed"
         )}
       >

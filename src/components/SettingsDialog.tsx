@@ -241,7 +241,7 @@ export function SettingsDialog({ open, onClose, onRerunSetup }: SettingsDialogPr
         role="dialog"
         aria-modal="true"
         aria-labelledby="settings-dialog-title"
-        className="relative bg-background rounded-xl shadow-2xl w-full max-w-lg mx-4 max-h-[90vh] overflow-hidden animate-in fade-in zoom-in-95 duration-200 border border-border/50 ring-1 ring-white/10 flex flex-col"
+        className="relative bg-background rounded-2xl shadow-2xl w-full max-w-lg mx-4 max-h-[90vh] overflow-hidden animate-in fade-in zoom-in-95 duration-200 border border-border/50 flex flex-col"
       >
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-border">
@@ -276,7 +276,7 @@ export function SettingsDialog({ open, onClose, onRerunSetup }: SettingsDialogPr
                   aria-describedby={urlError ? "gateway-url-error" : undefined}
                   aria-invalid={urlError ? "true" : undefined}
                   className={cn(
-                    "w-full px-3 py-2 rounded-lg border bg-muted/30 focus:outline-none focus:ring-2",
+                    "w-full px-3 py-2 rounded-xl border bg-muted/30 focus:outline-none focus:ring-2 transition-colors",
                     urlError 
                       ? "border-destructive focus:ring-destructive/50" 
                       : "border-border focus:ring-primary/50"
@@ -326,7 +326,7 @@ export function SettingsDialog({ open, onClose, onRerunSetup }: SettingsDialogPr
                     onChange={(e) => setFormData({ ...formData, gatewayToken: e.target.value })}
                     placeholder="Stored securely in OS keychain"
                     aria-describedby="gateway-token-hint"
-                    className="w-full px-3 py-2 pr-10 rounded-lg border border-border bg-muted/30 focus:outline-none focus:ring-2 focus:ring-primary/50"
+                    className="w-full px-3 py-2 pr-10 rounded-xl border border-border bg-muted/30 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-colors"
                   />
                   <button
                     type="button"
@@ -427,7 +427,7 @@ export function SettingsDialog({ open, onClose, onRerunSetup }: SettingsDialogPr
                       value={formData.defaultModel}
                       onChange={(e) => setFormData({ ...formData, defaultModel: e.target.value })}
                       aria-describedby={!connected ? "model-hint" : undefined}
-                      className="w-full px-3 py-2 rounded-lg border border-border bg-muted/30 focus:outline-none focus:ring-2 focus:ring-primary/50"
+                      className="w-full px-3 py-2 rounded-xl border border-border bg-muted/30 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-colors"
                     >
                       {Object.entries(modelsByProvider).map(([provider, providerModels]) => (
                         <optgroup key={provider} label={providerNames[provider] || provider}>
@@ -474,7 +474,7 @@ export function SettingsDialog({ open, onClose, onRerunSetup }: SettingsDialogPr
                   onChange={(e) => setFormData({ ...formData, defaultSystemPrompt: e.target.value })}
                   placeholder="e.g., You are a helpful assistant that responds concisely..."
                   aria-describedby="system-prompt-hint"
-                  className="w-full h-24 px-3 py-2 rounded-lg text-sm border border-border bg-background focus:ring-2 focus:ring-ring focus:border-transparent resize-none"
+                  className="w-full h-24 px-3 py-2 rounded-xl text-sm border border-border bg-muted/30 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-transparent resize-none transition-colors"
                 />
               </div>
             </div>

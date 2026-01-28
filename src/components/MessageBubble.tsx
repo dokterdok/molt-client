@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, KeyboardEvent, Suspense, memo } from "react";
+import { useState, useRef, useEffect, KeyboardEvent, memo } from "react";
 import { Message, Attachment } from "../stores/store";
 import { cn } from "../lib/utils";
 import { formatDistanceToNow } from "date-fns";
@@ -15,18 +15,7 @@ import {
   FileText,
 } from "lucide-react";
 import { ImageRenderer } from "./ImageRenderer";
-
-// Lazy-load the heavy markdown renderer (~336 kB chunk with react-markdown + highlight.js)
-const MarkdownRenderer = React.lazy(() => import("./MarkdownRenderer").then(m => ({ default: m.MarkdownRenderer })));
-
-// Lightweight plain-text fallback shown while markdown chunk loads
-function PlainTextFallback({ content }: { content: string }) {
-  return (
-    <div className="prose prose-sm dark:prose-invert max-w-none">
-      <p className="whitespace-pre-wrap break-words">{content}</p>
-    </div>
-  );
-}
+import { MarkdownRenderer } from "./MarkdownRenderer";
 
 interface MessageBubbleProps {
   message: Message;
@@ -160,7 +149,7 @@ export const MessageBubble = memo(function MessageBubble({ message, onEdit, onRe
           className={cn(
             "relative",
             isUser ? "text-right" : "",
-            isUser && !isEditing && "bg-primary/5 rounded-2xl rounded-tr-sm px-4 py-3",
+            isUser && !isEditing && "bg-gradient-to-br from-primary/10 to-primary/[0.06] shadow-sm shadow-primary/10 rounded-2xl rounded-tr-sm px-4 py-3",
             // Streaming state: subtle border pulse
             message.isStreaming && !isUser && "border border-primary/30 rounded-2xl px-4 py-3 animate-streaming-pulse"
           )}
@@ -220,13 +209,11 @@ export const MessageBubble = memo(function MessageBubble({ message, onEdit, onRe
           ) : message.isStreaming && !message.content ? (
             <TypingIndicator />
           ) : (
-            <Suspense fallback={<PlainTextFallback content={message.content} />}>
-              <MarkdownRenderer
-                content={message.content}
-                copiedCode={copiedCode}
-                onCopyCode={copyToClipboard}
-              />
-            </Suspense>
+            <MarkdownRenderer
+              content={message.content}
+              copiedCode={copiedCode}
+              onCopyCode={copyToClipboard}
+            />
           )}
 
           {/* Streaming cursor */}
@@ -243,12 +230,13 @@ export const MessageBubble = memo(function MessageBubble({ message, onEdit, onRe
         {/* Actions (visible on hover) */}
         {!message.isStreaming && !isEditing && (
           <div className={cn(
-            "flex items-center gap-1 mt-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200",
-            isUser && "justify-end"
+            "flex items-center gap-0.5 mt-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200",
+            isUser && "justify-end",
+            "bg-background/80 backdrop-blur-sm border border-border/50 rounded-lg p-0.5 w-fit shadow-sm"
           )}>
             <button
               onClick={copyMessage}
-              className="p-1.5 text-muted-foreground hover:text-foreground hover:bg-muted rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-primary/50"
+              className="p-1.5 text-muted-foreground hover:text-foreground hover:bg-muted rounded-md transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
               title="Copy message"
               aria-label="Copy message to clipboard"
             >
@@ -258,7 +246,7 @@ export const MessageBubble = memo(function MessageBubble({ message, onEdit, onRe
             {isUser && onEdit && (
               <button
                 onClick={handleStartEdit}
-                className="p-1.5 text-muted-foreground hover:text-foreground hover:bg-muted rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-primary/50"
+                className="p-1.5 text-muted-foreground hover:text-foreground hover:bg-muted rounded-md transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
                 title="Edit message (will resend)"
                 aria-label="Edit message"
               >
@@ -269,7 +257,7 @@ export const MessageBubble = memo(function MessageBubble({ message, onEdit, onRe
             {!isUser && isLastAssistantMessage && onRegenerate && (
               <button
                 onClick={handleRegenerate}
-                className="p-1.5 text-muted-foreground hover:text-foreground hover:bg-muted rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-primary/50"
+                className="p-1.5 text-muted-foreground hover:text-foreground hover:bg-muted rounded-md transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
                 title="Regenerate response"
                 aria-label="Regenerate response"
               >
@@ -320,7 +308,7 @@ function TypingIndicator() {
       {[0, 1, 2].map((i) => (
         <span
           key={i}
-          className="w-2 h-2 rounded-full bg-primary/70 animate-bounce shadow-sm"
+          className="w-2 h-2 rounded-full bg-primary/60 animate-bounce"
           style={{ 
             animationDelay: `${i * 0.15}s`,
             animationDuration: "0.6s"

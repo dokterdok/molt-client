@@ -117,10 +117,10 @@ export function WelcomeView() {
                 onClick={() => handleSuggestionClick(suggestion)}
                 disabled={!connected}
                 className={cn(
-                  "group p-4 text-left rounded-xl border transition-all duration-200",
+                  "group p-4 text-left rounded-xl border transition-[colors,transform,box-shadow] duration-200",
                   "animate-in fade-in slide-in-from-bottom-2",
                   connected
-                    ? "border-border hover:border-primary/30 hover:bg-muted/50 hover:shadow-lg hover:shadow-primary/5 hover:-translate-y-0.5"
+                    ? "border-border/50 hover:border-primary/30 hover:bg-primary/5 hover:shadow-md hover:shadow-primary/5 hover:-translate-y-0.5 cursor-pointer"
                     : "border-border/50 opacity-50 cursor-not-allowed"
                 )}
                 style={{ animationDelay: `${i * 50 + 200}ms` }}

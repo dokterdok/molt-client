@@ -934,6 +934,8 @@ pub async fn send_message(
     let request_id = uuid::Uuid::new_v4().to_string();
     let idempotency_key = uuid::Uuid::new_v4().to_string();
 
+    // Build request params - always use "message" field (not "input")
+    // Attachments go in separate "attachments" array per Gateway protocol
     let request_params = if params.attachments.is_empty() {
         serde_json::json!({
             "message": params.message,
@@ -942,11 +944,27 @@ pub async fn send_message(
             "idempotencyKey": idempotency_key,
         })
     } else {
+        // Convert attachments to Gateway format:
+        // [{type: "image", mimeType: "...", content: "base64..."}]
+        let attachments: Vec<serde_json::Value> = params.attachments.iter().map(|a| {
+            serde_json::json!({
+                "type": match a.mime_type.as_str() {
+                    t if t.starts_with("image/") => "image",
+                    t if t.starts_with("text/") => "text",
+                    _ => "file"
+                },
+                "mimeType": a.mime_type,
+                "fileName": a.filename,
+                "content": a.data,  // Already base64
+            })
+        }).collect();
+        
         serde_json::json!({
-            "input": build_input_items(&params.message, &params.attachments),
+            "message": params.message,
             "sessionKey": params.session_key,
             "thinking": params.thinking,
             "idempotencyKey": idempotency_key,
+            "attachments": attachments,
         })
     };
 

@@ -438,17 +438,14 @@ describe('Message Flow', () => {
     it('should update the conversation updatedAt timestamp', () => {
       const store = useStore.getState();
       const conv = store.createConversation();
-      const originalUpdatedAt = conv.updatedAt;
+      const originalUpdatedAt = conv.updatedAt.getTime();
 
       const msg = store.addMessage(conv.id, { role: 'user', content: 'Test' });
-
-      // Small delay to ensure timestamp difference
-      const timeBefore = new Date();
       store.updateMessage(conv.id, msg.id, 'Updated');
 
       const updatedConv = useStore.getState().conversations.find(c => c.id === conv.id)!;
       expect(updatedConv.updatedAt).toBeInstanceOf(Date);
-      expect(updatedConv.updatedAt.getTime()).toBeGreaterThanOrEqual(timeBefore.getTime());
+      expect(updatedConv.updatedAt.getTime()).toBeGreaterThanOrEqual(originalUpdatedAt);
     });
   });
 

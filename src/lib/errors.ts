@@ -22,7 +22,7 @@ export function translateError(error: string | Error): UserFriendlyError {
   if (lowerError.includes('connection refused') || lowerError.includes('econnrefused')) {
     return {
       title: "Can't reach Gateway",
-      message: "The Clawdbot Gateway isn't responding.",
+      message: "The Gateway isn't responding.",
       suggestion: "Make sure the Gateway is running and the URL is correct."
     };
   }

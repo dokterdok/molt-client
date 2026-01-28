@@ -310,7 +310,7 @@ export function SettingsDialog({ open, onClose, onRerunSetup }: SettingsDialogPr
                         <p className="text-muted-foreground">
                           Check your Gateway config file or ask your admin. Run{" "}
                           <code className="px-1 py-0.5 bg-muted rounded text-xs font-mono">
-                            moltzer gateway status
+                            clawdbot gateway status
                           </code>{" "}
                           to see if auth is enabled.
                         </p>

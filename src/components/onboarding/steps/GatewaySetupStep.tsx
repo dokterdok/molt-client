@@ -39,7 +39,7 @@ function getErrorHint(errorStr: string): { hint: string; action?: string; comman
     return {
       hint: "The authentication token is wrong or missing.",
       action: "Where to find your token",
-      command: "moltzer gateway status"
+      command: "clawdbot gateway status"
     };
   }
   if (lower.includes("400") || lower.includes("bad request")) {
@@ -58,14 +58,14 @@ function getErrorHint(errorStr: string): { hint: string; action?: string; comman
     return {
       hint: "Gateway is not running or not reachable.",
       action: "Start Gateway with",
-      command: "moltzer gateway start"
+      command: "clawdbot gateway start"
     };
   }
   if (lower.includes("timeout") || lower.includes("timed out")) {
     return {
       hint: "Connection timed out — Gateway may be down.",
       action: "Check Gateway status",
-      command: "moltzer gateway status"
+      command: "clawdbot gateway status"
     };
   }
   if (lower.includes("network") || lower.includes("dns") || lower.includes("resolve")) {
@@ -78,7 +78,7 @@ function getErrorHint(errorStr: string): { hint: string; action?: string; comman
   return {
     hint: "Gateway connection failed.",
     action: "Make sure Gateway is running",
-    command: "moltzer gateway start"
+    command: "clawdbot gateway start"
   };
 }
 
@@ -442,7 +442,7 @@ export function GatewaySetupStep({
                       <p className="text-muted-foreground">
                         Check your Gateway config file or ask your admin. Run{" "}
                         <code className="px-1 py-0.5 bg-muted rounded text-xs font-mono">
-                          moltzer gateway status
+                          clawdbot gateway status
                         </code>{" "}
                         to see if auth is enabled.
                       </p>

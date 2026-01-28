@@ -165,6 +165,8 @@ async fn perform_update_check<R: Runtime>(app: &AppHandle<R>) -> Result<UpdateIn
             let state = app.state::<UpdaterState>();
             *state.last_check.lock().await = Some(std::time::SystemTime::now());
             
+            println!("Update check complete: no updates available (current: {})", current_version);
+            
             Ok(UpdateInfo {
                 available: false,
                 version: current_version.clone(),
@@ -174,7 +176,7 @@ async fn perform_update_check<R: Runtime>(app: &AppHandle<R>) -> Result<UpdateIn
             })
         }
         Err(e) => {
-            eprintln!("Update check failed: {}", e);
+            eprintln!("[Updater] Update check failed: {}", e);
             Err(format!("Failed to check for updates: {}", e))
         }
     }
@@ -192,15 +194,25 @@ pub fn setup_periodic_checks<R: Runtime>(app: &AppHandle<R>) {
             (base_hours * 3600) + (random_extra_minutes * 60)
         );
         
+        println!(
+            "[Updater] Periodic checks enabled: every {} hours {} minutes",
+            base_hours,
+            random_extra_minutes
+        );
+        
         let mut interval_timer = interval(check_interval);
         
         loop {
             interval_timer.tick().await;
             
+            println!("[Updater] Performing periodic update check...");
+            
             // Perform update check
             if let Ok(info) = perform_update_check(&app_handle).await {
                 if info.available {
-                    println!("Update available: v{}", info.version);
+                    println!("[Updater] Update available: v{}", info.version);
+                } else {
+                    println!("[Updater] No updates available");
                 }
             }
         }
@@ -211,11 +223,13 @@ pub fn setup_periodic_checks<R: Runtime>(app: &AppHandle<R>) {
 pub fn setup_network_listener<R: Runtime>(app: &AppHandle<R>) {
     let app_handle = app.clone();
     
+    println!("[Updater] Network listener enabled: will check for updates on gateway reconnection");
+    
     // Listen to "gateway:reconnected" event emitted by the gateway module
     let _ = app.listen("gateway:reconnected", move |_event| {
         let app = app_handle.clone();
         tauri::async_runtime::spawn(async move {
-            println!("Gateway reconnected, checking for updates...");
+            println!("[Updater] Gateway reconnected, checking for updates...");
             let _ = perform_update_check(&app).await;
         });
     });

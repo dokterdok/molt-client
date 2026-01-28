@@ -275,7 +275,8 @@ export const MessageBubble = memo(function MessageBubble({
         {!message.isStreaming && !isEditing && (
           <div
             className={cn(
-              "flex items-center gap-0.5 mt-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200",
+              "flex items-center gap-0.5 mt-2 opacity-0 group-hover:opacity-100 transition-all duration-200",
+              "group-hover:translate-y-0 translate-y-1",
               isUser && "justify-end",
               "bg-background/80 backdrop-blur-sm border border-border/50 rounded-lg p-0.5 w-fit shadow-sm",
             )}

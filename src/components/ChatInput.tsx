@@ -336,9 +336,9 @@ export function ChatInput({ onSend, disabled, isSending }: ChatInputProps) {
       {/* Input row */}
       <div
         className={cn(
-          "relative flex items-end gap-2 rounded-2xl border bg-background/60 transition-colors duration-200",
+          "relative flex items-end gap-2 rounded-2xl border bg-background/60 transition-all duration-200",
           isFocused
-            ? "border-primary/40 ring-2 ring-primary/15 shadow-md shadow-primary/5"
+            ? "border-primary/40 ring-2 ring-primary/15 shadow-md shadow-primary/5 scale-[1.01]"
             : "border-border hover:border-border/70",
           disabled && "opacity-50 cursor-not-allowed",
         )}
@@ -406,9 +406,9 @@ export function ChatInput({ onSend, disabled, isSending }: ChatInputProps) {
           onClick={handleSend}
           disabled={!canSend}
           className={cn(
-            "p-3 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-xl m-1 transition-all duration-200 flex-shrink-0",
+            "p-3 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-xl m-1 transition-all duration-150 flex-shrink-0",
             canSend
-              ? "bg-primary text-primary-foreground hover:bg-primary/90 hover:shadow-md active:scale-95"
+              ? "bg-primary text-primary-foreground hover:bg-primary/90 hover:shadow-md hover:scale-105 active:scale-95"
               : "text-muted-foreground cursor-not-allowed",
           )}
           title="Send message (Enter)"

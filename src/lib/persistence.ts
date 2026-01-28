@@ -221,7 +221,7 @@ export async function persistMessage(
       ? await encrypt(message.thinkingContent)
       : undefined;
 
-    const searchText = message.content.toLowerCase();
+    const searchText = (message.content || "").toLowerCase();
 
     const dbMessage: DBMessage = {
       id: message.id,

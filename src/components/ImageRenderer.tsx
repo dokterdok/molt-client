@@ -60,6 +60,20 @@ export function ImageRenderer({
   // Focus trap for lightbox
   useFocusTrap(lightboxRef, isExpanded);
 
+  // Keyboard shortcut: Escape to close lightbox
+  useEffect(() => {
+    if (!isExpanded) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setIsExpanded(false);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isExpanded]);
+
   const handleLoad = useCallback((e: SyntheticEvent<HTMLImageElement>) => {
     const img = e.currentTarget;
     setDimensions({ width: img.naturalWidth, height: img.naturalHeight });
@@ -183,13 +197,9 @@ export function ImageRenderer({
       {/* Lightbox modal */}
       {isExpanded && (
         <div
+          ref={lightboxRef}
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 animate-in fade-in duration-200"
           onClick={() => setIsExpanded(false)}
-          onKeyDown={(e) => {
-            if (e.key === "Escape") {
-              setIsExpanded(false);
-            }
-          }}
           role="dialog"
           aria-modal="true"
           aria-label="Image lightbox"

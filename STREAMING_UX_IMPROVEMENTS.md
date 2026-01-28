@@ -143,6 +143,35 @@ Improved `appendToCurrentMessage` efficiency:
 - Faster message cascade on load
 - Optimized state updates
 
+### 14. **Input Field Micro-Interactions**
+**New:** Subtle scale effect on focus
+- Input scales to 1.01 when focused
+- Combines with existing border/shadow effects
+- Creates sense of "lifting" when active
+- Duration: 200ms for smooth transition
+
+### 15. **Send Button Polish**
+**Before:** Basic hover with scale
+**After:** Enhanced hover and press states
+- Hover: scale-105 + shadow
+- Active: scale-95 for tactile press
+- Transition: 150ms (snappier than 200ms)
+- Send icon slides slightly on hover
+
+---
+
+## Iteration 3: Micro-Interactions & Polish
+
+**Current Time:** 22:10 CET
+**Target:** Continue until 6am CET (~8 hours remaining)
+
+### Focus Areas:
+- Message sending visual feedback
+- Action button hover states
+- Code block copy button smoothness
+- Profile any remaining performance issues
+- Test on different screen sizes
+
 ---
 
 ## Next Iteration Focus

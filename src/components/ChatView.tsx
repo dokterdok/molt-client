@@ -136,6 +136,14 @@ export function ChatView() {
     async (messageId: string, newContent: string) => {
       if (!currentConversation) return;
 
+      // Check connection before attempting to edit
+      if (!connected) {
+        setError("Cannot edit messages while offline. Please wait for reconnection.");
+        setPendingEdit(null);
+        setTimeout(() => setError(null), 10000);
+        return;
+      }
+
       // Delete all messages after this one (including any assistant response)
       deleteMessagesAfter(currentConversation.id, messageId);
 
@@ -223,6 +231,13 @@ export function ChatView() {
     async (messageId: string) => {
       if (!currentConversation || isSending || currentStreamingMessageId)
         return;
+
+      // Check connection before attempting to regenerate
+      if (!connected) {
+        setError("Cannot regenerate responses while offline. Please wait for reconnection.");
+        setTimeout(() => setError(null), 10000);
+        return;
+      }
 
       // Find the assistant message
       const messageIndex = currentConversation.messages.findIndex(
@@ -606,13 +621,13 @@ function EmptyConversation() {
         className="text-xl font-semibold mb-2 animate-in fade-in slide-in-from-bottom-2 duration-500"
         style={{ animationDelay: "200ms" }}
       >
-        Let's get started
+        Ready to chat?
       </h2>
       <p
         className="text-muted-foreground max-w-md text-sm sm:text-base leading-relaxed animate-in fade-in slide-in-from-bottom-2 duration-500"
         style={{ animationDelay: "300ms" }}
       >
-        What can I help you with today? Choose a starter below or type your own message.
+        Choose a quick starter below, or type your own message to get started.
       </p>
 
       {/* Quick action suggestions — clickable to fill input */}

@@ -459,6 +459,24 @@ export function SettingsDialog({ open, onClose, onRerunSetup }: SettingsDialogPr
                   aria-describedby="thinking-hint"
                 />
               </div>
+
+              {/* System Prompt */}
+              <div>
+                <label htmlFor="system-prompt" className="block text-sm font-medium mb-1.5">
+                  Default System Prompt
+                </label>
+                <p id="system-prompt-hint" className="text-xs text-muted-foreground mb-2">
+                  Custom instructions for the AI (applied to new conversations)
+                </p>
+                <textarea
+                  id="system-prompt"
+                  value={formData.defaultSystemPrompt || ""}
+                  onChange={(e) => setFormData({ ...formData, defaultSystemPrompt: e.target.value })}
+                  placeholder="e.g., You are a helpful assistant that responds concisely..."
+                  aria-describedby="system-prompt-hint"
+                  className="w-full h-24 px-3 py-2 rounded-lg text-sm border border-border bg-background focus:ring-2 focus:ring-ring focus:border-transparent resize-none"
+                />
+              </div>
             </div>
           </section>
 

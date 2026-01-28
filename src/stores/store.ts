@@ -68,6 +68,8 @@ export interface Conversation {
   model?: string;
   thinkingEnabled: boolean;
   isPinned: boolean;
+  /** Custom system prompt for this conversation (overrides default) */
+  systemPrompt?: string;
 }
 
 /**
@@ -89,6 +91,8 @@ export interface Settings {
   defaultModel: string;
   thinkingDefault: boolean;
   theme: "light" | "dark" | "system";
+  /** Default system prompt for new conversations */
+  defaultSystemPrompt: string;
 }
 
 /**
@@ -456,6 +460,7 @@ export const useStore = create<Store>()((set, get) => ({
         defaultModel: "anthropic/claude-sonnet-4-5",
         thinkingDefault: false,
         theme: "system",
+        defaultSystemPrompt: "", // Empty by default
       },
 
       updateSettings: async (updates) => {

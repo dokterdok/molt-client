@@ -258,59 +258,73 @@ fn get_platform() -> String {
     return "unknown".to_string();
 }
 
-/// Debug: Test raw TCP connection using BLOCKING std::net (works better with Tailscale on macOS)
-async fn test_tcp_connection(host: &str, port: u16) -> Result<(), String> {
-    let addr = format!("{}:{}", host, port);
-    log_protocol_error("TCP Test", &format!("Attempting BLOCKING TCP to {}", addr));
+/// Test TCP connection using socket2 with explicit IPv4 (bypasses potential IPv6 issues on macOS)
+async fn test_tcp_connection_ipv4(host: &str, port: u16) -> Result<std::net::SocketAddr, String> {
+    let addr_str = format!("{}:{}", host, port);
+    log_protocol_error("TCP Test", &format!("Testing IPv4-only connection to {}", addr_str));
     
-    let addr_clone = addr.clone();
+    let host = host.to_string();
     let result = tokio::task::spawn_blocking(move || {
-        use std::net::TcpStream as StdTcpStream;
-        use std::time::Duration as StdDuration;
+        use socket2::{Socket, Domain, Type, Protocol};
+        use std::net::{SocketAddr, ToSocketAddrs};
+        use std::time::Duration;
         
-        // Try to resolve and connect using std::net (which uses system networking)
-        match std::net::ToSocketAddrs::to_socket_addrs(&addr_clone.as_str()) {
-            Ok(mut addrs) => {
-                if let Some(socket_addr) = addrs.next() {
-                    match StdTcpStream::connect_timeout(&socket_addr, StdDuration::from_secs(5)) {
-                        Ok(_) => Ok(()),
-                        Err(e) => Err(format!("Connect failed: {}", e)),
-                    }
-                } else {
-                    Err("DNS resolved but no addresses".to_string())
-                }
+        // Resolve hostname - filter to IPv4 only
+        let addrs: Vec<SocketAddr> = format!("{}:{}", host, port)
+            .to_socket_addrs()
+            .map_err(|e| format!("DNS failed: {}", e))?
+            .filter(|a| a.is_ipv4())
+            .collect();
+        
+        if addrs.is_empty() {
+            return Err("No IPv4 addresses found".to_string());
+        }
+        
+        log_protocol_error("TCP Test", &format!("Resolved to {} IPv4 addrs: {:?}", addrs.len(), addrs));
+        
+        // Create IPv4-only socket
+        let socket = Socket::new(Domain::IPV4, Type::STREAM, Some(Protocol::TCP))
+            .map_err(|e| format!("Socket creation failed: {}", e))?;
+        
+        // Try first IPv4 address
+        let addr = addrs[0];
+        log_protocol_error("TCP Test", &format!("Connecting to {} (IPv4 only)...", addr));
+        
+        let start = std::time::Instant::now();
+        match socket.connect_timeout(&addr.into(), Duration::from_secs(10)) {
+            Ok(()) => {
+                log_protocol_error("TCP Test", &format!("SUCCESS in {:?}", start.elapsed()));
+                Ok(addr)
             }
-            Err(e) => Err(format!("DNS resolution failed: {}", e)),
+            Err(e) => {
+                log_protocol_error("TCP Test", &format!("FAILED after {:?}: {}", start.elapsed(), e));
+                Err(format!("Connect failed: {}", e))
+            }
         }
     }).await.map_err(|e| format!("Task error: {}", e))?;
     
-    match result {
-        Ok(()) => {
-            log_protocol_error("TCP Test", &format!("SUCCESS - connected to {}", addr));
-            Ok(())
-        }
-        Err(e) => {
-            log_protocol_error("TCP Test", &format!("FAILED - {}: {}", addr, e));
-            Err(e)
-        }
-    }
+    result
 }
 
-/// Resolve hostname using system DNS (works with Tailscale MagicDNS)
+/// Resolve hostname using system DNS - IPv4 only (avoids IPv6 issues on macOS with Tailscale)
 async fn resolve_with_system_dns(host: &str, port: u16) -> Result<std::net::SocketAddr, String> {
     let addr_str = format!("{}:{}", host, port);
-    log_protocol_error("DNS", &format!("Resolving {} via system DNS", addr_str));
+    log_protocol_error("DNS", &format!("Resolving {} via system DNS (IPv4 only)", addr_str));
     
+    let addr_str_clone = addr_str.clone();
     let result = tokio::task::spawn_blocking(move || {
         use std::net::ToSocketAddrs;
-        addr_str.to_socket_addrs()
+        let addrs: Vec<_> = addr_str_clone.to_socket_addrs()
             .map_err(|e| format!("DNS resolution failed: {}", e))?
-            .next()
-            .ok_or_else(|| "No addresses found".to_string())
+            .filter(|a| a.is_ipv4())  // IPv4 ONLY
+            .collect();
+        
+        addrs.into_iter().next()
+            .ok_or_else(|| "No IPv4 addresses found".to_string())
     }).await.map_err(|e| format!("Task error: {}", e))?;
     
     match &result {
-        Ok(addr) => log_protocol_error("DNS", &format!("Resolved to {}", addr)),
+        Ok(addr) => log_protocol_error("DNS", &format!("Resolved to {} (IPv4)", addr)),
         Err(e) => log_protocol_error("DNS", &format!("Failed: {}", e)),
     }
     result
@@ -331,18 +345,19 @@ async fn try_connect_with_fallback(
 > {
     let timeout_duration = Duration::from_secs(30);
 
-    // For Tailscale URLs, resolve DNS first using system resolver
+    // For Tailscale URLs, test IPv4 connectivity first
     let connect_url = if url.contains(".ts.net") {
         if let Ok(parsed) = url::Url::parse(url) {
             if let Some(host) = parsed.host_str() {
                 let port = parsed.port().unwrap_or(if url.starts_with("wss") { 443 } else { 80 });
                 
-                // Resolve using system DNS (includes Tailscale MagicDNS)
-                match resolve_with_system_dns(host, port).await {
+                // Test IPv4-only TCP connection first (diagnostic)
+                log_protocol_error("Tailscale", "Testing IPv4-only TCP connection...");
+                match test_tcp_connection_ipv4(host, port).await {
                     Ok(addr) => {
-                        // Rewrite URL to use IP, keeping the host for SNI
+                        // IPv4 works! Rewrite URL to use the resolved IP
                         let ip_url = url.replace(host, &addr.ip().to_string());
-                        log_protocol_error("Tailscale", &format!("Rewriting URL to IP: {}", ip_url));
+                        log_protocol_error("Tailscale", &format!("IPv4 works! Rewriting URL to: {}", ip_url));
                         ip_url
                     }
                     Err(e) => {

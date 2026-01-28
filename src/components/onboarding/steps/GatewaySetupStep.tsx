@@ -218,6 +218,7 @@ export function GatewaySetupStep({
   const [autoDetected, setAutoDetected] = useState(false);
   const [suggestedPort, setSuggestedPort] = useState<string | null>(null);
   const [protocolNotice, setProtocolNotice] = useState<string>("");
+  const [isButtonHovered, setIsButtonHovered] = useState(false);
   const { updateSettings } = useStore();
   
   // Track mounted state and cancellation
@@ -686,20 +687,41 @@ export function GatewaySetupStep({
             )}
 
             <button
-              onClick={handleTestConnection}
-              disabled={connectionState === "testing" || !gatewayUrl.trim()}
+              onClick={() => {
+                if (connectionState === "testing") {
+                  // Cancel the test
+                  isCancelledRef.current = true;
+                  setConnectionState("idle");
+                } else {
+                  handleTestConnection();
+                }
+              }}
+              disabled={!gatewayUrl.trim() && connectionState !== "testing"}
+              onMouseEnter={() => setIsButtonHovered(true)}
+              onMouseLeave={() => setIsButtonHovered(false)}
               className={cn(
                 "w-full px-6 py-4 rounded-lg font-semibold text-lg transition-all duration-200",
                 connectionState === "testing"
-                  ? "bg-muted text-muted-foreground cursor-not-allowed"
+                  ? isButtonHovered
+                    ? "bg-red-500 text-white cursor-pointer hover:bg-red-600"
+                    : "bg-muted text-muted-foreground cursor-pointer"
                   : "bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg shadow-blue-500/30 hover:shadow-xl hover:shadow-blue-500/40 hover:-translate-y-0.5 active:translate-y-0"
               )}
             >
               {connectionState === "testing" ? (
-                <span className="flex items-center justify-center gap-2">
-                  <Spinner size="sm" />
-                  Testing Connection...
-                </span>
+                isButtonHovered ? (
+                  <span className="flex items-center justify-center gap-2">
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                    Cancel
+                  </span>
+                ) : (
+                  <span className="flex items-center justify-center gap-2">
+                    <Spinner size="sm" />
+                    Testing Connection...
+                  </span>
+                )
               ) : (
                 "Test Connection"
               )}

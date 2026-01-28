@@ -253,14 +253,14 @@ export function Sidebar({ onToggle: _onToggle, onRerunSetup, hasUpdateAvailable 
           (searchQuery ? (
             <EmptyState
               icon={<Search className="w-8 h-8" strokeWidth={1.5} />}
-              title="No matches found"
+              title="No matches"
               description={`Try a different search term`}
             />
           ) : (
             <EmptyState
               icon={<MessageSquare className="w-8 h-8" strokeWidth={1.5} />}
-              title="Ready to chat?"
-              description="Create your first conversation to get started"
+              title="No conversations yet"
+              description="Start a new chat to begin"
               action={
                 <Button
                   onClick={handleNewChat}

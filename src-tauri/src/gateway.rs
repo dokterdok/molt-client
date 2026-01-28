@@ -106,6 +106,19 @@ use tokio::sync::{mpsc, oneshot, Mutex, RwLock};
 use tokio_tungstenite::{connect_async_tls_with_config, tungstenite::Message as WsMessage, Connector};
 
 // ============================================================================
+// Type Aliases
+// ============================================================================
+
+/// Shared state reference for background tasks
+type StateRef = Arc<GatewayStateInner>;
+
+/// Pending requests map
+type PendingRequestsMap = Arc<Mutex<HashMap<String, PendingRequest>>>;
+
+/// Active streaming runs tracker
+type ActiveRunsMap = Arc<Mutex<HashMap<String, Instant>>>;
+
+// ============================================================================
 // State Management
 // ============================================================================
 

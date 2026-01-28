@@ -303,7 +303,7 @@ export function ChatView() {
     
     // Check connection before attempting to send
     if (!connected) {
-      setError("Cannot send messages while offline. Please wait for reconnection.");
+      setError("You're offline right now. Reconnect to send messages.");
       setLastFailedMessage({ content, attachments });
       setTimeout(() => setError(null), 10000);
       return;

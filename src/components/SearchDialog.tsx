@@ -32,6 +32,7 @@ export function SearchDialog({ open, onClose }: SearchDialogProps) {
   const [roleFilter, setRoleFilter] = useState<
     "all" | "user" | "assistant"
   >("all");
+  const [totalMatches, setTotalMatches] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
   const dialogRef = useRef<HTMLDivElement>(null);
   const resultsRef = useRef<(HTMLButtonElement | null)[]>([]);
@@ -116,6 +117,7 @@ export function SearchDialog({ open, onClose }: SearchDialogProps) {
           new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime(),
       );
 
+      setTotalMatches(searchResults.length);
       setResults(searchResults.slice(0, 50)); // Limit results
       setSelectedIndex(0);
     } catch (err) {
@@ -333,6 +335,11 @@ export function SearchDialog({ open, onClose }: SearchDialogProps) {
                     <span className="text-primary">
                       {" "}
                       • {roleFilter === "user" ? "Your messages" : "Moltz replies"}
+                    </span>
+                  )}
+                  {totalMatches > 50 && (
+                    <span className="text-orange-500 ml-2">
+                      (showing top 50 of {totalMatches})
                     </span>
                   )}
                 </div>

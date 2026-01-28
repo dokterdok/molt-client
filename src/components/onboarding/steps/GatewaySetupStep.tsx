@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef, useCallback } from "react";
 import { invoke } from "@tauri-apps/api/core";
+import { listen, type UnlistenFn } from "@tauri-apps/api/event";
 import { useStore, type ModelInfo } from "../../../stores/store";
 import { cn } from "../../../lib/utils";
 import { Spinner } from "../../ui/spinner";
@@ -318,6 +319,46 @@ export function GatewaySetupStep({
     };
   }, [autoDetectGateway]);
 
+  // Listen for gateway errors during testing
+  useEffect(() => {
+    if (connectionState !== "testing") return;
+    
+    let unlistenState: UnlistenFn | undefined;
+    let unlistenError: UnlistenFn | undefined;
+    
+    const setupListeners = async () => {
+      // Listen for state changes (e.g., Failed state)
+      unlistenState = await listen<{ reason?: string; can_retry?: boolean }>("gateway:state", (event) => {
+        const payload = event.payload as { reason?: string } | string;
+        if (typeof payload === "object" && payload.reason) {
+          // Failed state
+          if (isMountedRef.current && connectionState === "testing") {
+            setConnectionState("error");
+            setErrorMessage(payload.reason);
+            setErrorHint(getErrorHint(payload.reason, gatewayUrl));
+          }
+        }
+      });
+      
+      // Listen for explicit errors
+      unlistenError = await listen<string>("gateway:error", (event) => {
+        if (isMountedRef.current && connectionState === "testing") {
+          setConnectionState("error");
+          const errMsg = typeof event.payload === "string" ? event.payload : "Connection error";
+          setErrorMessage(errMsg);
+          setErrorHint(getErrorHint(errMsg, gatewayUrl));
+        }
+      });
+    };
+    
+    setupListeners();
+    
+    return () => {
+      unlistenState?.();
+      unlistenError?.();
+    };
+  }, [connectionState, gatewayUrl]);
+
   const handleTestConnection = async () => {
     // Reset cancelled state for new test
     isCancelledRef.current = false;
@@ -356,6 +397,9 @@ export function GatewaySetupStep({
     setProtocolNotice("");
     setSuggestedPort(null);
 
+    // Frontend timeout failsafe (8 seconds max)
+    const CONNECT_TIMEOUT_MS = 8000;
+    
     try {
       await invoke("disconnect");
       
@@ -364,7 +408,13 @@ export function GatewaySetupStep({
         return;
       }
       
-      const result = await invoke<ConnectResult>("connect", { url: trimmedUrl, token: trimmedToken });
+      // Race between connect and timeout
+      const connectPromise = invoke<ConnectResult>("connect", { url: trimmedUrl, token: trimmedToken });
+      const timeoutPromise = new Promise<never>((_, reject) => {
+        setTimeout(() => reject(new Error("Connection timed out after 8 seconds")), CONNECT_TIMEOUT_MS);
+      });
+      
+      const result = await Promise.race([connectPromise, timeoutPromise]);
       
       // Check if cancelled after async operation
       if (isCancelledRef.current || !isMountedRef.current) {

@@ -296,9 +296,10 @@ code {
   animation: glow 2s ease-in-out infinite;
 }
 
-/* Typing bounce for message indicators */
+/* Typing bounce for message indicators - optimized for smoothness */
 .typing-dot {
-  animation: typing-bounce 1.4s infinite ease-in-out both;
+  animation: typing-bounce 1.2s infinite cubic-bezier(0.4, 0, 0.6, 1) both;
+  will-change: transform;
 }
 
 /* Streaming message border pulse (P1: optimized for responsiveness) */

@@ -243,8 +243,13 @@ export function SearchDialog({ open, onClose }: SearchDialogProps) {
               </span>
             </div>
           ) : results.length > 0 ? (
-            <div className="py-2">
-              {results.map((result, index) => (
+            <>
+              <div className="px-4 py-2 text-xs text-muted-foreground border-b border-border/50">
+                {results.length} {results.length === 1 ? "result" : "results"}{" "}
+                found
+              </div>
+              <div className="py-2">
+                {results.map((result, index) => (
                 <button
                   key={`${result.conversationId}-${result.messageId}`}
                   ref={(el) => (resultsRef.current[index] = el)}
@@ -281,8 +286,10 @@ export function SearchDialog({ open, onClose }: SearchDialogProps) {
                     <HighlightedText text={result.matchSnippet} query={query} />
                   </p>
                 </button>
-              ))}
-            </div>
+                ))}
+              </div>
+            </>
+          
           ) : query ? (
             <EmptyState
               icon={<Frown className="w-8 h-8" strokeWidth={1.5} />}

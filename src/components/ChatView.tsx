@@ -154,7 +154,7 @@ export function ChatView() {
         });
       } catch (err: unknown) {
         console.error("Failed to send edited message:", err);
-        const errorMsg = String(err).replace("Error: ", "");
+        const errorMsg = typeof err === "string" ? err : String(err).replace("Error: ", "");
         setError(errorMsg);
         setTimeout(() => setError(null), 15000);
       } finally {
@@ -252,7 +252,7 @@ export function ChatView() {
         });
       } catch (err: unknown) {
         console.error("Failed to regenerate response:", err);
-        const errorMsg = String(err).replace("Error: ", "");
+        const errorMsg = typeof err === "string" ? err : String(err).replace("Error: ", "");
         setError(errorMsg);
         setTimeout(() => setError(null), 15000);
       } finally {
@@ -526,12 +526,18 @@ export function ChatView() {
         );
       })()}
 
-      {/* Connection warning */}
+      {/* Connection warning - helpful and actionable */}
       {!connected && (
         <div className="px-4 py-2 bg-amber-500/10 border-t border-amber-500/20 animate-in slide-in-from-bottom duration-200">
-          <div className="max-w-3xl mx-auto flex items-center gap-2 text-amber-600 dark:text-amber-400 text-sm">
-            <AlertTriangle className="w-4 h-4 flex-shrink-0" />
-            <span>Not connected to Gateway. Messages won't be sent.</span>
+          <div className="max-w-3xl mx-auto flex items-center gap-3 text-amber-700 dark:text-amber-300 text-sm">
+            <WifiOff className="w-4 h-4 flex-shrink-0" strokeWidth={2} />
+            <div className="flex-1 min-w-0">
+              <span className="font-medium">Offline mode</span>
+              <span className="mx-1.5">·</span>
+              <span className="text-xs opacity-90">
+                Messages won't be sent until reconnected. Check the status bar above for retry options.
+              </span>
+            </div>
           </div>
         </div>
       )}

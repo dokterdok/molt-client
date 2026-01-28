@@ -309,15 +309,9 @@ async fn try_connect_with_fallback(
     ),
     GatewayError,
 > {
-    let timeout_duration = Duration::from_secs(15); // Increased for Tailscale/remote connections
+    let timeout_duration = Duration::from_secs(30); // Increased for Tailscale/remote connections
 
-    // Debug: Extract host and test TCP first
-    if let Ok(parsed) = url::Url::parse(url) {
-        if let Some(host) = parsed.host_str() {
-            let port = parsed.port().unwrap_or(if url.starts_with("wss") { 443 } else { 80 });
-            let _ = test_tcp_connection(host, port).await;
-        }
-    }
+    // Skip TCP test - it's just for debugging
 
     // Use native-tls connector for better macOS compatibility
     let tls_connector = native_tls::TlsConnector::new()

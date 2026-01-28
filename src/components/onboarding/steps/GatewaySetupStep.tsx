@@ -441,8 +441,13 @@ export function GatewaySetupStep({
     setProtocolNotice("");
     setSuggestedPort(null);
 
-    // Frontend timeout failsafe (8 seconds max)
-    const CONNECT_TIMEOUT_MS = 8000;
+    // Frontend timeout - longer for Tailscale/remote connections
+    const isTailscale = trimmedUrl.includes('.ts.net');
+    const CONNECT_TIMEOUT_MS = isTailscale ? 120000 : 15000; // 2 min for Tailscale, 15s otherwise
+    
+    if (isTailscale) {
+      console.log("[DEBUG] Tailscale URL detected, using extended timeout");
+    }
 
     try {
       await invoke("disconnect");

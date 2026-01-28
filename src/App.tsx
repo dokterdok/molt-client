@@ -593,9 +593,16 @@ export default function App() {
       clearTimers();
       // Unregister global shortcut
       unregister(shortcut).catch(() => {});
+      // Safely clean up event listeners (guard against double-cleanup in React Strict Mode)
       unlisten.then((listeners) => {
-        listeners.forEach((fn) => fn());
-      });
+        listeners.forEach((fn) => {
+          try {
+            if (typeof fn === 'function') fn();
+          } catch (e) {
+            // Ignore cleanup errors (listener may already be removed)
+          }
+        });
+      }).catch(() => {});
     };
   }, [
     setConnected,

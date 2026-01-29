@@ -513,17 +513,18 @@ export function GatewaySetupStep({
       // Check if cancelled
       if (isCancelledRef.current || !isMountedRef.current) return;
 
-      // Step 3: Fetch models to verify full communication (keeps connection alive)
-      const models = await invoke<ModelInfo[]>("get_models");
-      if (models && models.length > 0 && isMountedRef.current) {
-        useStore.getState().setAvailableModels(models);
-      }
-
-      // ALL VERIFICATION PASSED - Now we can declare success!
+      // Connection verified! Mark as connected immediately
       setConnectionState("success");
-      
-      // Mark as connected in store so main app doesn't try to reconnect
       useStore.getState().setConnected(true);
+
+      // Fetch models in background (don't block onboarding)
+      invoke<ModelInfo[]>("get_models")
+        .then((models) => {
+          if (models && models.length > 0) {
+            useStore.getState().setAvailableModels(models);
+          }
+        })
+        .catch((err) => console.warn("[onboarding] Model fetch failed:", err));
 
       // Save progress
       localStorage.setItem(
@@ -535,12 +536,12 @@ export function GatewaySetupStep({
         }),
       );
 
-      // Auto-advance (if still mounted and not cancelled)
+      // Auto-advance quickly (connection already verified)
       setTimeout(() => {
         if (isMountedRef.current && !isCancelledRef.current) {
           onSuccess();
         }
-      }, 1500);
+      }, 800);
     } catch (err: unknown) {
       // Check if cancelled
       if (isCancelledRef.current || !isMountedRef.current) {

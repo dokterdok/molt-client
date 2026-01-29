@@ -197,6 +197,7 @@ pub struct ConnectResult {
 }
 
 /// Connect parameters for handshake
+/// Schema: additionalProperties: false - only include fields from schema!
 #[derive(Debug, Serialize)]
 struct ConnectParams {
     #[serde(rename = "minProtocol")]
@@ -204,11 +205,8 @@ struct ConnectParams {
     #[serde(rename = "maxProtocol")]
     max_protocol: i32,
     client: ClientInfo,
-    role: String,
-    scopes: Vec<String>,
+    #[serde(skip_serializing_if = "Vec::is_empty")]
     caps: Vec<String>,
-    commands: Vec<String>,
-    permissions: serde_json::Value,
     auth: AuthInfo,
     locale: String,
     #[serde(rename = "userAgent")]
@@ -943,16 +941,9 @@ async fn handle_validated_frame(
                                     id: "clawdbot-control-ui".to_string(), // Must match gateway schema
                                     version: env!("CARGO_PKG_VERSION").to_string(),
                                     platform: get_platform(),
-                                    mode: "cli".to_string(), // Must be "webchat" or "cli"
+                                    mode: "cli".to_string(), // Must be "webchat", "cli", "ui", "backend", "probe", or "test"
                                 },
-                                role: "operator".to_string(),
-                                scopes: vec![
-                                    "operator.read".to_string(),
-                                    "operator.write".to_string(),
-                                ],
-                                caps: vec![],
-                                commands: vec![],
-                                permissions: serde_json::json!({}),
+                                caps: vec![], // Optional, skipped if empty
                                 auth: AuthInfo {
                                     token: token.to_string(),
                                 },
@@ -1578,11 +1569,7 @@ mod tests {
                 platform: "windows".to_string(),
                 mode: "cli".to_string(),
             },
-            role: "operator".to_string(),
-            scopes: vec!["operator.read".to_string()],
             caps: vec![],
-            commands: vec![],
-            permissions: serde_json::json!({}),
             auth: AuthInfo {
                 token: "test-token".to_string(),
             },
@@ -1593,7 +1580,7 @@ mod tests {
         let json = serde_json::to_string(&params).unwrap();
         assert!(json.contains("minProtocol"));
         assert!(json.contains("maxProtocol"));
-        assert!(json.contains("operator"));
+        assert!(json.contains("clawdbot-control-ui"));
     }
 
     #[tokio::test]

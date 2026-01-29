@@ -137,7 +137,9 @@ export function SettingsDialog({
     if (open && connected) {
       fetchModels();
     }
-  }, [open, connected, fetchModels]);
+    // fetchModels is a stable callback and shouldn't trigger re-runs
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open, connected]);
 
   // Validate URL and suggest wss:// for non-localhost
   const validateUrl = (url: string): string | null => {

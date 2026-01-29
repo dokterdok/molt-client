@@ -513,26 +513,7 @@ export function GatewaySetupStep({
       // Check if cancelled
       if (isCancelledRef.current || !isMountedRef.current) return;
 
-      // Step 3: Disconnect test connection
-      await invoke("disconnect");
-
-      // Check if cancelled
-      if (isCancelledRef.current || !isMountedRef.current) return;
-
-      // Step 4: Reconnect to verify settings work
-      const verifyResult = await invoke<ConnectResult>("connect", {
-        url: actualUrl,
-        token: trimmedToken, // Use the token from memory store
-      });
-
-      if (!verifyResult.success) {
-        throw new Error("Verification reconnect failed - settings may not be saved correctly");
-      }
-
-      // Check if cancelled
-      if (isCancelledRef.current || !isMountedRef.current) return;
-
-      // Step 5: Fetch models to verify full communication
+      // Step 3: Fetch models to verify full communication (keeps connection alive)
       const models = await invoke<ModelInfo[]>("get_models");
       if (models && models.length > 0 && isMountedRef.current) {
         useStore.getState().setAvailableModels(models);

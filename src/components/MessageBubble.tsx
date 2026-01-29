@@ -20,6 +20,9 @@ import {
   X,
   Send,
   FileText,
+  Brain,
+  ChevronDown,
+  ChevronUp,
 } from "lucide-react";
 import { ImageRenderer } from "./ImageRenderer";
 import { Spinner } from "./ui/spinner";
@@ -48,6 +51,7 @@ export const MessageBubble = memo(function MessageBubble({
   const [showTimestamp, setShowTimestamp] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [editContent, setEditContent] = useState(message.content);
+  const [thinkingExpanded, setThinkingExpanded] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   // Auto-focus textarea when entering edit mode
@@ -281,20 +285,64 @@ export const MessageBubble = memo(function MessageBubble({
           ) : message.isStreaming && !message.content ? (
             <TypingIndicator />
           ) : (
-            <Suspense
-              fallback={
-                <div className="flex items-center gap-2 text-sm text-muted-foreground py-2">
-                  <Spinner size="sm" />
-                  Loading...
+            <>
+              {/* Thinking block (collapsible) */}
+              {!isUser && message.thinkingContent && (
+                <div className="mb-3">
+                  <button
+                    onClick={() => setThinkingExpanded(!thinkingExpanded)}
+                    className="flex items-center gap-2 text-xs text-muted-foreground hover:text-foreground transition-colors w-full text-left py-1 px-2 rounded-md hover:bg-muted/50"
+                    aria-expanded={thinkingExpanded}
+                    aria-controls={`thinking-${message.id}`}
+                  >
+                    <Brain className="w-3.5 h-3.5" strokeWidth={2} />
+                    <span className="font-medium">Thinking</span>
+                    {thinkingExpanded ? (
+                      <ChevronUp className="w-3.5 h-3.5 ml-auto" />
+                    ) : (
+                      <ChevronDown className="w-3.5 h-3.5 ml-auto" />
+                    )}
+                  </button>
+                  {thinkingExpanded && (
+                    <div
+                      id={`thinking-${message.id}`}
+                      className="mt-2 pl-4 border-l-2 border-muted text-muted-foreground text-sm italic animate-in fade-in slide-in-from-top-2 duration-200"
+                    >
+                      <Suspense
+                        fallback={
+                          <div className="flex items-center gap-2 text-sm text-muted-foreground py-2">
+                            <Spinner size="sm" />
+                            Loading...
+                          </div>
+                        }
+                      >
+                        <MarkdownRenderer
+                          content={message.thinkingContent}
+                          copiedCode={copiedCode}
+                          onCopyCode={copyToClipboard}
+                        />
+                      </Suspense>
+                    </div>
+                  )}
                 </div>
-              }
-            >
-              <MarkdownRenderer
-                content={message.content}
-                copiedCode={copiedCode}
-                onCopyCode={copyToClipboard}
-              />
-            </Suspense>
+              )}
+
+              {/* Main message content */}
+              <Suspense
+                fallback={
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground py-2">
+                    <Spinner size="sm" />
+                    Loading...
+                  </div>
+                }
+              >
+                <MarkdownRenderer
+                  content={message.content}
+                  copiedCode={copiedCode}
+                  onCopyCode={copyToClipboard}
+                />
+              </Suspense>
+            </>
           )}
 
           {/* Streaming cursor - P1: smooth blink */}

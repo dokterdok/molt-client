@@ -129,7 +129,8 @@ function AppContent() {
   const { toasts, dismissToast, showError, showSuccess } = useToast();
   // PERF: Use selective subscriptions with shallow equality to prevent unnecessary re-renders
   const {
-    currentConversation,
+    currentConversationId,
+    conversations,
     connected,
     setConnected,
     appendToCurrentMessage,
@@ -139,7 +140,8 @@ function AppContent() {
     getQueuedMessagesCount,
   } = useStore(
     useShallow((state) => ({
-      currentConversation: state.currentConversation,
+      currentConversationId: state.currentConversationId,
+      conversations: state.conversations,
       connected: state.connected,
       setConnected: state.setConnected,
       appendToCurrentMessage: state.appendToCurrentMessage,
@@ -149,6 +151,11 @@ function AppContent() {
       getQueuedMessagesCount: state.getQueuedMessagesCount,
     })),
   );
+  
+  // Derive currentConversation from id + conversations
+  const currentConversation = currentConversationId 
+    ? conversations.find(c => c.id === currentConversationId) || null 
+    : null;
 
   // Refs for tracking state across async operations
   const isMountedRef = useRef(true);

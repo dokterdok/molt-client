@@ -374,9 +374,9 @@ export function ChatInput({ onSend, disabled, isSending, inputRef: externalRef }
           disabled={disabled}
           placeholder={
             isSending
-              ? "Sending message..."
+              ? "Sending..."
               : disabled
-                ? "Connect to Gateway to send messages..."
+                ? "Not connected yet (check Settings to connect)"
                 : "Message Moltz..."
           }
           rows={1}

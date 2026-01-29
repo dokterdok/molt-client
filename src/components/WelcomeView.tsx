@@ -110,15 +110,13 @@ export function WelcomeView() {
           <div className="mb-8 px-4 py-3 bg-amber-500/10 border border-amber-500/20 rounded-xl animate-in fade-in slide-in-from-top-2 duration-300">
             <div className="flex items-center justify-center gap-2 text-amber-600 dark:text-amber-400">
               <AlertTriangle className="w-5 h-5" strokeWidth={2} />
-              <span className="font-medium">Offline Mode</span>
+              <span className="font-medium">Not Connected Yet</span>
             </div>
             <p className="text-sm text-amber-600/80 dark:text-amber-400/80 mt-1 text-center">
-              You can browse saved conversations, but sending messages requires
-              a connection.
+              You can browse saved chats, but you'll need to connect before you can chat with Moltz.
             </p>
             <p className="text-xs text-amber-600/60 dark:text-amber-400/60 mt-2 text-center">
-              Check Settings (⌘,) to configure your Gateway or click Retry
-              above.
+              Open Settings (⌘,) to set up your connection.
             </p>
           </div>
         )}

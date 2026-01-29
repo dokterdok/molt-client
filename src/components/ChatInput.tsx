@@ -413,7 +413,7 @@ export function ChatInput({
           className={cn(
             "p-3 rounded-xl m-1 transition-all duration-200 flex-shrink-0",
             canSend
-              ? "bg-primary text-primary-foreground hover:bg-primary/90 hover:shadow-md hover:scale-105 active:scale-95"
+              ? "bg-primary text-primary-foreground hover:bg-primary/90 hover:shadow-md hover:scale-[1.02] active:scale-[0.98]"
               : "text-muted-foreground cursor-not-allowed",
           )}
           title="Send message (Enter)"

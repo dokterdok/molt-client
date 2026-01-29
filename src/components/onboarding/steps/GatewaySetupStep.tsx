@@ -501,29 +501,14 @@ export function GatewaySetupStep({
         );
       }
 
-      // Step 1: Save settings (await to ensure keychain write completes)
-      try {
-        await updateSettings({ gatewayUrl: actualUrl, gatewayToken: trimmedToken });
-      } catch (saveErr) {
-        throw new Error(`Failed to save settings: ${saveErr}`);
-      }
+      // Step 1: Save settings (token goes to keychain if available, otherwise stays in memory)
+      await updateSettings({ gatewayUrl: actualUrl, gatewayToken: trimmedToken });
 
       // Check if cancelled
       if (isCancelledRef.current || !isMountedRef.current) return;
 
-      // Step 2: Verify token was saved by reading it back
-      const { tryGetGatewayToken } = await import("../../../lib/keychain");
-      const savedToken = await tryGetGatewayToken();
-      
-      // If keychain failed to save, that's okay - token is in memory store
-      // It just won't persist across app restarts
-      if (savedToken !== trimmedToken) {
-        console.warn(
-          `[onboarding] Keychain verification failed - token in memory only. ` +
-          `Expected ${trimmedToken.length} chars, got ${savedToken.length} chars.`
-        );
-        // Don't throw - connection still works, just won't persist
-      }
+      // Note: We don't verify keychain storage anymore - token is in memory store
+      // which is sufficient for the session. Keychain is just for persistence.
 
       // Check if cancelled
       if (isCancelledRef.current || !isMountedRef.current) return;
@@ -534,10 +519,10 @@ export function GatewaySetupStep({
       // Check if cancelled
       if (isCancelledRef.current || !isMountedRef.current) return;
 
-      // Step 4: Reconnect using saved settings (simulates what main app will do)
+      // Step 4: Reconnect to verify settings work
       const verifyResult = await invoke<ConnectResult>("connect", {
         url: actualUrl,
-        token: savedToken, // Use token from keychain, not the one we typed
+        token: trimmedToken, // Use the token from memory store
       });
 
       if (!verifyResult.success) {

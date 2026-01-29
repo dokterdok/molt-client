@@ -38,19 +38,31 @@ export async function tryGetGatewayToken(): Promise<string> {
 
 /**
  * Save the gateway token to the OS keychain
+ * Returns true if saved successfully, false if keychain unavailable
  */
-export async function setGatewayToken(token: string): Promise<void> {
+export async function setGatewayToken(token: string): Promise<boolean> {
   if (!token) {
     // If token is empty, delete it from keychain
-    await deleteGatewayToken();
-    return;
+    try {
+      await deleteGatewayToken();
+    } catch {
+      // Ignore delete failures
+    }
+    return true;
   }
 
-  await invoke("keychain_set", {
-    service: SERVICE_NAME,
-    key: "gateway_token",
-    value: token,
-  });
+  try {
+    await invoke("keychain_set", {
+      service: SERVICE_NAME,
+      key: "gateway_token",
+      value: token,
+    });
+    return true;
+  } catch (err) {
+    console.warn("[keychain] Failed to save token (keychain unavailable):", err);
+    // Don't throw - token will stay in memory store
+    return false;
+  }
 }
 
 /**

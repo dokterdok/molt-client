@@ -443,9 +443,9 @@ export function GatewaySetupStep({
     setSuggestedPort(null);
 
     // Frontend timeout - longer for Tailscale/remote connections
-    const isTailscale = trimmedUrl.includes('.ts.net');
+    const isTailscale = trimmedUrl.includes(".ts.net");
     const CONNECT_TIMEOUT_MS = isTailscale ? 120000 : 15000; // 2 min for Tailscale, 15s otherwise
-    
+
     if (isTailscale) {
       // Using extended timeout for Tailscale URLs
     }
@@ -642,7 +642,10 @@ export function GatewaySetupStep({
             )}
           >
             <div>
-              <label htmlFor="gateway-url-input" className="block text-sm font-medium mb-2">
+              <label
+                htmlFor="gateway-url-input"
+                className="block text-sm font-medium mb-2"
+              >
                 Where's the connection running?
               </label>
               <input
@@ -656,7 +659,11 @@ export function GatewaySetupStep({
                 aria-label="Connection address"
                 aria-required="true"
                 aria-invalid={connectionState === "error"}
-                aria-describedby={connectionState === "error" ? "gateway-error-message" : undefined}
+                aria-describedby={
+                  connectionState === "error"
+                    ? "gateway-error-message"
+                    : undefined
+                }
                 className={cn(
                   "w-full px-4 py-3 rounded-lg border bg-muted/30 focus:outline-none focus:ring-2 transition-all",
                   connectionState === "error"
@@ -665,7 +672,8 @@ export function GatewaySetupStep({
                 )}
               />
               <p className="text-xs text-muted-foreground mt-1.5">
-                💡 Most people use: <button
+                💡 Most people use:{" "}
+                <button
                   onClick={() => onGatewayUrlChange("ws://localhost:18789")}
                   className="text-primary hover:underline font-medium"
                   type="button"
@@ -676,7 +684,10 @@ export function GatewaySetupStep({
             </div>
 
             <div>
-              <label htmlFor="gateway-token-input" className="block text-sm font-medium mb-2">
+              <label
+                htmlFor="gateway-token-input"
+                className="block text-sm font-medium mb-2"
+              >
                 Authentication Token{" "}
                 <span className="text-muted-foreground font-normal">
                   (optional)
@@ -697,8 +708,8 @@ export function GatewaySetupStep({
                         🔑 Authentication Token
                       </p>
                       <p className="text-muted-foreground mb-3">
-                        Some Gateways require a token for security. If you
-                        get a 401/403 error, you need this.
+                        Some Gateways require a token for security. If you get a
+                        401/403 error, you need this.
                       </p>
                       <p className="font-medium mb-1">Where to find it:</p>
                       <ul className="text-sm text-muted-foreground space-y-1 mb-3">
@@ -750,59 +761,59 @@ export function GatewaySetupStep({
                   transition={{ type: "spring", stiffness: 400, damping: 25 }}
                   className="p-4 rounded-lg bg-red-500/10 border border-red-500/20 space-y-3 max-h-64 overflow-y-auto"
                 >
-                <div className="flex items-start gap-3">
-                  <svg
-                    className="w-5 h-5 text-red-600 dark:text-red-400 flex-shrink-0 mt-0.5"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                    />
-                  </svg>
-                  <div className="flex-1">
-                    <p className="font-medium text-red-600 dark:text-red-400">
-                      {errorMessage}
-                    </p>
-                    {errorHint && (
-                      <p className="text-sm text-muted-foreground mt-1">
-                        {errorHint.hint}
-                      </p>
-                    )}
-                  </div>
-                </div>
-
-                {/* Actionable fix - simplified, no command line stuff */}
-                {errorHint?.action && (
-                  <div className="pl-8">
-                    <p className="text-sm text-muted-foreground">
-                      💡 {errorHint.action}
-                    </p>
-                  </div>
-                )}
-
-                {/* Port suggestion */}
-                {suggestedPort && (
-                  <div className="pl-8 mt-2">
-                    <button
-                      onClick={() => {
-                        const newUrl = gatewayUrl.replace(
-                          /:\d+/,
-                          `:${suggestedPort}`,
-                        );
-                        onGatewayUrlChange(newUrl);
-                        setSuggestedPort(null);
-                      }}
-                      className="text-sm text-blue-600 dark:text-blue-400 hover:underline"
+                  <div className="flex items-start gap-3">
+                    <svg
+                      className="w-5 h-5 text-red-600 dark:text-red-400 flex-shrink-0 mt-0.5"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
                     >
-                      Try the standard setup: localhost:{suggestedPort} →
-                    </button>
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                      />
+                    </svg>
+                    <div className="flex-1">
+                      <p className="font-medium text-red-600 dark:text-red-400">
+                        {errorMessage}
+                      </p>
+                      {errorHint && (
+                        <p className="text-sm text-muted-foreground mt-1">
+                          {errorHint.hint}
+                        </p>
+                      )}
+                    </div>
                   </div>
-                )}
+
+                  {/* Actionable fix - simplified, no command line stuff */}
+                  {errorHint?.action && (
+                    <div className="pl-8">
+                      <p className="text-sm text-muted-foreground">
+                        💡 {errorHint.action}
+                      </p>
+                    </div>
+                  )}
+
+                  {/* Port suggestion */}
+                  {suggestedPort && (
+                    <div className="pl-8 mt-2">
+                      <button
+                        onClick={() => {
+                          const newUrl = gatewayUrl.replace(
+                            /:\d+/,
+                            `:${suggestedPort}`,
+                          );
+                          onGatewayUrlChange(newUrl);
+                          setSuggestedPort(null);
+                        }}
+                        className="text-sm text-blue-600 dark:text-blue-400 hover:underline"
+                      >
+                        Try the standard setup: localhost:{suggestedPort} →
+                      </button>
+                    </div>
+                  )}
                 </motion.div>
               )}
             </AnimatePresence>
@@ -820,8 +831,16 @@ export function GatewaySetupStep({
               disabled={!gatewayUrl.trim() && connectionState !== "testing"}
               onMouseEnter={() => setIsButtonHovered(true)}
               onMouseLeave={() => setIsButtonHovered(false)}
-              whileHover={connectionState !== "testing" ? { scale: 1.02, y: -2 } : undefined}
-              whileTap={connectionState !== "testing" ? { scale: 0.98, y: 0 } : undefined}
+              whileHover={
+                connectionState !== "testing"
+                  ? { scale: 1.02, y: -2 }
+                  : undefined
+              }
+              whileTap={
+                connectionState !== "testing"
+                  ? { scale: 0.98, y: 0 }
+                  : undefined
+              }
               transition={{ type: "spring", stiffness: 400, damping: 25 }}
               className={cn(
                 "w-full px-6 py-4 rounded-lg font-semibold text-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-background",
@@ -830,18 +849,23 @@ export function GatewaySetupStep({
                     ? "bg-red-500 text-white cursor-pointer hover:bg-red-600 focus:ring-red-500"
                     : "bg-muted text-muted-foreground cursor-pointer focus:ring-muted"
                   : "bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg shadow-blue-500/30 hover:shadow-xl hover:shadow-blue-500/40 focus:ring-blue-500",
-                (!gatewayUrl.trim() && connectionState !== "testing") && "opacity-50 cursor-not-allowed"
+                !gatewayUrl.trim() &&
+                  connectionState !== "testing" &&
+                  "opacity-50 cursor-not-allowed",
               )}
               aria-live="polite"
-              aria-label={connectionState === "testing" 
-                ? (isButtonHovered ? "Cancel connection test" : "Testing connection...")
-                : "Test Gateway connection"
+              aria-label={
+                connectionState === "testing"
+                  ? isButtonHovered
+                    ? "Cancel connection test"
+                    : "Testing connection..."
+                  : "Test Gateway connection"
               }
             >
               <AnimatePresence mode="wait">
                 {connectionState === "testing" ? (
                   isButtonHovered ? (
-                    <motion.span 
+                    <motion.span
                       key="cancel"
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
@@ -864,7 +888,7 @@ export function GatewaySetupStep({
                       Cancel
                     </motion.span>
                   ) : (
-                    <motion.span 
+                    <motion.span
                       key="testing"
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
@@ -873,7 +897,11 @@ export function GatewaySetupStep({
                     >
                       <motion.div
                         animate={{ rotate: 360 }}
-                        transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                        transition={{
+                          duration: 1,
+                          repeat: Infinity,
+                          ease: "linear",
+                        }}
                       >
                         <svg
                           className="w-5 h-5"

@@ -19,7 +19,7 @@ export function WelcomeView() {
       connected: state.connected,
       settings: state.settings,
       availableModels: state.availableModels,
-    }))
+    })),
   );
 
   // Moltz-specific suggestions showcasing agentic capabilities
@@ -90,13 +90,22 @@ export function WelcomeView() {
       <div className="max-w-3xl w-full text-center">
         {/* Semantic heading for screen readers */}
         <h1 className="sr-only">Moltz AI Assistant - Welcome</h1>
-        
+
         {/* Logo */}
         <div className="mb-8 animate-in zoom-in-50 duration-500">
           <div className="inline-flex items-center justify-center w-24 h-24 rounded-2xl bg-gradient-to-br from-orange-400 via-orange-500 to-red-500 shadow-xl shadow-orange-500/20 mb-6 transform hover:scale-105 transition-transform">
-            <span className="text-5xl drop-shadow-lg" role="img" aria-label="Moltz lobster mascot">🦞</span>
+            <span
+              className="text-5xl drop-shadow-lg"
+              role="img"
+              aria-label="Moltz lobster mascot"
+            >
+              🦞
+            </span>
           </div>
-          <h2 className="text-5xl font-bold bg-gradient-to-r from-orange-500 via-red-500 to-pink-500 bg-clip-text text-transparent mb-3" aria-hidden="true">
+          <h2
+            className="text-5xl font-bold bg-gradient-to-r from-orange-500 via-red-500 to-pink-500 bg-clip-text text-transparent mb-3"
+            aria-hidden="true"
+          >
             Moltz
           </h2>
           <p className="text-lg text-muted-foreground">
@@ -113,7 +122,8 @@ export function WelcomeView() {
               <span className="font-medium">Not Connected Yet</span>
             </div>
             <p className="text-sm text-amber-600/80 dark:text-amber-400/80 mt-1 text-center">
-              You can browse saved chats, but you'll need to connect before you can chat with Moltz.
+              You can browse saved chats, but you'll need to connect before you
+              can chat with Moltz.
             </p>
             <p className="text-xs text-amber-600/60 dark:text-amber-400/60 mt-2 text-center">
               Open Settings (⌘,) to set up your connection.

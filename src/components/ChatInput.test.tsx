@@ -55,7 +55,9 @@ describe("ChatInput", () => {
       render(<ChatInput onSend={mockOnSend} disabled={true} />);
 
       expect(
-        screen.getByPlaceholderText("Not connected yet (check Settings to connect)"),
+        screen.getByPlaceholderText(
+          "Not connected yet (check Settings to connect)",
+        ),
       ).toBeInTheDocument();
     });
 
@@ -78,9 +80,7 @@ describe("ChatInput", () => {
     it('should show "Sending..." placeholder when isSending is true', () => {
       render(<ChatInput onSend={mockOnSend} isSending={true} />);
 
-      expect(
-        screen.getByPlaceholderText("Sending..."),
-      ).toBeInTheDocument();
+      expect(screen.getByPlaceholderText("Sending...")).toBeInTheDocument();
     });
 
     it("should show spinner in send button when isSending", () => {

@@ -1,4 +1,12 @@
-import { useState, useRef, useEffect, KeyboardEvent, memo, lazy, Suspense } from "react";
+import {
+  useState,
+  useRef,
+  useEffect,
+  KeyboardEvent,
+  memo,
+  lazy,
+  Suspense,
+} from "react";
 import { Message, Attachment } from "../stores/store";
 import { cn } from "../lib/utils";
 import { formatDistanceToNow } from "date-fns";
@@ -20,7 +28,7 @@ import { Spinner } from "./ui/spinner";
 const MarkdownRenderer = lazy(() =>
   import("./MarkdownRenderer").then((module) => ({
     default: module.MarkdownRenderer,
-  }))
+  })),
 );
 
 interface MessageBubbleProps {
@@ -106,7 +114,7 @@ export const MessageBubble = memo(function MessageBubble({
     <div
       className={cn(
         "group flex gap-3 animate-message-in",
-        isUser && "flex-row-reverse"
+        isUser && "flex-row-reverse",
       )}
       onMouseEnter={() => setShowTimestamp(true)}
       onMouseLeave={() => setShowTimestamp(false)}
@@ -151,13 +159,19 @@ export const MessageBubble = memo(function MessageBubble({
             </span>
           )}
           {message.sendStatus === "queued" && (
-            <span className="text-xs text-amber-600 dark:text-amber-400 flex items-center gap-1" title="Message will be sent when reconnected">
+            <span
+              className="text-xs text-amber-600 dark:text-amber-400 flex items-center gap-1"
+              title="Message will be sent when reconnected"
+            >
               <span className="inline-block w-1 h-1 rounded-full bg-amber-500" />
               Queued
             </span>
           )}
           {message.sendStatus === "failed" && (
-            <span className="text-xs text-destructive flex items-center gap-1" title={message.sendError || "Failed to send"}>
+            <span
+              className="text-xs text-destructive flex items-center gap-1"
+              title={message.sendError || "Failed to send"}
+            >
               <span className="inline-block w-1 h-1 rounded-full bg-destructive" />
               Failed
             </span>
@@ -290,8 +304,15 @@ export const MessageBubble = memo(function MessageBubble({
 
           {/* Screen reader announcement for streaming status */}
           {!isUser && (
-            <div role="status" aria-live="polite" aria-atomic="true" className="sr-only">
-              {message.isStreaming ? "Assistant is typing" : "Response complete"}
+            <div
+              role="status"
+              aria-live="polite"
+              aria-atomic="true"
+              className="sr-only"
+            >
+              {message.isStreaming
+                ? "Assistant is typing"
+                : "Response complete"}
             </div>
           )}
         </div>

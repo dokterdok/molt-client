@@ -62,14 +62,19 @@ export function FeatureTourStep({ onComplete, onSkip }: FeatureTourStepProps) {
     }, 3500);
 
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Enter" && document.activeElement === primaryButtonRef.current) {
+      if (
+        e.key === "Enter" &&
+        document.activeElement === primaryButtonRef.current
+      ) {
         e.preventDefault();
         onComplete();
       }
       // Allow arrow keys to navigate features
       if (e.key === "ArrowLeft") {
         e.preventDefault();
-        setCurrentFeatureIndex((prev) => (prev - 1 + features.length) % features.length);
+        setCurrentFeatureIndex(
+          (prev) => (prev - 1 + features.length) % features.length,
+        );
       }
       if (e.key === "ArrowRight") {
         e.preventDefault();
@@ -85,7 +90,7 @@ export function FeatureTourStep({ onComplete, onSkip }: FeatureTourStepProps) {
   }, [onComplete, features.length]);
 
   return (
-    <div 
+    <div
       className="flex-1 flex flex-col items-center justify-center p-8"
       role="main"
       aria-labelledby="tour-heading"
@@ -98,22 +103,26 @@ export function FeatureTourStep({ onComplete, onSkip }: FeatureTourStepProps) {
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
           className="text-center"
         >
-          <motion.div 
+          <motion.div
             className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-purple-400 to-pink-500 shadow-xl shadow-purple-500/20 mb-6"
-            animate={{ 
+            animate={{
               rotate: [0, 5, -5, 0],
-              scale: [1, 1.05, 1]
+              scale: [1, 1.05, 1],
             }}
-            transition={{ 
+            transition={{
               duration: 2,
               repeat: Infinity,
-              ease: "easeInOut"
+              ease: "easeInOut",
             }}
             aria-label="Feature tour icon"
           >
-            <span className="text-4xl" role="img" aria-label="Sparkles emoji">✨</span>
+            <span className="text-4xl" role="img" aria-label="Sparkles emoji">
+              ✨
+            </span>
           </motion.div>
-          <h2 id="tour-heading" className="text-4xl font-bold mb-3">Power User Shortcuts</h2>
+          <h2 id="tour-heading" className="text-4xl font-bold mb-3">
+            Power User Shortcuts
+          </h2>
           <p className="text-lg text-muted-foreground">
             Master these to work at lightning speed
           </p>
@@ -135,13 +144,13 @@ export function FeatureTourStep({ onComplete, onSkip }: FeatureTourStepProps) {
               initial={{ opacity: 0, y: 20, scale: 0.95 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -20, scale: 0.95 }}
-              transition={{ 
+              transition={{
                 duration: 0.4,
-                ease: [0.16, 1, 0.3, 1]
+                ease: [0.16, 1, 0.3, 1],
               }}
               className="absolute inset-0 flex flex-col items-center justify-center"
             >
-              <motion.div 
+              <motion.div
                 className="w-24 h-24 rounded-2xl bg-gradient-to-br from-purple-500/20 to-pink-500/20 border-2 border-purple-500/30 flex items-center justify-center mb-4"
                 whileHover={{ scale: 1.05 }}
                 transition={{ type: "spring", stiffness: 400, damping: 25 }}
@@ -161,7 +170,11 @@ export function FeatureTourStep({ onComplete, onSkip }: FeatureTourStepProps) {
         </motion.div>
 
         {/* Progress dots */}
-        <div className="flex justify-center gap-2" role="tablist" aria-label="Feature navigation">
+        <div
+          className="flex justify-center gap-2"
+          role="tablist"
+          aria-label="Feature navigation"
+        >
           {features.map((feature, i) => (
             <motion.button
               key={i}
@@ -182,7 +195,7 @@ export function FeatureTourStep({ onComplete, onSkip }: FeatureTourStepProps) {
         </div>
 
         {/* Feature grid */}
-        <div 
+        <div
           className="grid grid-cols-2 gap-3"
           role="list"
           aria-label="All keyboard shortcuts"
@@ -193,10 +206,10 @@ export function FeatureTourStep({ onComplete, onSkip }: FeatureTourStepProps) {
               role="listitem"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ 
-                duration: 0.4, 
-                delay: 0.4 + (i * 0.1),
-                ease: [0.16, 1, 0.3, 1]
+              transition={{
+                duration: 0.4,
+                delay: 0.4 + i * 0.1,
+                ease: [0.16, 1, 0.3, 1],
               }}
               onClick={() => setCurrentFeatureIndex(i)}
               whileHover={{ scale: 1.02, y: -2 }}
@@ -281,10 +294,9 @@ export function FeatureTourStep({ onComplete, onSkip }: FeatureTourStepProps) {
           Press{" "}
           <kbd className="px-1.5 py-0.5 bg-muted rounded font-mono">Enter</kbd>{" "}
           to finish • Use{" "}
-          <kbd className="px-1.5 py-0.5 bg-muted rounded font-mono">←</kbd>
-          {" "}
-          <kbd className="px-1.5 py-0.5 bg-muted rounded font-mono">→</kbd>
-          {" "}to navigate
+          <kbd className="px-1.5 py-0.5 bg-muted rounded font-mono">←</kbd>{" "}
+          <kbd className="px-1.5 py-0.5 bg-muted rounded font-mono">→</kbd> to
+          navigate
         </motion.p>
       </div>
     </div>

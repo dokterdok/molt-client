@@ -29,6 +29,7 @@ pub mod ids {
 }
 
 /// Build the application menu
+#[allow(dead_code)] // May be used when custom menus are enabled
 pub fn build_menu(app: &AppHandle) -> tauri::Result<Menu<Wry>> {
     let about_metadata = AboutMetadataBuilder::new()
         .name(Some("Moltz"))

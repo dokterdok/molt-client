@@ -18,17 +18,17 @@ import { translateError, getErrorTitle } from "./lib/errors";
 const Sidebar = lazy(() =>
   import("./components/Sidebar").then((module) => ({
     default: module.Sidebar,
-  }))
+  })),
 );
 const ChatView = lazy(() =>
   import("./components/ChatView").then((module) => ({
     default: module.ChatView,
-  }))
+  })),
 );
 const WelcomeView = lazy(() =>
   import("./components/WelcomeView").then((module) => ({
     default: module.WelcomeView,
-  }))
+  })),
 );
 
 // Check if running on macOS (for traffic light padding)
@@ -48,20 +48,22 @@ interface ConnectResult {
 
 // Check if onboarding is needed BEFORE rendering (prevents UI flash)
 function checkOnboardingNeeded(): boolean {
-  const onboardingCompleted = localStorage.getItem("moltz-onboarding-completed");
+  const onboardingCompleted = localStorage.getItem(
+    "moltz-onboarding-completed",
+  );
   const onboardingSkipped = localStorage.getItem("moltz-onboarding-skipped");
-  
+
   // If completed or skipped, no onboarding needed
   if (onboardingCompleted || onboardingSkipped) {
     return false;
   }
-  
+
   // Otherwise, onboarding is needed
   return true;
 }
 
 // Check if running in Tauri (desktop app) vs browser
-const isTauri = typeof window !== 'undefined' && '__TAURI__' in window;
+const isTauri = typeof window !== "undefined" && "__TAURI__" in window;
 
 // Browser-only download prompt component (no hooks)
 function BrowserDownloadPrompt() {
@@ -71,20 +73,33 @@ function BrowserDownloadPrompt() {
         <div className="inline-flex items-center justify-center w-24 h-24 rounded-2xl bg-gradient-to-br from-orange-400 via-orange-500 to-red-500 shadow-xl shadow-orange-500/30">
           <span className="text-5xl">🦞</span>
         </div>
-        <h1 className="text-3xl font-bold text-gray-900">Moltz Desktop App Required</h1>
+        <h1 className="text-3xl font-bold text-gray-900">
+          Moltz Desktop App Required
+        </h1>
         <p className="text-gray-600 text-lg">
-          Moltz is a desktop application that runs locally on your computer for maximum privacy and speed.
+          Moltz is a desktop application that runs locally on your computer for
+          maximum privacy and speed.
         </p>
         <p className="text-gray-500">
           Please download and install the Moltz app to get started.
         </p>
-        <a 
-          href="https://moltz.app/download" 
+        <a
+          href="https://moltz.app/download"
           className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-orange-500 to-red-500 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all"
         >
           Download Moltz
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+          <svg
+            className="w-4 h-4"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
+            />
           </svg>
         </a>
       </div>
@@ -99,7 +114,9 @@ function AppContent() {
   const [reconnectAttempts, setReconnectAttempts] = useState(0);
   const [isLoadingData, setIsLoadingData] = useState(true);
   // Initialize showOnboarding immediately to prevent flash
-  const [showOnboarding, setShowOnboarding] = useState(() => checkOnboardingNeeded());
+  const [showOnboarding, setShowOnboarding] = useState(() =>
+    checkOnboardingNeeded(),
+  );
   const [retryCountdown, setRetryCountdown] = useState<number | null>(null);
   const [retryNowFn, setRetryNowFn] = useState<(() => void) | null>(null);
   const [connectionError, setConnectionError] = useState<string | null>(null);
@@ -130,7 +147,7 @@ function AppContent() {
       settings: state.settings,
       retryQueuedMessages: state.retryQueuedMessages,
       getQueuedMessagesCount: state.getQueuedMessagesCount,
-    }))
+    })),
   );
 
   // Refs for tracking state across async operations
@@ -259,9 +276,7 @@ function AppContent() {
     // Don't attempt connection if no Gateway URL is configured
     // BUT don't re-trigger onboarding if it was just completed (check localStorage)
     if (!settings.gatewayUrl || settings.gatewayUrl.trim() === "") {
-      const justCompleted = localStorage.getItem(
-        "moltz-onboarding-completed",
-      );
+      const justCompleted = localStorage.getItem("moltz-onboarding-completed");
       const justSkipped = localStorage.getItem("moltz-onboarding-skipped");
       if (!justCompleted && !justSkipped) {
         setIsConnecting(false);
@@ -474,7 +489,7 @@ function AppContent() {
         setRetryCountdown(null);
         setRetryNowFn(null);
         disconnectAttempts = 0;
-        
+
         // Fetch models on connection (non-blocking)
         invoke<ModelInfo[]>("get_models")
           .then((models) => {
@@ -612,34 +627,38 @@ function AppContent() {
         completeCurrentMessage(event.payload?.usage);
       }),
       // P1: Handle streaming errors and timeouts gracefully
-      listen<{ runId: string; timeoutSecs: number }>("gateway:stream_timeout", (event) => {
-        if (!eventListenerMounted) return;
-        console.error("Stream timeout:", event.payload);
-        // Complete the current message with error indication
-        const { currentConversation, currentStreamingMessageId } = useStore.getState();
-        if (currentConversation && currentStreamingMessageId) {
-          const message = currentConversation.messages.find(
-            m => m.id === currentStreamingMessageId
-          );
-          if (message) {
-            // Append timeout notice to the message
-            appendToCurrentMessage(
-              `\n\n⚠️ *Stream timed out after ${event.payload.timeoutSecs} seconds*`
+      listen<{ runId: string; timeoutSecs: number }>(
+        "gateway:stream_timeout",
+        (event) => {
+          if (!eventListenerMounted) return;
+          console.error("Stream timeout:", event.payload);
+          // Complete the current message with error indication
+          const { currentConversation, currentStreamingMessageId } =
+            useStore.getState();
+          if (currentConversation && currentStreamingMessageId) {
+            const message = currentConversation.messages.find(
+              (m) => m.id === currentStreamingMessageId,
             );
+            if (message) {
+              // Append timeout notice to the message
+              appendToCurrentMessage(
+                `\n\n⚠️ *Stream timed out after ${event.payload.timeoutSecs} seconds*`,
+              );
+            }
           }
-        }
-        completeCurrentMessage();
-        showError("Response timed out. The model may be experiencing issues.");
-      }),
+          completeCurrentMessage();
+          showError(
+            "Response timed out. The model may be experiencing issues.",
+          );
+        },
+      ),
       listen<string>("gateway:error", (event) => {
         if (!eventListenerMounted) return;
         console.error("Gateway error during streaming:", event.payload);
         // Complete current message if streaming
         const { currentStreamingMessageId } = useStore.getState();
         if (currentStreamingMessageId) {
-          appendToCurrentMessage(
-            `\n\n⚠️ *Error: ${event.payload}*`
-          );
+          appendToCurrentMessage(`\n\n⚠️ *Error: ${event.payload}*`);
           completeCurrentMessage();
         }
         showError(event.payload);
@@ -735,15 +754,17 @@ function AppContent() {
       // Unregister global shortcut
       unregister(shortcut).catch(() => {});
       // Safely clean up event listeners (guard against double-cleanup in React Strict Mode)
-      unlisten.then((listeners) => {
-        listeners.forEach((fn) => {
-          try {
-            if (typeof fn === 'function') fn();
-          } catch {
-            // Ignore cleanup errors (listener may already be removed)
-          }
-        });
-      }).catch(() => {});
+      unlisten
+        .then((listeners) => {
+          listeners.forEach((fn) => {
+            try {
+              if (typeof fn === "function") fn();
+            } catch {
+              // Ignore cleanup errors (listener may already be removed)
+            }
+          });
+        })
+        .catch(() => {});
     };
   }, [
     setConnected,
@@ -797,7 +818,9 @@ function AppContent() {
   return (
     <>
       <ToastContainer toasts={toasts} onDismiss={dismissToast} />
-      <UpdateNotification onUpdateDismissed={() => setHasUpdateDismissed(true)} />
+      <UpdateNotification
+        onUpdateDismissed={() => setHasUpdateDismissed(true)}
+      />
       {/* Skip to main content link for keyboard navigation */}
       <a
         href="#main-content"
@@ -876,7 +899,8 @@ function AppContent() {
                   if (queuedCount > 0) {
                     return (
                       <span className="hidden sm:inline truncate">
-                        — {queuedCount} message{queuedCount > 1 ? 's' : ''} queued
+                        — {queuedCount} message{queuedCount > 1 ? "s" : ""}{" "}
+                        queued
                       </span>
                     );
                   }
@@ -1112,12 +1136,12 @@ function AppContent() {
               !errorDismissed &&
               (() => {
                 const friendlyError = translateError(connectionError);
-                const isAuthError = 
+                const isAuthError =
                   connectionError.toLowerCase().includes("unauthorized") ||
                   connectionError.toLowerCase().includes("authentication") ||
                   connectionError.toLowerCase().includes("token") ||
                   connectionError.toLowerCase().includes("forbidden");
-                
+
                 return (
                   <div className="absolute inset-0 bg-background/95 backdrop-blur-sm flex flex-col items-center justify-center gap-4 z-40 animate-in fade-in duration-300">
                     {/* Close button */}
@@ -1126,17 +1150,34 @@ function AppContent() {
                       className="absolute top-4 right-4 p-2 text-muted-foreground hover:text-foreground rounded-lg hover:bg-muted transition-colors"
                       title="Dismiss and continue offline"
                     >
-                      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                      <svg
+                        className="w-5 h-5"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M6 18L18 6M6 6l12 12"
+                        />
                       </svg>
                     </button>
 
-                    <div className={cn(
-                      "w-16 h-16 rounded-full flex items-center justify-center mb-2",
-                      isAuthError ? "bg-amber-500/10" : "bg-destructive/10"
-                    )}>
+                    <div
+                      className={cn(
+                        "w-16 h-16 rounded-full flex items-center justify-center mb-2",
+                        isAuthError ? "bg-amber-500/10" : "bg-destructive/10",
+                      )}
+                    >
                       <svg
-                        className={cn("w-8 h-8", isAuthError ? "text-amber-600 dark:text-amber-400" : "text-destructive")}
+                        className={cn(
+                          "w-8 h-8",
+                          isAuthError
+                            ? "text-amber-600 dark:text-amber-400"
+                            : "text-destructive",
+                        )}
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"

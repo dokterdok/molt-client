@@ -26,7 +26,8 @@ export function translateError(error: string | Error): UserFriendlyError {
     return {
       title: "Can't connect",
       message: "Nothing is responding at that address.",
-      suggestion: "Make sure Moltz is running on your computer. Check Settings to update the connection.",
+      suggestion:
+        "Make sure Moltz is running on your computer. Check Settings to update the connection.",
     };
   }
 
@@ -75,11 +76,15 @@ export function translateError(error: string | Error): UserFriendlyError {
   }
 
   // Gateway protocol/schema errors
-  if (lowerError.includes("invalid connect params") || lowerError.includes("client/id")) {
+  if (
+    lowerError.includes("invalid connect params") ||
+    lowerError.includes("client/id")
+  ) {
     return {
       title: "Protocol mismatch",
       message: "The gateway rejected the connection handshake.",
-      suggestion: "Try updating both Moltz and Clawdbot to the latest version. If using an older gateway, check if 'allowInsecureAuth' is enabled in gateway config.",
+      suggestion:
+        "Try updating both Moltz and Clawdbot to the latest version. If using an older gateway, check if 'allowInsecureAuth' is enabled in gateway config.",
     };
   }
 
@@ -92,7 +97,8 @@ export function translateError(error: string | Error): UserFriendlyError {
     return {
       title: "Wrong password",
       message: "The security password isn't correct.",
-      suggestion: "Check your password in Settings, or try without a password if you didn't set one up.",
+      suggestion:
+        "Check your password in Settings, or try without a password if you didn't set one up.",
     };
   }
 
@@ -100,7 +106,8 @@ export function translateError(error: string | Error): UserFriendlyError {
     return {
       title: "Access denied",
       message: "You don't have permission to connect.",
-      suggestion: "Check your security password or contact whoever set this up.",
+      suggestion:
+        "Check your security password or contact whoever set this up.",
     };
   }
 
@@ -230,15 +237,15 @@ export function getErrorTitle(error: string | Error): string {
 export function logError(
   error: string | Error,
   context?: string,
-  additionalData?: Record<string, unknown>
+  additionalData?: Record<string, unknown>,
 ): void {
   const prefix = context ? `[${context}]` : "";
   console.error(`${prefix} Error:`, error);
-  
+
   if (additionalData && Object.keys(additionalData).length > 0) {
     console.error(`${prefix} Additional context:`, additionalData);
   }
-  
+
   // Also log the stack trace if available
   if (error instanceof Error && error.stack) {
     console.error(`${prefix} Stack trace:`, error.stack);

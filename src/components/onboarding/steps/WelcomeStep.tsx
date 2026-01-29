@@ -16,7 +16,10 @@ export function WelcomeStep({ onNext, onSkip }: WelcomeStepProps) {
 
     // Auto-advance on Enter
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Enter" && document.activeElement === primaryButtonRef.current) {
+      if (
+        e.key === "Enter" &&
+        document.activeElement === primaryButtonRef.current
+      ) {
         e.preventDefault();
         onNext();
       }
@@ -26,7 +29,7 @@ export function WelcomeStep({ onNext, onSkip }: WelcomeStepProps) {
   }, [onNext]);
 
   return (
-    <div 
+    <div
       className="flex-1 flex flex-col items-center justify-center p-8 overflow-y-auto"
       role="main"
       aria-labelledby="welcome-heading"
@@ -36,27 +39,27 @@ export function WelcomeStep({ onNext, onSkip }: WelcomeStepProps) {
         <motion.div
           initial={{ opacity: 0, y: 32, scale: 0.9 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
-          transition={{ 
-            duration: 0.7, 
-            ease: [0.16, 1, 0.3, 1] // Custom easing for smooth feel
+          transition={{
+            duration: 0.7,
+            ease: [0.16, 1, 0.3, 1], // Custom easing for smooth feel
           }}
         >
-          <motion.div 
+          <motion.div
             className="inline-flex items-center justify-center w-32 h-32 rounded-3xl bg-gradient-to-br from-orange-400 via-orange-500 to-red-500 shadow-2xl shadow-orange-500/30 mb-8"
             whileHover={{ scale: 1.05 }}
             transition={{ type: "spring", stiffness: 300, damping: 20 }}
             aria-label="Moltz logo"
           >
-            <motion.span 
+            <motion.span
               className="text-7xl drop-shadow-lg"
-              animate={{ 
-                rotate: [0, -10, 10, -10, 10, 0] 
+              animate={{
+                rotate: [0, -10, 10, -10, 10, 0],
               }}
-              transition={{ 
-                duration: 2, 
-                ease: "easeInOut", 
+              transition={{
+                duration: 2,
+                ease: "easeInOut",
                 repeat: Infinity,
-                repeatDelay: 1
+                repeatDelay: 1,
               }}
               role="img"
               aria-label="Lobster emoji"
@@ -70,13 +73,13 @@ export function WelcomeStep({ onNext, onSkip }: WelcomeStepProps) {
         <motion.div
           initial={{ opacity: 0, y: 32 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ 
-            duration: 0.7, 
+          transition={{
+            duration: 0.7,
             delay: 0.2,
-            ease: [0.16, 1, 0.3, 1]
+            ease: [0.16, 1, 0.3, 1],
           }}
         >
-          <h1 
+          <h1
             id="welcome-heading"
             className="text-6xl font-bold bg-gradient-to-r from-orange-500 via-red-500 to-pink-500 bg-clip-text text-transparent mb-4"
           >
@@ -92,37 +95,56 @@ export function WelcomeStep({ onNext, onSkip }: WelcomeStepProps) {
         </motion.div>
 
         {/* Feature highlights */}
-        <div 
+        <div
           className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-3xl mx-auto"
           role="list"
           aria-label="Moltz features"
         >
           {[
-            { icon: "📅", label: "Reschedule my 3pm and notify them", gradient: "from-orange-500/10 to-red-500/10", border: "border-orange-500/20" },
-            { icon: "📧", label: "What did John email me about?", gradient: "from-red-500/10 to-pink-500/10", border: "border-red-500/20" },
-            { icon: "📁", label: "Find that contract from last week", gradient: "from-pink-500/10 to-purple-500/10", border: "border-pink-500/20" }
+            {
+              icon: "📅",
+              label: "Reschedule my 3pm and notify them",
+              gradient: "from-orange-500/10 to-red-500/10",
+              border: "border-orange-500/20",
+            },
+            {
+              icon: "📧",
+              label: "What did John email me about?",
+              gradient: "from-red-500/10 to-pink-500/10",
+              border: "border-red-500/20",
+            },
+            {
+              icon: "📁",
+              label: "Find that contract from last week",
+              gradient: "from-pink-500/10 to-purple-500/10",
+              border: "border-pink-500/20",
+            },
           ].map((feature, index) => (
             <motion.div
               key={feature.label}
               role="listitem"
               initial={{ opacity: 0, y: 32 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ 
+              transition={{
                 duration: 0.5,
-                delay: 0.4 + (index * 0.1),
-                ease: [0.16, 1, 0.3, 1]
+                delay: 0.4 + index * 0.1,
+                ease: [0.16, 1, 0.3, 1],
               }}
-              whileHover={{ 
+              whileHover={{
                 scale: 1.05,
-                transition: { type: "spring", stiffness: 400, damping: 25 }
+                transition: { type: "spring", stiffness: 400, damping: 25 },
               }}
               className={cn(
                 "p-6 rounded-xl bg-gradient-to-br border",
                 feature.gradient,
-                feature.border
+                feature.border,
               )}
             >
-              <div className="text-3xl mb-3" role="img" aria-label={feature.label}>
+              <div
+                className="text-3xl mb-3"
+                role="img"
+                aria-label={feature.label}
+              >
                 {feature.icon}
               </div>
               <p className="text-sm font-medium">{feature.label}</p>
@@ -134,10 +156,10 @@ export function WelcomeStep({ onNext, onSkip }: WelcomeStepProps) {
         <motion.div
           initial={{ opacity: 0, y: 32 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ 
-            duration: 0.7, 
+          transition={{
+            duration: 0.7,
             delay: 0.7,
-            ease: [0.16, 1, 0.3, 1]
+            ease: [0.16, 1, 0.3, 1],
           }}
           className="flex flex-col items-center gap-4"
         >

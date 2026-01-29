@@ -51,9 +51,9 @@ interface SidebarProps {
   onSettingsClosed?: () => void;
 }
 
-export function Sidebar({ 
-  onToggle: _onToggle, 
-  onRerunSetup, 
+export function Sidebar({
+  onToggle: _onToggle,
+  onRerunSetup,
   hasUpdateAvailable,
   forceShowSettings,
   onSettingsClosed,
@@ -78,7 +78,7 @@ export function Sidebar({
       deleteConversation: state.deleteConversation,
       pinConversation: state.pinConversation,
       connected: state.connected,
-    }))
+    })),
   );
   const [searchQuery, setSearchQuery] = useState("");
   const [settingsOpen, setSettingsOpen] = useState(false);
@@ -231,7 +231,11 @@ export function Sidebar({
       </div>
 
       {/* Quick filter */}
-      <div className="px-3 pb-2" role="search" aria-label="Filter conversations">
+      <div
+        className="px-3 pb-2"
+        role="search"
+        aria-label="Filter conversations"
+      >
         <label htmlFor="conversation-filter" className="sr-only">
           Filter conversations by title or content
         </label>
@@ -389,13 +393,16 @@ function ConversationSection({
   const shouldVirtualize = conversations.length > 30;
 
   // Handle arrow key navigation between conversations
-  const handleNavigate = (currentIndex: number, direction: 'up' | 'down') => {
-    const buttons = parentRef.current?.querySelectorAll('button[aria-label^="Conversation:"]');
+  const handleNavigate = (currentIndex: number, direction: "up" | "down") => {
+    const buttons = parentRef.current?.querySelectorAll(
+      'button[aria-label^="Conversation:"]',
+    );
     if (!buttons || buttons.length === 0) return;
 
-    const nextIndex = direction === 'down' 
-      ? Math.min(currentIndex + 1, buttons.length - 1)
-      : Math.max(currentIndex - 1, 0);
+    const nextIndex =
+      direction === "down"
+        ? Math.min(currentIndex + 1, buttons.length - 1)
+        : Math.max(currentIndex - 1, 0);
 
     const nextButton = buttons[nextIndex] as HTMLButtonElement;
     nextButton?.focus();
@@ -489,7 +496,7 @@ interface ConversationItemProps {
   onPin: () => void;
   onExport: () => void;
   style?: React.CSSProperties;
-  onNavigate?: (direction: 'up' | 'down') => void;
+  onNavigate?: (direction: "up" | "down") => void;
 }
 
 function ConversationItem({

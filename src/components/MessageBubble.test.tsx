@@ -269,7 +269,9 @@ describe("MessageBubble", () => {
       render(<MessageBubble message={message} />);
 
       // Wait for markdown to load before looking for copy button
-      const copyButton = await screen.findByLabelText(/Copy code to clipboard/i);
+      const copyButton = await screen.findByLabelText(
+        /Copy code to clipboard/i,
+      );
       fireEvent.click(copyButton);
 
       await waitFor(() => {
@@ -290,7 +292,9 @@ describe("MessageBubble", () => {
       render(<MessageBubble message={message} />);
 
       // Wait for markdown to load before looking for copy button
-      const copyButton = await screen.findByLabelText(/Copy code to clipboard/i);
+      const copyButton = await screen.findByLabelText(
+        /Copy code to clipboard/i,
+      );
       fireEvent.click(copyButton);
 
       await waitFor(() => {

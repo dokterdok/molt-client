@@ -571,7 +571,7 @@ async fn try_connect_with_fallback(
         match first_attempt {
             Ok(Ok(stream)) => {
                 log_protocol_error("Manual TCP", "SUCCESS with original URL");
-                return Ok((stream, url.to_string(), false));
+                Ok((stream, url.to_string(), false))
             }
             Ok(Err(e)) => {
                 log_protocol_error("Manual TCP", &format!("Failed: {}", e));
@@ -592,36 +592,36 @@ async fn try_connect_with_fallback(
                     match second_attempt {
                         Ok(Ok(stream)) => {
                             log_protocol_error("Manual TCP", "SUCCESS with upgraded protocol");
-                            return Ok((stream, alternate_url, true));
+                            Ok((stream, alternate_url, true))
                         }
                         Ok(Err(e2)) => {
                             log_protocol_error(
                                 "Manual TCP",
                                 &format!("Upgrade also failed: {}", e2),
                             );
-                            return Err(GatewayError::Network {
+                            Err(GatewayError::Network {
                                 message: format!(
                                     "Unable to connect to Gateway at {}. Error: {}",
                                     url, e2
                                 ),
                                 retryable: true,
                                 retry_after: Some(Duration::from_millis(BACKOFF_INITIAL_MS)),
-                            });
+                            })
                         }
                         Err(_) => {
-                            return Err(GatewayError::Timeout {
+                            Err(GatewayError::Timeout {
                                 timeout_secs: timeout_duration.as_secs(),
                                 request_id: None,
-                            });
+                            })
                         }
                     }
                 } else {
                     // No safe alternate available (was already wss://)
-                    return Err(GatewayError::Network {
+                    Err(GatewayError::Network {
                         message: format!("Unable to connect to Gateway at {}. Error: {}", url, e),
                         retryable: true,
                         retry_after: Some(Duration::from_millis(BACKOFF_INITIAL_MS)),
-                    });
+                    })
                 }
             }
             Err(_) => {

@@ -109,9 +109,7 @@ describe("Keychain", () => {
 
       await setGatewayToken("new-token");
 
-      expect(keychainStore["com.moltz.client:gateway_token"]).toBe(
-        "new-token",
-      );
+      expect(keychainStore["com.moltz.client:gateway_token"]).toBe("new-token");
     });
 
     it("should delete the token when setting to empty string", async () => {

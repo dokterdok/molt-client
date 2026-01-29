@@ -79,7 +79,7 @@ export function SettingsDialog({
       setAvailableModels: state.setAvailableModels,
       modelsLoading: state.modelsLoading,
       setModelsLoading: state.setModelsLoading,
-    }))
+    })),
   );
   const { showSuccess, showError: showToastError } = useToast();
   const [formData, setFormData] = useState(settings);
@@ -398,11 +398,13 @@ export function SettingsDialog({
                       <TooltipContent side="top" className="max-w-xs">
                         <p className="font-medium mb-1">When do I need this?</p>
                         <p className="text-muted-foreground mb-2">
-                          Only if you specifically set up password protection. Most people don't need this.
+                          Only if you specifically set up password protection.
+                          Most people don't need this.
                         </p>
                         <p className="font-medium mb-1">Leave blank unless:</p>
                         <p className="text-muted-foreground">
-                          You get an "authentication failed" error or someone gave you a password for this setup.
+                          You get an "authentication failed" error or someone
+                          gave you a password for this setup.
                         </p>
                       </TooltipContent>
                     </Tooltip>

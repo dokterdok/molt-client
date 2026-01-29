@@ -143,7 +143,9 @@ export function ExportDialog({
     } catch (err: unknown) {
       console.error("Export failed:", err);
       const friendly = translateError(err instanceof Error ? err : String(err));
-      setError(`${friendly.title}: ${friendly.message}${friendly.suggestion ? '\n' + friendly.suggestion : ''}`);
+      setError(
+        `${friendly.title}: ${friendly.message}${friendly.suggestion ? "\n" + friendly.suggestion : ""}`,
+      );
     } finally {
       setIsExporting(false);
     }
@@ -164,7 +166,9 @@ export function ExportDialog({
     } catch (err: unknown) {
       console.error("Copy failed:", err);
       const friendly = translateError(err instanceof Error ? err : String(err));
-      setError(`${friendly.title}: ${friendly.message}${friendly.suggestion ? '\n' + friendly.suggestion : ''}`);
+      setError(
+        `${friendly.title}: ${friendly.message}${friendly.suggestion ? "\n" + friendly.suggestion : ""}`,
+      );
     }
   };
 
@@ -306,7 +310,10 @@ export function ExportDialog({
               <div className="p-3 bg-destructive/10 border border-destructive/20 rounded-lg animate-in fade-in slide-in-from-bottom-2 duration-200">
                 <div className="flex items-start gap-3">
                   <div className="flex-shrink-0 w-6 h-6 rounded-full bg-destructive/20 flex items-center justify-center mt-0.5">
-                    <AlertTriangle className="w-4 h-4 text-destructive" strokeWidth={2} />
+                    <AlertTriangle
+                      className="w-4 h-4 text-destructive"
+                      strokeWidth={2}
+                    />
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="text-sm text-destructive whitespace-pre-line">

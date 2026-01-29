@@ -20,7 +20,10 @@ export function GatewayExplainerStep({
     primaryButtonRef.current?.focus();
 
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Enter" && document.activeElement === primaryButtonRef.current) {
+      if (
+        e.key === "Enter" &&
+        document.activeElement === primaryButtonRef.current
+      ) {
         e.preventDefault();
         onNext();
       }
@@ -30,7 +33,7 @@ export function GatewayExplainerStep({
   }, [onNext]);
 
   return (
-    <div 
+    <div
       className="flex-1 flex flex-col items-center justify-center p-8"
       role="main"
       aria-labelledby="explainer-heading"
@@ -43,7 +46,7 @@ export function GatewayExplainerStep({
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
           className="text-center"
         >
-          <motion.div 
+          <motion.div
             className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-blue-400 to-blue-600 shadow-xl shadow-blue-500/20 mb-6"
             whileHover={{ scale: 1.05, rotate: 5 }}
             transition={{ type: "spring", stiffness: 400, damping: 25 }}
@@ -64,18 +67,16 @@ export function GatewayExplainerStep({
               />
             </svg>
           </motion.div>
-          <h2 id="explainer-heading" className="text-4xl font-bold mb-3">How Moltz Works</h2>
+          <h2 id="explainer-heading" className="text-4xl font-bold mb-3">
+            How Moltz Works
+          </h2>
           <p className="text-lg text-muted-foreground">
             Moltz connects directly to your stuff—no cloud required
           </p>
         </motion.div>
 
         {/* Explanation cards */}
-        <div 
-          className="space-y-4"
-          role="list"
-          aria-label="Gateway features"
-        >
+        <div className="space-y-4" role="list" aria-label="Gateway features">
           {[
             {
               icon: "🔐",
@@ -84,7 +85,7 @@ export function GatewayExplainerStep({
               gradient: "from-green-500/10 to-emerald-500/10",
               border: "border-green-500/20",
               iconBg: "bg-green-500/20",
-              titleColor: "text-green-600 dark:text-green-400"
+              titleColor: "text-green-600 dark:text-green-400",
             },
             {
               icon: "🔌",
@@ -93,7 +94,7 @@ export function GatewayExplainerStep({
               gradient: "from-purple-500/10 to-pink-500/10",
               border: "border-purple-500/20",
               iconBg: "bg-purple-500/20",
-              titleColor: "text-purple-600 dark:text-purple-400"
+              titleColor: "text-purple-600 dark:text-purple-400",
             },
             {
               icon: "⚡",
@@ -102,35 +103,37 @@ export function GatewayExplainerStep({
               gradient: "from-orange-500/10 to-red-500/10",
               border: "border-orange-500/20",
               iconBg: "bg-orange-500/20",
-              titleColor: "text-orange-600 dark:text-orange-400"
-            }
+              titleColor: "text-orange-600 dark:text-orange-400",
+            },
           ].map((card, index) => (
             <motion.div
               key={card.title}
               role="listitem"
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ 
-                duration: 0.5, 
-                delay: 0.2 + (index * 0.1),
-                ease: [0.16, 1, 0.3, 1]
+              transition={{
+                duration: 0.5,
+                delay: 0.2 + index * 0.1,
+                ease: [0.16, 1, 0.3, 1],
               }}
-              whileHover={{ 
+              whileHover={{
                 scale: 1.02,
                 x: 4,
-                transition: { type: "spring", stiffness: 400, damping: 25 }
+                transition: { type: "spring", stiffness: 400, damping: 25 },
               }}
               className={cn(
                 "p-6 rounded-xl bg-gradient-to-br border",
                 card.gradient,
-                card.border
+                card.border,
               )}
             >
               <div className="flex items-start gap-4">
-                <div className={cn(
-                  "w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0",
-                  card.iconBg
-                )}>
+                <div
+                  className={cn(
+                    "w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0",
+                    card.iconBg,
+                  )}
+                >
                   <span className="text-2xl" role="img" aria-label={card.title}>
                     {card.icon}
                   </span>

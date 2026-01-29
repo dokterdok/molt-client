@@ -46,7 +46,7 @@ export function ChatView() {
       markMessageSent: state.markMessageSent,
       markMessageFailed: state.markMessageFailed,
       markMessageQueued: state.markMessageQueued,
-    }))
+    })),
   );
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
@@ -85,29 +85,29 @@ export function ChatView() {
   // P1: Auto-scroll to bottom on new messages (only if already near bottom)
   // Separate effect for streaming vs. new messages for optimal UX
   const prevMessagesLengthRef = useRef(0);
-  
+
   useEffect(() => {
     if (!currentConversation) return;
-    
+
     const messagesLength = currentConversation.messages.length;
     const isNewMessage = messagesLength > prevMessagesLengthRef.current;
     prevMessagesLengthRef.current = messagesLength;
-    
+
     if (isNearBottom && isNewMessage) {
       // Smooth scroll for new messages
       messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentConversation?.messages.length, isNearBottom]);
-  
+
   // P1: Instant scroll during streaming for responsiveness
   useEffect(() => {
     if (!currentConversation || !currentStreamingMessageId) return;
-    
+
     const streamingMessage = currentConversation.messages.find(
-      m => m.id === currentStreamingMessageId
+      (m) => m.id === currentStreamingMessageId,
     );
-    
+
     if (streamingMessage && isNearBottom) {
       // Use instant scroll during streaming for zero jank
       // RAF ensures it happens after DOM update
@@ -126,7 +126,7 @@ export function ChatView() {
   const scrollRafRef = useRef<number | null>(null);
   const handleScroll = useCallback(() => {
     if (!scrollContainerRef.current) return;
-    
+
     // Cancel pending RAF to debounce
     if (scrollRafRef.current !== null) {
       cancelAnimationFrame(scrollRafRef.current);
@@ -134,12 +134,12 @@ export function ChatView() {
 
     scrollRafRef.current = requestAnimationFrame(() => {
       if (!scrollContainerRef.current) return;
-      
+
       const { scrollTop, scrollHeight, clientHeight } =
         scrollContainerRef.current;
       const distanceFromBottom = scrollHeight - scrollTop - clientHeight;
       setIsNearBottom(distanceFromBottom < 100);
-      
+
       scrollRafRef.current = null;
     });
   }, []);
@@ -223,8 +223,12 @@ export function ChatView() {
         });
       } catch (err: unknown) {
         console.error("Failed to send edited message:", err);
-        const friendly = translateError(err instanceof Error ? err : String(err));
-        setError(`${friendly.title}: ${friendly.message}${friendly.suggestion ? '\n' + friendly.suggestion : ''}`);
+        const friendly = translateError(
+          err instanceof Error ? err : String(err),
+        );
+        setError(
+          `${friendly.title}: ${friendly.message}${friendly.suggestion ? "\n" + friendly.suggestion : ""}`,
+        );
         setTimeout(() => setError(null), 15000);
       } finally {
         setIsSending(false);
@@ -321,8 +325,12 @@ export function ChatView() {
         });
       } catch (err: unknown) {
         console.error("Failed to regenerate response:", err);
-        const friendly = translateError(err instanceof Error ? err : String(err));
-        setError(`${friendly.title}: ${friendly.message}${friendly.suggestion ? '\n' + friendly.suggestion : ''}`);
+        const friendly = translateError(
+          err instanceof Error ? err : String(err),
+        );
+        setError(
+          `${friendly.title}: ${friendly.message}${friendly.suggestion ? "\n" + friendly.suggestion : ""}`,
+        );
         setTimeout(() => setError(null), 15000);
       } finally {
         setIsSending(false);
@@ -396,23 +404,33 @@ export function ChatView() {
       // Mark user message as sent (no longer pending)
       markMessageSent(currentConversation.id, userMessage.id);
     } catch (err: unknown) {
-      logError(err instanceof Error ? err : String(err), "ChatView.handleSendMessage", {
-        conversationId: currentConversation.id,
-        hasAttachments: attachments.length > 0,
-      });
+      logError(
+        err instanceof Error ? err : String(err),
+        "ChatView.handleSendMessage",
+        {
+          conversationId: currentConversation.id,
+          hasAttachments: attachments.length > 0,
+        },
+      );
       const friendly = translateError(err instanceof Error ? err : String(err));
       const errorMsg = String(err).replace("Error: ", "");
-      
+
       // Check if it's a connection error - queue for retry
-      if (errorMsg.toLowerCase().includes("connection") || 
-          errorMsg.toLowerCase().includes("network") ||
-          errorMsg.toLowerCase().includes("disconnected")) {
+      if (
+        errorMsg.toLowerCase().includes("connection") ||
+        errorMsg.toLowerCase().includes("network") ||
+        errorMsg.toLowerCase().includes("disconnected")
+      ) {
         markMessageQueued(currentConversation.id, userMessage.id);
-        setError(`${friendly.title}: ${friendly.message}${friendly.suggestion ? '\n' + friendly.suggestion : ''}`);
+        setError(
+          `${friendly.title}: ${friendly.message}${friendly.suggestion ? "\n" + friendly.suggestion : ""}`,
+        );
       } else {
         // Hard error - mark as failed
         markMessageFailed(currentConversation.id, userMessage.id, errorMsg);
-        setError(`${friendly.title}: ${friendly.message}${friendly.suggestion ? '\n' + friendly.suggestion : ''}`);
+        setError(
+          `${friendly.title}: ${friendly.message}${friendly.suggestion ? "\n" + friendly.suggestion : ""}`,
+        );
         setLastFailedMessage({ content, attachments });
       }
 

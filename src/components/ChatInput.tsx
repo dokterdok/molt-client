@@ -92,7 +92,12 @@ interface ChatInputProps {
   inputRef?: React.RefObject<HTMLTextAreaElement>;
 }
 
-export function ChatInput({ onSend, disabled, isSending, inputRef: externalRef }: ChatInputProps) {
+export function ChatInput({
+  onSend,
+  disabled,
+  isSending,
+  inputRef: externalRef,
+}: ChatInputProps) {
   const [message, setMessage] = useState("");
   const [attachments, setAttachments] = useState<PreparedAttachment[]>([]);
   const [isLoadingFiles, setIsLoadingFiles] = useState(false);
@@ -253,7 +258,9 @@ export function ChatInput({ onSend, disabled, isSending, inputRef: externalRef }
     } catch (err) {
       console.error("Failed to open file dialog:", err);
       const friendly = translateError(err instanceof Error ? err : String(err));
-      setFileError(`${friendly.title}: ${friendly.message}${friendly.suggestion ? ' ' + friendly.suggestion : ''}`);
+      setFileError(
+        `${friendly.title}: ${friendly.message}${friendly.suggestion ? " " + friendly.suggestion : ""}`,
+      );
       setTimeout(() => setFileError(null), 8000);
     } finally {
       setIsLoadingFiles(false);

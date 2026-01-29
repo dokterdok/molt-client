@@ -231,9 +231,7 @@ describe("toHTML", () => {
   it("should include title in head and body", () => {
     const conversation = createTestConversation();
     const result = toHTML(conversation);
-    expect(result).toContain(
-      "<title>Test Conversation - Moltz Export</title>",
-    );
+    expect(result).toContain("<title>Test Conversation - Moltz Export</title>");
     expect(result).toContain("<h1>Test Conversation</h1>");
   });
 

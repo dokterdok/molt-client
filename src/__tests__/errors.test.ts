@@ -342,10 +342,7 @@ describe("Error Translation", () => {
 
     it("should log error to console", () => {
       logError("Test error");
-      expect(consoleErrorSpy).toHaveBeenCalledWith(
-        " Error:",
-        "Test error",
-      );
+      expect(consoleErrorSpy).toHaveBeenCalledWith(" Error:", "Test error");
     });
 
     it("should log error with context", () => {
@@ -410,10 +407,9 @@ describe("Error Translation", () => {
       logError("Test error", undefined, { detail: "info" });
 
       expect(consoleErrorSpy).toHaveBeenCalledWith(" Error:", "Test error");
-      expect(consoleErrorSpy).toHaveBeenCalledWith(
-        " Additional context:",
-        { detail: "info" },
-      );
+      expect(consoleErrorSpy).toHaveBeenCalledWith(" Additional context:", {
+        detail: "info",
+      });
     });
   });
 

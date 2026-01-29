@@ -17,7 +17,9 @@ interface UpdateNotificationProps {
   onUpdateDismissed: () => void;
 }
 
-export function UpdateNotification({ onUpdateDismissed }: UpdateNotificationProps) {
+export function UpdateNotification({
+  onUpdateDismissed,
+}: UpdateNotificationProps) {
   const [updateInfo, setUpdateInfo] = useState<UpdateInfo | null>(null);
   const [isInstalling, setIsInstalling] = useState(false);
   const [downloadProgress, setDownloadProgress] = useState(0);
@@ -25,15 +27,21 @@ export function UpdateNotification({ onUpdateDismissed }: UpdateNotificationProp
 
   useEffect(() => {
     // Listen for update-available events from backend
-    const unlistenAvailable = listen<UpdateInfo>("update-available", (event) => {
-      setUpdateInfo(event.payload);
-      setError(null);
-    });
+    const unlistenAvailable = listen<UpdateInfo>(
+      "update-available",
+      (event) => {
+        setUpdateInfo(event.payload);
+        setError(null);
+      },
+    );
 
     // Listen for download progress
-    const unlistenProgress = listen<number>("update-download-progress", (event) => {
-      setDownloadProgress(event.payload);
-    });
+    const unlistenProgress = listen<number>(
+      "update-download-progress",
+      (event) => {
+        setDownloadProgress(event.payload);
+      },
+    );
 
     // Listen for download completion
     const unlistenDownloaded = listen("update-downloaded", () => {
@@ -96,7 +104,7 @@ export function UpdateNotification({ onUpdateDismissed }: UpdateNotificationProp
           "fixed bottom-4 right-4 z-50",
           "w-96 rounded-lg shadow-2xl",
           "bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700",
-          "overflow-hidden"
+          "overflow-hidden",
         )}
       >
         {/* Header */}
@@ -134,7 +142,9 @@ export function UpdateNotification({ onUpdateDismissed }: UpdateNotificationProp
           {isInstalling ? (
             <div className="space-y-2">
               <div className="flex items-center justify-between text-xs">
-                <span className="text-gray-600 dark:text-gray-400">Downloading...</span>
+                <span className="text-gray-600 dark:text-gray-400">
+                  Downloading...
+                </span>
                 <span className="text-gray-900 dark:text-white font-medium">
                   {downloadProgress.toFixed(0)}%
                 </span>
@@ -166,7 +176,7 @@ export function UpdateNotification({ onUpdateDismissed }: UpdateNotificationProp
                     "flex-1 px-4 py-2 rounded-md text-sm font-medium",
                     "bg-blue-600 hover:bg-blue-700 text-white",
                     "transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2",
-                    "dark:focus:ring-offset-gray-800"
+                    "dark:focus:ring-offset-gray-800",
                   )}
                 >
                   Update Now
@@ -178,7 +188,7 @@ export function UpdateNotification({ onUpdateDismissed }: UpdateNotificationProp
                     "bg-gray-100 hover:bg-gray-200 text-gray-700",
                     "dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-gray-300",
                     "transition-colors focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2",
-                    "dark:focus:ring-offset-gray-800"
+                    "dark:focus:ring-offset-gray-800",
                   )}
                 >
                   Later

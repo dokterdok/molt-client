@@ -165,7 +165,7 @@ export function DetectionStep({
   // If we found a Gateway, show confirmation UI
   if (foundUrl) {
     return (
-      <div 
+      <div
         className="flex-1 flex flex-col items-center justify-center p-8"
         role="main"
         aria-labelledby="found-heading"
@@ -183,14 +183,14 @@ export function DetectionStep({
             transition={{ duration: 0.5, delay: 0.1 }}
             className="text-center"
           >
-            <motion.div 
+            <motion.div
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
-              transition={{ 
-                type: "spring", 
-                stiffness: 200, 
+              transition={{
+                type: "spring",
+                stiffness: 200,
                 damping: 15,
-                delay: 0.2
+                delay: 0.2,
               }}
               className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-green-400 to-green-600 shadow-xl shadow-green-500/20 mb-6"
               aria-label="Success icon"
@@ -213,7 +213,9 @@ export function DetectionStep({
                 />
               </motion.svg>
             </motion.div>
-            <h2 id="found-heading" className="text-4xl font-bold mb-3">Gateway Found!</h2>
+            <h2 id="found-heading" className="text-4xl font-bold mb-3">
+              Gateway Found!
+            </h2>
             <p className="text-lg text-muted-foreground">
               We detected a Gateway at:
             </p>
@@ -272,7 +274,7 @@ export function DetectionStep({
 
   // Default: scanning UI
   return (
-    <div 
+    <div
       className="flex-1 flex flex-col items-center justify-center p-8"
       role="main"
       aria-labelledby="detection-heading"
@@ -286,20 +288,20 @@ export function DetectionStep({
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
           className="text-center"
         >
-          <motion.div 
+          <motion.div
             className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-blue-400 to-blue-600 shadow-xl shadow-blue-500/20 mb-6"
-            animate={{ 
+            animate={{
               scale: [1, 1.05, 1],
               boxShadow: [
                 "0 20px 25px -5px rgba(59, 130, 246, 0.2)",
                 "0 20px 25px -5px rgba(59, 130, 246, 0.4)",
-                "0 20px 25px -5px rgba(59, 130, 246, 0.2)"
-              ]
+                "0 20px 25px -5px rgba(59, 130, 246, 0.2)",
+              ],
             }}
-            transition={{ 
+            transition={{
               duration: 2,
               repeat: Infinity,
-              ease: "easeInOut"
+              ease: "easeInOut",
             }}
             aria-label="Scanning icon"
           >
@@ -309,10 +311,10 @@ export function DetectionStep({
               stroke="currentColor"
               viewBox="0 0 24 24"
               animate={{ rotate: 360 }}
-              transition={{ 
+              transition={{
                 duration: 3,
                 repeat: Infinity,
-                ease: "linear"
+                ease: "linear",
               }}
               aria-hidden="true"
             >
@@ -327,9 +329,7 @@ export function DetectionStep({
           <h2 id="detection-heading" className="text-4xl font-bold mb-3">
             Looking for Gateway...
           </h2>
-          <p className="text-lg text-muted-foreground">
-            Checking common ports
-          </p>
+          <p className="text-lg text-muted-foreground">Checking common ports</p>
         </motion.div>
 
         {/* Progress card */}

@@ -34,11 +34,11 @@ export interface TokenUsage {
 /**
  * Message send status for user feedback
  */
-export type MessageSendStatus = 
-  | "sending"      // Being sent to Gateway
-  | "sent"         // Confirmed by Gateway
-  | "queued"       // Queued for retry (disconnected)
-  | "failed";      // Failed to send
+export type MessageSendStatus =
+  | "sending" // Being sent to Gateway
+  | "sent" // Confirmed by Gateway
+  | "queued" // Queued for retry (disconnected)
+  | "failed"; // Failed to send
 
 /**
  * Single message in a conversation
@@ -164,7 +164,11 @@ interface Store {
     content: string,
   ) => void;
   markMessageSent: (conversationId: string, messageId: string) => void;
-  markMessageFailed: (conversationId: string, messageId: string, error: string) => void;
+  markMessageFailed: (
+    conversationId: string,
+    messageId: string,
+    error: string,
+  ) => void;
   markMessageQueued: (conversationId: string, messageId: string) => void;
   retryQueuedMessages: () => Promise<void>;
   getQueuedMessagesCount: () => number;
@@ -196,8 +200,8 @@ const debouncedPersist = (fn: () => void, delay = 500) => {
 };
 
 // CRITICAL-6: Clear timer on page unload to prevent memory leak
-if (typeof window !== 'undefined') {
-  window.addEventListener('beforeunload', () => {
+if (typeof window !== "undefined") {
+  window.addEventListener("beforeunload", () => {
     if (persistTimer) {
       clearTimeout(persistTimer);
       persistTimer = undefined;
@@ -342,9 +346,10 @@ export const useStore = create<Store>()((set, get) => ({
       id: generateId(),
       timestamp: new Date(),
       // Initialize sendStatus for user messages
-      sendStatus: messageData.role === "user" && messageData.isPending 
-        ? "sending" 
-        : messageData.sendStatus,
+      sendStatus:
+        messageData.role === "user" && messageData.isPending
+          ? "sending"
+          : messageData.sendStatus,
     };
 
     set((state) => ({
@@ -423,8 +428,13 @@ export const useStore = create<Store>()((set, get) => ({
           ? {
               ...c,
               messages: c.messages.map((m) =>
-                m.id === messageId 
-                  ? { ...m, isPending: false, sendStatus: "sent" as MessageSendStatus, sendError: undefined } 
+                m.id === messageId
+                  ? {
+                      ...m,
+                      isPending: false,
+                      sendStatus: "sent" as MessageSendStatus,
+                      sendError: undefined,
+                    }
                   : m,
               ),
             }
@@ -459,8 +469,13 @@ export const useStore = create<Store>()((set, get) => ({
           ? {
               ...c,
               messages: c.messages.map((m) =>
-                m.id === messageId 
-                  ? { ...m, isPending: false, sendStatus: "failed" as MessageSendStatus, sendError: error } 
+                m.id === messageId
+                  ? {
+                      ...m,
+                      isPending: false,
+                      sendStatus: "failed" as MessageSendStatus,
+                      sendError: error,
+                    }
                   : m,
               ),
             }
@@ -490,13 +505,13 @@ export const useStore = create<Store>()((set, get) => ({
           ? {
               ...c,
               messages: c.messages.map((m) =>
-                m.id === messageId 
-                  ? { 
-                      ...m, 
-                      sendStatus: "queued" as MessageSendStatus, 
+                m.id === messageId
+                  ? {
+                      ...m,
+                      sendStatus: "queued" as MessageSendStatus,
                       retryCount: (m.retryCount || 0) + 1,
-                      sendError: undefined 
-                    } 
+                      sendError: undefined,
+                    }
                   : m,
               ),
             }
@@ -507,7 +522,7 @@ export const useStore = create<Store>()((set, get) => ({
 
   retryQueuedMessages: async () => {
     const { conversations, connected } = get();
-    
+
     if (!connected) {
       // Not connected yet - will retry when connection established
       return;
@@ -516,7 +531,7 @@ export const useStore = create<Store>()((set, get) => ({
     // Find all queued messages across all conversations
     for (const conv of conversations) {
       const queuedMessages = conv.messages.filter(
-        (m) => m.sendStatus === "queued" && m.role === "user"
+        (m) => m.sendStatus === "queued" && m.role === "user",
       );
 
       for (const msg of queuedMessages) {
@@ -534,8 +549,8 @@ export const useStore = create<Store>()((set, get) => ({
                 ? {
                     ...c,
                     messages: c.messages.map((m) =>
-                      m.id === msg.id 
-                        ? { ...m, sendStatus: "sending" as MessageSendStatus } 
+                      m.id === msg.id
+                        ? { ...m, sendStatus: "sending" as MessageSendStatus }
                         : m,
                     ),
                   }
@@ -551,12 +566,13 @@ export const useStore = create<Store>()((set, get) => ({
               session_key: conv.id,
               model: conv.model || get().settings.defaultModel,
               thinking: conv.thinkingEnabled ? "low" : null,
-              attachments: msg.attachments?.map((a) => ({
-                id: a.id,
-                filename: a.filename,
-                mimeType: a.mimeType,
-                data: a.data,
-              })) || [],
+              attachments:
+                msg.attachments?.map((a) => ({
+                  id: a.id,
+                  filename: a.filename,
+                  mimeType: a.mimeType,
+                  data: a.data,
+                })) || [],
             },
           });
 
@@ -574,7 +590,9 @@ export const useStore = create<Store>()((set, get) => ({
   getQueuedMessagesCount: () => {
     const { conversations } = get();
     return conversations.reduce((count, conv) => {
-      return count + conv.messages.filter((m) => m.sendStatus === "queued").length;
+      return (
+        count + conv.messages.filter((m) => m.sendStatus === "queued").length
+      );
     }, 0);
   },
 

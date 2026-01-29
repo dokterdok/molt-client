@@ -50,8 +50,9 @@ export function NoGatewayStep({
             How Moltz Works
           </h3>
           <p className="text-sm text-muted-foreground leading-relaxed mb-4">
-            Moltz needs a background service running on your computer. This is what lets Moltz 
-            access your calendar, email, files, and more—all while keeping everything private on your machine.
+            Moltz needs a background service running on your computer. This is
+            what lets Moltz access your calendar, email, files, and more—all
+            while keeping everything private on your machine.
           </p>
           <ul className="space-y-2 text-sm text-muted-foreground">
             <li className="flex items-start gap-2">
@@ -93,7 +94,8 @@ export function NoGatewayStep({
               <div className="flex-1">
                 <p className="font-medium mb-2">Download and install Moltz</p>
                 <p className="text-sm text-muted-foreground mb-3">
-                  Visit the installation page to get the background service running.
+                  Visit the installation page to get the background service
+                  running.
                 </p>
                 <a
                   href="https://github.com/yusefmosiah/Choir#installation"
@@ -102,8 +104,18 @@ export function NoGatewayStep({
                   className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors text-sm font-medium"
                 >
                   Open Installation Guide
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                  <svg
+                    className="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                    />
                   </svg>
                 </a>
               </div>
@@ -130,8 +142,8 @@ export function NoGatewayStep({
           {/* Already installed? */}
           <div className="p-4 rounded-lg bg-blue-500/10 border border-blue-500/20">
             <p className="text-sm text-muted-foreground">
-              <strong>Already installed?</strong> You might need to manually enter the connection address. 
-              Click "Enter Manually" below.
+              <strong>Already installed?</strong> You might need to manually
+              enter the connection address. Click "Enter Manually" below.
             </p>
           </div>
         </div>

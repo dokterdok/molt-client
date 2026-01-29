@@ -1,7 +1,7 @@
 ﻿import { useStore } from "../stores/store";
 import { useShallow } from "zustand/react/shallow";
 import { cn } from "../lib/utils";
-import { Plus, AlertTriangle, Cpu, MessageSquare } from "lucide-react";
+import { Plus, AlertTriangle, MessageSquare } from "lucide-react";
 import { Button } from "./ui/button";
 import { formatDistanceToNow } from "date-fns";
 
@@ -12,8 +12,6 @@ export function WelcomeView() {
     selectConversation,
     addMessage,
     connected,
-    settings,
-    availableModels,
     conversations,
   } = useStore(
     useShallow((state) => ({
@@ -21,8 +19,6 @@ export function WelcomeView() {
       selectConversation: state.selectConversation,
       addMessage: state.addMessage,
       connected: state.connected,
-      settings: state.settings,
-      availableModels: state.availableModels,
       conversations: state.conversations,
     })),
   );
@@ -84,17 +80,6 @@ export function WelcomeView() {
     });
   };
 
-  // Get display name for current model
-  const currentModelName = (() => {
-    const model = availableModels.find((m) => m.id === settings.defaultModel);
-    if (model) return model.name;
-    // Fallback: extract name from ID
-    const parts = settings.defaultModel.split("/");
-    return parts[parts.length - 1]
-      .replace(/-/g, " ")
-      .replace(/\b\w/g, (c) => c.toUpperCase());
-  })();
-
   return (
     <div className="flex-1 flex flex-col items-center justify-center p-8 animate-in fade-in duration-500">
       <div className="max-w-3xl w-full text-center">
@@ -141,16 +126,7 @@ export function WelcomeView() {
           </div>
         )}
 
-        {/* Model info */}
-        {connected && (
-          <div className="mb-8 flex items-center justify-center gap-2 text-sm text-muted-foreground animate-in fade-in duration-300">
-            <Cpu className="w-4 h-4" strokeWidth={2} />
-            <span>Powered by</span>
-            <span className="px-2 py-0.5 bg-muted rounded-md font-medium text-foreground">
-              {currentModelName}
-            </span>
-          </div>
-        )}
+        {/* Model info - removed for cleaner UI */}
 
         {/* Continue conversation card */}
         {recentConversation && (
@@ -241,22 +217,7 @@ export function WelcomeView() {
           Start New Chat
         </Button>
 
-        {/* Keyboard hint */}
-        <p
-          className="mt-4 text-xs text-muted-foreground animate-in fade-in duration-500"
-          style={{ animationDelay: "500ms" }}
-        >
-          Press{" "}
-          <kbd className="px-1.5 py-0.5 bg-muted rounded font-mono mx-0.5">
-            ⌘N
-          </kbd>{" "}
-          to start a new chat
-          <span className="mx-2">·</span>
-          <kbd className="px-1.5 py-0.5 bg-muted rounded font-mono mx-0.5">
-            ⌘K
-          </kbd>{" "}
-          to search
-        </p>
+        {/* Keyboard hints removed for cleaner UI */}
       </div>
     </div>
   );

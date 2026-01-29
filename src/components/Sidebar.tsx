@@ -210,8 +210,7 @@ export function Sidebar({
           leftIcon={<Plus className="w-4 h-4" />}
           aria-label="Create new conversation"
         >
-          <span className="flex-1 text-left">New Chat</span>
-          <kbd className="text-xs opacity-70 font-mono">⌘N</kbd>
+          New Chat
         </Button>
       </div>
 
@@ -225,8 +224,7 @@ export function Sidebar({
           leftIcon={<Search className="w-4 h-4" />}
           aria-label="Search messages"
         >
-          <span className="flex-1 text-left">Search messages...</span>
-          <kbd className="text-xs font-mono">⌘K</kbd>
+          Search messages...
         </Button>
       </div>
 
@@ -331,8 +329,7 @@ export function Sidebar({
           }
           aria-label="Open settings"
         >
-          <span className="flex-1 text-left">Settings</span>
-          <kbd className="text-xs font-mono opacity-50">⌘,</kbd>
+          Settings
         </Button>
       </div>
 

@@ -20,7 +20,8 @@ import { Button } from "./ui/button";
 export function ChatView() {
   // PERF: Use selective subscriptions with shallow equality to prevent unnecessary re-renders
   const {
-    currentConversation,
+    currentConversationId,
+    conversations,
     addMessage,
     updateMessage,
     deleteMessagesAfter,
@@ -34,7 +35,8 @@ export function ChatView() {
     markMessageQueued,
   } = useStore(
     useShallow((state) => ({
-      currentConversation: state.currentConversation,
+      currentConversationId: state.currentConversationId,
+      conversations: state.conversations,
       addMessage: state.addMessage,
       updateMessage: state.updateMessage,
       deleteMessagesAfter: state.deleteMessagesAfter,
@@ -48,6 +50,11 @@ export function ChatView() {
       markMessageQueued: state.markMessageQueued,
     })),
   );
+  
+  // Derive currentConversation from id + conversations (getter doesn't trigger re-renders with useShallow)
+  const currentConversation = currentConversationId 
+    ? conversations.find(c => c.id === currentConversationId) || null 
+    : null;
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const chatInputRef = useRef<HTMLTextAreaElement>(null);

@@ -165,6 +165,12 @@ code {
 }
 
 /* Animation utilities */
+
+/* Reverse spin animation - for spinners with counter-clockwise arrows */
+.animate-spin-reverse {
+  animation: spin 1s linear infinite reverse;
+}
+
 @keyframes bounce {
   0%,
   100% {

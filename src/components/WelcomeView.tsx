@@ -81,7 +81,7 @@ export function WelcomeView() {
   };
 
   return (
-    <div className="flex-1 flex flex-col items-center justify-center p-8 animate-in fade-in duration-500">
+    <div className="flex-1 flex flex-col items-center justify-center p-8 animate-in fade-in duration-500 select-none">
       <div className="max-w-3xl w-full text-center">
         {/* Semantic heading for screen readers */}
         <h1 className="sr-only">Moltz AI Assistant - Welcome</h1>

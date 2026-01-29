@@ -6,7 +6,7 @@
  */
 
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor, act } from "@testing-library/react";
 import { userEvent } from "@testing-library/user-event";
 import { ImageRenderer, parseImageContent } from "../components/ImageRenderer";
 
@@ -77,7 +77,9 @@ describe("ImageRenderer", () => {
       const img = screen.getByRole("img");
       
       // Simulate successful load
-      img.dispatchEvent(new Event("load", { bubbles: true }));
+      await act(async () => {
+        img.dispatchEvent(new Event("load", { bubbles: true }));
+      });
 
       await waitFor(() => {
         expect(img).not.toHaveClass("opacity-0");

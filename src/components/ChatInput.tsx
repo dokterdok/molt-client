@@ -59,6 +59,7 @@ const MIME_TYPES: Record<string, string> = {
 
 const IMAGE_TYPES = ["image/png", "image/jpeg", "image/gif", "image/webp"];
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
+const MAX_MESSAGE_LENGTH = 100000; // 100k characters (reasonable for AI models)
 
 function getExtension(filename: string): string {
   const parts = filename.split(".");
@@ -146,6 +147,18 @@ export function ChatInput({ onSend, disabled, isSending }: ChatInputProps) {
     if (disabled || isSending) return; // Prevent double-submit
     const trimmedMessage = message.trim();
     if (!trimmedMessage && attachments.length === 0) return;
+    
+    // Validate message length
+    if (trimmedMessage.length > MAX_MESSAGE_LENGTH) {
+      const lengthKB = (trimmedMessage.length / 1000).toFixed(1);
+      setFileError(`Message too long (${lengthKB}k characters). Maximum is 100k characters. Try breaking it into smaller messages.`);
+      if (errorTimerRef.current !== undefined) {
+        clearTimeout(errorTimerRef.current);
+      }
+      errorTimerRef.current = window.setTimeout(() => setFileError(null), 8000);
+      return;
+    }
+    
     onSend(trimmedMessage, attachments);
     setMessage("");
     setAttachments([]);
@@ -450,6 +463,22 @@ export function ChatInput({ onSend, disabled, isSending }: ChatInputProps) {
             Shift+Enter
           </kbd>{" "}
           for new line
+          {message.length > MAX_MESSAGE_LENGTH * 0.8 && (
+            <>
+              <span className="mx-1.5" aria-hidden="true">
+                ·
+              </span>
+              <span
+                className={cn(
+                  message.length > MAX_MESSAGE_LENGTH
+                    ? "text-destructive font-medium"
+                    : "text-amber-600 dark:text-amber-400"
+                )}
+              >
+                {(message.length / 1000).toFixed(1)}k / 100k chars
+              </span>
+            </>
+          )}
         </p>
       </div>
     </div>

@@ -182,16 +182,13 @@ function AppContent() {
         // Load conversations from IndexedDB
         const { conversations } = await loadPersistedData();
 
-        // Restore conversations to store and auto-select the most recent one
+        // Restore conversations to store (sorted by most recent)
+        // Don't auto-select - show welcome screen, but conversations visible in sidebar
         if (conversations.length > 0) {
-          // Sort by updatedAt descending to get most recent first
           const sorted = [...conversations].sort(
             (a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
           );
-          useStore.setState({ 
-            conversations: sorted,
-            currentConversationId: sorted[0].id, // Auto-select most recent
-          });
+          useStore.setState({ conversations: sorted });
         }
       } catch (err) {
         console.error("Failed to load persisted data:", err);

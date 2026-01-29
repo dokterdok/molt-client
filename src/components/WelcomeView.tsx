@@ -1,8 +1,9 @@
 ﻿import { useStore } from "../stores/store";
 import { useShallow } from "zustand/react/shallow";
 import { cn } from "../lib/utils";
-import { Plus, AlertTriangle, Cpu } from "lucide-react";
+import { Plus, AlertTriangle, Cpu, MessageSquare } from "lucide-react";
 import { Button } from "./ui/button";
+import { formatDistanceToNow } from "date-fns";
 
 export function WelcomeView() {
   // PERF: Use selective subscriptions with shallow equality to prevent unnecessary re-renders
@@ -13,6 +14,7 @@ export function WelcomeView() {
     connected,
     settings,
     availableModels,
+    conversations,
   } = useStore(
     useShallow((state) => ({
       createConversation: state.createConversation,
@@ -21,8 +23,12 @@ export function WelcomeView() {
       connected: state.connected,
       settings: state.settings,
       availableModels: state.availableModels,
+      conversations: state.conversations,
     })),
   );
+
+  // Get the most recent conversation with messages (for "Continue" card)
+  const recentConversation = conversations.find(c => c.messages.length > 0);
 
   // Moltz-specific suggestions showcasing agentic capabilities
   // Titles kept short to fit in cards without truncation
@@ -146,11 +152,41 @@ export function WelcomeView() {
           </div>
         )}
 
+        {/* Continue conversation card */}
+        {recentConversation && (
+          <div className="mb-6 animate-in fade-in slide-in-from-bottom-2 duration-300">
+            <button
+              onClick={() => selectConversation(recentConversation.id)}
+              disabled={!connected}
+              className={cn(
+                "w-full max-w-md mx-auto p-4 text-left rounded-xl border-2 transition-all duration-200",
+                connected
+                  ? "border-primary/30 bg-primary/5 hover:border-primary/50 hover:bg-primary/10 hover:shadow-lg hover:shadow-primary/10 hover:-translate-y-0.5 cursor-pointer"
+                  : "border-border/50 opacity-50 cursor-not-allowed",
+              )}
+            >
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-lg bg-primary/20 flex items-center justify-center">
+                  <MessageSquare className="w-5 h-5 text-primary" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="font-semibold text-primary">Continue your conversation</p>
+                  <p className="text-xs text-muted-foreground truncate">
+                    {recentConversation.messages.find(m => m.role === "user")?.content.slice(0, 50) || "Chat with Clawd"} 
+                    {" · "}
+                    {formatDistanceToNow(new Date(recentConversation.updatedAt), { addSuffix: true })}
+                  </p>
+                </div>
+              </div>
+            </button>
+          </div>
+        )}
+
         {/* Suggestions */}
         <div className="mb-8">
           <h3 className="sr-only">Suggested actions</h3>
           <p className="text-sm text-muted-foreground mb-4">
-            Try asking me to...
+            {recentConversation ? "Or try something new..." : "Try asking me to..."}
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
             {suggestions.map((suggestion, i) => (

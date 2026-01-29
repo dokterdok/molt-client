@@ -565,7 +565,12 @@ function ConversationItem({
             isSelected ? "font-semibold" : "font-medium",
           )}
         >
-          {conversation.title}
+          {/* Show better title: if "New Chat" but has messages, derive from first message */}
+          {conversation.title === "New Chat" && conversation.messages.length > 0
+            ? conversation.messages.find(m => m.role === "user")?.content.slice(0, 30) + 
+              (conversation.messages.find(m => m.role === "user")?.content.length > 30 ? "..." : "") ||
+              "Chat with Clawd"
+            : conversation.title}
         </p>
         <p className="text-xs text-muted-foreground/60">
           {formatDistanceToNow(new Date(conversation.updatedAt), {

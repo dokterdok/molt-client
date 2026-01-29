@@ -4,11 +4,13 @@
  * Features:
  * - Syntax highlighting via highlight.js
  * - Copy button with visual feedback
- * - Language labels
+ * - Language labels + filename detection
  * - Line numbers (toggleable)
  * - Wrap toggle for long lines
  * - Diff highlighting (+/- lines)
  * - Live HTML/CSS preview
+ * - Run button for JS/TS code (sandboxed eval)
+ * - Open in CodeSandbox for complex examples
  */
 
 import { useState, memo, useMemo, useCallback, ReactNode } from "react";
@@ -22,6 +24,9 @@ import {
   X,
   ChevronDown,
   ChevronUp,
+  ExternalLink,
+  AlertCircle,
+  FileCode,
 } from "lucide-react";
 
 interface CodeBlockProps {
@@ -90,6 +95,36 @@ const LANGUAGE_NAMES: Record<string, string> = {
 // Languages that support live preview
 const PREVIEWABLE_LANGUAGES = ["html", "htm", "svg"];
 
+// Languages that support "Run" execution
+const RUNNABLE_LANGUAGES = ["js", "javascript", "ts", "typescript", "jsx", "tsx"];
+
+// Regex to extract filename from first comment line
+// Matches: // filename.ts, /* filename.ts */, # filename.py
+const FILENAME_PATTERNS = [
+  /^\/\/\s*(\S+\.\w+)\s*$/m,           // // filename.ts
+  /^\/\*\s*(\S+\.\w+)\s*\*\/\s*$/m,    // /* filename.ts */
+  /^#\s*(\S+\.\w+)\s*$/m,              // # filename.py
+];
+
+/**
+ * Extract filename from code if present in first line comment
+ */
+function extractFilename(code: string): string | null {
+  const firstLine = code.split('\n')[0].trim();
+  for (const pattern of FILENAME_PATTERNS) {
+    const match = firstLine.match(pattern);
+    if (match) return match[1];
+  }
+  return null;
+}
+
+// Execution result type
+interface ExecutionResult {
+  success: boolean;
+  output: string;
+  error?: string;
+}
+
 export const CodeBlock = memo(function CodeBlock({
   code,
   language,
@@ -102,11 +137,15 @@ export const CodeBlock = memo(function CodeBlock({
   const [wrapLines, setWrapLines] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
   const [previewExpanded, setPreviewExpanded] = useState(true);
+  const [isRunning, setIsRunning] = useState(false);
+  const [executionResult, setExecutionResult] = useState<ExecutionResult | null>(null);
 
   const displayLanguage = LANGUAGE_NAMES[language.toLowerCase()] || language;
   const isDiff = language === "diff";
   const canPreview = PREVIEWABLE_LANGUAGES.includes(language.toLowerCase());
+  const canRun = RUNNABLE_LANGUAGES.includes(language.toLowerCase());
   const isCopied = copiedCode === code;
+  const filename = useMemo(() => extractFilename(code), [code]);
 
   // Split code into lines for line numbers and diff highlighting
   const lines = useMemo(() => code.split("\n"), [code]);

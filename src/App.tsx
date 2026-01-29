@@ -132,7 +132,8 @@ function AppContent() {
   const [errorDismissed, setErrorDismissed] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
   const [showCommandPalette, setShowCommandPalette] = useState(false);
-  const [showSearchDialog, setShowSearchDialog] = useState(false);
+  // Note: showSearchDialog planned for future use
+  const [, setShowSearchDialog] = useState(false);
   const { toasts, dismissToast, showError, showSuccess } = useToast();
   // PERF: Use selective subscriptions with shallow equality to prevent unnecessary re-renders
   const {

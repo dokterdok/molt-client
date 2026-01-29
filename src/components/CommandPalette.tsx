@@ -169,8 +169,6 @@ export function CommandPalette({
     // Add model switching commands
     availableModels.forEach((model: ModelInfo) => {
       const isCurrentDefault = settings.defaultModel === model.id;
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const isCurrentConversation = currentConversation?.model === model.id;
       items.push({
         id: `model-${model.id}`,
         label: `Switch to ${model.name}`,

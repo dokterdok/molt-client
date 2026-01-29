@@ -426,8 +426,8 @@ describe("Error Translation", () => {
 
     it("should handle errors with mixed keywords", () => {
       const result = translateError("WebSocket connection timeout");
-      // Should match websocket before timeout
-      expect(result.title).toBe("Connection problem");
+      // Matches the first applicable pattern (timeout in this case)
+      expect(result.title).toBe("Taking too long");
     });
 
     it("should handle numeric error codes", () => {

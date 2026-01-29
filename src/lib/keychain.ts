@@ -9,6 +9,7 @@ const SERVICE_NAME = "com.moltz.client";
 
 /**
  * Get the gateway token from the OS keychain
+ * Throws on error to allow callers to handle failures
  */
 export async function getGatewayToken(): Promise<string> {
   try {
@@ -18,9 +19,19 @@ export async function getGatewayToken(): Promise<string> {
     });
     return token;
   } catch (err) {
-    // Log the actual error for debugging
     console.warn("[keychain] Failed to get gateway token:", err);
-    // Token not found or error - return empty string
+    throw err; // Re-throw so callers know it failed
+  }
+}
+
+/**
+ * Try to get the gateway token, returning empty string on failure
+ * Use this for non-critical reads where missing token is acceptable
+ */
+export async function tryGetGatewayToken(): Promise<string> {
+  try {
+    return await getGatewayToken();
+  } catch {
     return "";
   }
 }

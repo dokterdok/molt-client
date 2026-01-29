@@ -20,7 +20,7 @@ import {
   deletePersistedMessage,
   deletePersistedMessages,
 } from "../lib/persistence";
-import { getGatewayToken, setGatewayToken } from "../lib/keychain";
+import { tryGetGatewayToken, setGatewayToken } from "../lib/keychain";
 
 /**
  * Token usage statistics for a message
@@ -745,12 +745,9 @@ export const useStore = create<Store>()((set, get) => ({
       const settingsToSave = { ...currentSettings, ...updates };
 
       // Save token to OS keychain (secure)
+      // Let errors propagate so callers can handle them
       if (updates.gatewayToken !== undefined) {
-        try {
-          await setGatewayToken(updates.gatewayToken);
-        } catch (err) {
-          console.error("Failed to save token to keychain:", err);
-        }
+        await setGatewayToken(updates.gatewayToken);
       }
 
       // Save other settings to localStorage (token excluded)
@@ -791,16 +788,13 @@ export const useStore = create<Store>()((set, get) => ({
       }
 
       // Load token from OS keychain (secure)
-      try {
-        const token = await getGatewayToken();
-        const tokenStatus = token
-          ? `loaded (${token.length} chars)`
-          : "empty/not found";
-        console.log(`[settings] Gateway token from keychain: ${tokenStatus}`);
-        settings = { ...settings, gatewayToken: token };
-      } catch (err) {
-        console.error("[settings] Failed to load token from keychain:", err);
-      }
+      // Uses tryGetGatewayToken which returns empty string on failure
+      const token = await tryGetGatewayToken();
+      const tokenStatus = token
+        ? `loaded (${token.length} chars)`
+        : "empty/not found";
+      console.log(`[settings] Gateway token from keychain: ${tokenStatus}`);
+      settings = { ...settings, gatewayToken: token };
 
       set({ settings });
     } catch (err) {

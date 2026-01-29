@@ -502,14 +502,28 @@ export function GatewaySetupStep({
       }
 
       // Step 1: Save settings (await to ensure keychain write completes)
-      await updateSettings({ gatewayUrl: actualUrl, gatewayToken: trimmedToken });
+      try {
+        await updateSettings({ gatewayUrl: actualUrl, gatewayToken: trimmedToken });
+      } catch (saveErr) {
+        throw new Error(`Failed to save settings: ${saveErr}`);
+      }
 
       // Check if cancelled
       if (isCancelledRef.current || !isMountedRef.current) return;
 
       // Step 2: Verify token was saved by reading it back
       const { getGatewayToken } = await import("../../../lib/keychain");
-      const savedToken = await getGatewayToken();
+      let savedToken: string;
+      try {
+        savedToken = await getGatewayToken();
+      } catch (keychainErr) {
+        // Keychain read failed - on macOS this could be permissions or first-run prompt
+        throw new Error(
+          `Keychain access failed: ${keychainErr}. ` +
+          `On macOS, try: Security & Privacy > Privacy > allow Moltz. ` +
+          `Or run the signed release build.`
+        );
+      }
       
       if (savedToken !== trimmedToken) {
         throw new Error(

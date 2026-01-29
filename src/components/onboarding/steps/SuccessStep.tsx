@@ -33,8 +33,9 @@ export function SuccessStep({ onNext, onSkip }: SuccessStepProps) {
       "#3b82f6",
       "#10b981",
     ];
+    // Reduced from 50 to 30 particles for better performance on low-end devices
     const particles: ConfettiParticle[] = Array.from(
-      { length: 50 },
+      { length: 30 },
       (_, i) => ({
         id: i,
         x: Math.random() * 100,

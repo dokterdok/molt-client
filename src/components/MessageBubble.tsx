@@ -97,7 +97,10 @@ export const MessageBubble = memo(function MessageBubble({
 
   return (
     <div
-      className={cn("group flex gap-3", isUser && "flex-row-reverse")}
+      className={cn(
+        "group flex gap-3 animate-message-in",
+        isUser && "flex-row-reverse"
+      )}
       onMouseEnter={() => setShowTimestamp(true)}
       onMouseLeave={() => setShowTimestamp(false)}
       role="article"

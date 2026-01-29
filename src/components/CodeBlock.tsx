@@ -138,6 +138,14 @@ export const CodeBlock = memo(function CodeBlock({
   const [previewExpanded, setPreviewExpanded] = useState(true);
   const [isRunning, setIsRunning] = useState(false);
   const [executionResult, setExecutionResult] = useState<ExecutionResult | null>(null);
+  
+  // Split code into lines
+  const lines = useMemo(() => code.split("\n"), [code]);
+  
+  // Collapse long code blocks by default (>25 lines)
+  const isLongCode = lines.length > 25;
+  const [isCollapsed, setIsCollapsed] = useState(isLongCode);
+  const COLLAPSED_LINES = 10;
 
   const displayLanguage = LANGUAGE_NAMES[language.toLowerCase()] || language;
   const isDiff = language === "diff";
@@ -145,9 +153,16 @@ export const CodeBlock = memo(function CodeBlock({
   const canRun = RUNNABLE_LANGUAGES.includes(language.toLowerCase());
   const isCopied = copiedCode === code;
   const filename = useMemo(() => extractFilename(code), [code]);
-
-  // Split code into lines for line numbers and diff highlighting
-  const lines = useMemo(() => code.split("\n"), [code]);
+  
+  // Code to display (collapsed or full)
+  const displayedCode = useMemo(() => {
+    if (isCollapsed && isLongCode) {
+      return lines.slice(0, COLLAPSED_LINES).join('\n');
+    }
+    return code;
+  }, [isCollapsed, isLongCode, lines, code]);
+  
+  const displayedLines = useMemo(() => displayedCode.split("\n"), [displayedCode]);
 
   // Detect if code has diff markers
   const hasDiffMarkers = useMemo(() => {
@@ -162,6 +177,10 @@ export const CodeBlock = memo(function CodeBlock({
   const handleCopy = useCallback(() => {
     onCopyCode(code);
   }, [code, onCopyCode]);
+
+  const toggleCollapsed = useCallback(() => {
+    setIsCollapsed((prev) => !prev);
+  }, []);
 
   const toggleLineNumbers = useCallback(() => {
     setShowLineNumbers((prev) => !prev);

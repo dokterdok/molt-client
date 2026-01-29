@@ -2,6 +2,7 @@ import { useEffect, useState, useRef, useCallback } from "react";
 import { invoke } from "@tauri-apps/api/core";
 import { cn } from "../../../lib/utils";
 import { Spinner } from "../../ui/spinner";
+import { DEFAULT_GATEWAY_URLS } from "../../../lib/constants";
 
 interface DetectionStepProps {
   onGatewayFound: (url: string) => void;
@@ -42,12 +43,7 @@ export function DetectionStep({
 
     setError(null);
 
-    const commonUrls = [
-      "ws://localhost:18789",
-      "ws://127.0.0.1:18789",
-      "ws://localhost:8789",
-      "wss://localhost:18789",
-    ];
+    const commonUrls = [...DEFAULT_GATEWAY_URLS];
 
     // Global timeout for entire detection (30 seconds max)
     const globalTimeout = setTimeout(() => {

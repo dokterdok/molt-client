@@ -88,6 +88,34 @@ export function translateError(error: string | Error): UserFriendlyError {
     };
   }
 
+  // Device identity / token errors
+  if (lowerError.includes("device identity required")) {
+    return {
+      title: "Authentication required",
+      message: "The gateway requires an auth token.",
+      suggestion:
+        "Enter your gateway token in Settings → Gateway Token. You can find it in your Clawdbot config.",
+    };
+  }
+
+  if (lowerError.includes("token mismatch") || lowerError.includes("token_mismatch")) {
+    return {
+      title: "Invalid token",
+      message: "The gateway token doesn't match.",
+      suggestion:
+        "Double-check your gateway token in Settings. Make sure it matches gateway.auth.token in your Clawdbot config.",
+    };
+  }
+
+  if (lowerError.includes("pairing required")) {
+    return {
+      title: "Pairing required",
+      message: "This device needs to be paired with the gateway.",
+      suggestion:
+        "Open the Clawdbot control panel and approve this device, or add your auth token in Settings.",
+    };
+  }
+
   // Authentication errors
   if (
     lowerError.includes("unauthorized") ||

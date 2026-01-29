@@ -25,7 +25,6 @@ import {
   ChevronDown,
   ChevronUp,
   ExternalLink,
-  AlertCircle,
   FileCode,
 } from "lucide-react";
 

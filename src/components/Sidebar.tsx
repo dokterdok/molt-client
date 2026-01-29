@@ -25,7 +25,7 @@ const SearchDialog = lazy(() =>
 const ExportDialog = lazy(() =>
   import("./ExportDialog").then((m) => ({ default: m.ExportDialog })),
 );
-import { formatDistanceToNow } from "date-fns";
+import { safeFormatDistanceToNow } from "../lib/safe-date";
 import {
   Plus,
   Search,
@@ -507,7 +507,7 @@ const ConversationItem = memo(function ConversationItem({
           {conversation.title}
         </p>
         <p className="text-xs text-muted-foreground/60">
-          {formatDistanceToNow(new Date(conversation.updatedAt), {
+          {safeFormatDistanceToNow(conversation.updatedAt, {
             addSuffix: true,
           })}
         </p>

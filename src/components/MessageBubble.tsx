@@ -156,7 +156,7 @@ export const MessageBubble = memo(function MessageBubble({
             )}
           >
             {!message.isPending &&
-              formatDistanceToNow(new Date(message.timestamp), {
+              safeFormatDistanceToNow(message.timestamp, {
                 addSuffix: true,
               })}
             {/* Token usage for assistant messages */}

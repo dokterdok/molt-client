@@ -1,7 +1,7 @@
 ﻿import React, { useState, useEffect, useCallback, useRef } from "react";
 import { useStore } from "../stores/store";
 import { cn } from "../lib/utils";
-import { formatDistanceToNow } from "date-fns";
+import { safeFormatDistanceToNow } from "../lib/safe-date";
 import { searchPersistedMessages } from "../lib/persistence";
 import { EmptyState } from "./ui/empty-state";
 import { MessageSquare, Frown } from "lucide-react";
@@ -430,7 +430,7 @@ export function SearchDialog({ open, onClose }: SearchDialogProps) {
                       {result.conversationTitle}
                     </span>
                     <span className="text-xs text-muted-foreground/70 whitespace-nowrap">
-                      {formatDistanceToNow(new Date(result.timestamp), {
+                      {safeFormatDistanceToNow(result.timestamp, {
                         addSuffix: true,
                       })}
                     </span>

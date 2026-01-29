@@ -1,5 +1,6 @@
 import { useRef, useEffect, useState, useCallback } from "react";
 import { invoke } from "@tauri-apps/api/core";
+import { invokeWithTimeout } from "../lib/invoke-with-timeout";
 import { useStore } from "../stores/store";
 import { ChatInput, PreparedAttachment } from "./ChatInput";
 import { MessageBubble } from "./MessageBubble";
@@ -162,15 +163,15 @@ export function ChatView() {
           isStreaming: true,
         });
 
-        // Send to gateway with updated message
-        await invoke("send_message", {
+        // Send to gateway with updated message (60s timeout)
+        await invokeWithTimeout("send_message", {
           params: {
             message: newContent,
             session_key: currentConversation.id,
             model: currentConversation.model || settings.defaultModel,
             thinking: currentConversation.thinkingEnabled ? "low" : null,
           },
-        });
+        }, 60000);
       } catch (err: unknown) {
         console.error("Failed to send edited message:", err);
         const errorMsg = typeof err === "string" ? err : String(err).replace("Error: ", "");
@@ -268,15 +269,15 @@ export function ChatView() {
           isStreaming: true,
         });
 
-        // Resend the preceding user message
-        await invoke("send_message", {
+        // Resend the preceding user message (60s timeout)
+        await invokeWithTimeout("send_message", {
           params: {
             message: precedingUserMessage.content,
             session_key: currentConversation.id,
             model: currentConversation.model || settings.defaultModel,
             thinking: currentConversation.thinkingEnabled ? "low" : null,
           },
-        });
+        }, 60000);
       } catch (err: unknown) {
         console.error("Failed to regenerate response:", err);
         const errorMsg = typeof err === "string" ? err : String(err).replace("Error: ", "");
@@ -336,8 +337,8 @@ export function ChatView() {
         isStreaming: true,
       });
 
-      // Send to gateway with attachments
-      await invoke("send_message", {
+      // Send to gateway with attachments (60s timeout for large attachments)
+      await invokeWithTimeout("send_message", {
         params: {
           message: content,
           session_key: currentConversation.id,
@@ -350,7 +351,7 @@ export function ChatView() {
             data: a.data,
           })),
         },
-      });
+      }, 60000);
 
       // Mark user message as sent (no longer pending)
       useStore

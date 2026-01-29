@@ -26,6 +26,7 @@ import {
   ChevronUp,
   ExternalLink,
   FileCode,
+  AlertCircle,
 } from "lucide-react";
 
 interface CodeBlockProps {
@@ -438,21 +439,22 @@ ${code}
       {/* Code content */}
       <div
         className={cn(
-          "!mt-0 !rounded-t-none !bg-zinc-900 dark:!bg-zinc-800 !border !border-t-0 !border-zinc-700",
+          "!mt-0 !rounded-t-none !bg-zinc-900 dark:!bg-zinc-800 !border !border-t-0 !border-zinc-700 relative",
           wrapLines ? "" : "overflow-x-auto",
-          (showPreview && canPreview) || executionResult ? "" : "rounded-b-lg"
+          (showPreview && canPreview) || executionResult || (isLongCode && isCollapsed) ? "" : "rounded-b-lg"
         )}
       >
         <pre
           className={cn(
             "!m-0 !p-0 !bg-transparent !border-0",
-            wrapLines && "whitespace-pre-wrap break-words"
+            wrapLines && "whitespace-pre-wrap break-words",
+            isCollapsed && isLongCode && "max-h-[260px] overflow-hidden"
           )}
         >
           {showLineNumbers || (isDiff || hasDiffMarkers) ? (
             <CodeWithLineNumbers
-              lines={lines}
-              code={code}
+              lines={isCollapsed && isLongCode ? displayedLines : lines}
+              code={isCollapsed && isLongCode ? displayedCode : code}
               children={children}
               className={className}
               showLineNumbers={showLineNumbers}
@@ -465,7 +467,37 @@ ${code}
             </code>
           )}
         </pre>
+        
+        {/* Collapsed overlay gradient */}
+        {isLongCode && isCollapsed && (
+          <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-zinc-900 dark:from-zinc-800 to-transparent pointer-events-none" />
+        )}
       </div>
+
+      {/* Expand/Collapse button for long code */}
+      {isLongCode && (
+        <button
+          onClick={toggleCollapsed}
+          className={cn(
+            "w-full flex items-center justify-center gap-2 px-4 py-2 text-xs font-medium transition-colors",
+            "bg-zinc-800 dark:bg-zinc-700 text-zinc-300 hover:text-white hover:bg-zinc-700 dark:hover:bg-zinc-600",
+            "border border-t-0 border-zinc-700",
+            !executionResult && !(showPreview && canPreview) && "rounded-b-lg"
+          )}
+        >
+          {isCollapsed ? (
+            <>
+              <ChevronDown className="w-4 h-4" />
+              Show all {lines.length} lines
+            </>
+          ) : (
+            <>
+              <ChevronUp className="w-4 h-4" />
+              Collapse
+            </>
+          )}
+        </button>
+      )}
 
       {/* Execution Result */}
       {executionResult && (

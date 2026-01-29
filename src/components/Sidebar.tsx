@@ -665,6 +665,6 @@ function ConversationItem({
         confirmText="Delete"
         confirmVariant="destructive"
       />
-    </button>
+    </div>
   );
 }

@@ -64,9 +64,9 @@ export function GatewayExplainerStep({
               />
             </svg>
           </motion.div>
-          <h2 id="explainer-heading" className="text-4xl font-bold mb-3">What's a Gateway?</h2>
+          <h2 id="explainer-heading" className="text-4xl font-bold mb-3">How Moltz Works</h2>
           <p className="text-lg text-muted-foreground">
-            Think of it as Moltz's connection to your world
+            Moltz connects directly to your stuff—no cloud required
           </p>
         </motion.div>
 

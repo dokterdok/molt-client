@@ -89,15 +89,17 @@ interface ChatInputProps {
   onSend: (content: string, attachments: PreparedAttachment[]) => void;
   disabled?: boolean;
   isSending?: boolean;
+  inputRef?: React.RefObject<HTMLTextAreaElement>;
 }
 
-export function ChatInput({ onSend, disabled, isSending }: ChatInputProps) {
+export function ChatInput({ onSend, disabled, isSending, inputRef: externalRef }: ChatInputProps) {
   const [message, setMessage] = useState("");
   const [attachments, setAttachments] = useState<PreparedAttachment[]>([]);
   const [isLoadingFiles, setIsLoadingFiles] = useState(false);
   const [fileError, setFileError] = useState<string | null>(null);
   const [isFocused, setIsFocused] = useState(false);
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const internalRef = useRef<HTMLTextAreaElement>(null);
+  const textareaRef = externalRef || internalRef;
 
   // Auto-focus on mount
   useEffect(() => {

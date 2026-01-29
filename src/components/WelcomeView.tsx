@@ -8,6 +8,7 @@ export function WelcomeView() {
   // PERF: Use selective subscriptions with shallow equality to prevent unnecessary re-renders
   const {
     createConversation,
+    selectConversation,
     addMessage,
     connected,
     settings,
@@ -15,6 +16,7 @@ export function WelcomeView() {
   } = useStore(
     useShallow((state) => ({
       createConversation: state.createConversation,
+      selectConversation: state.selectConversation,
       addMessage: state.addMessage,
       connected: state.connected,
       settings: state.settings,
@@ -68,6 +70,7 @@ export function WelcomeView() {
 
   const handleSuggestionClick = async (suggestion: (typeof suggestions)[0]) => {
     const conv = createConversation();
+    selectConversation(conv.id);
     // Auto-send the suggestion prompt
     addMessage(conv.id, {
       role: "user",
@@ -184,7 +187,10 @@ export function WelcomeView() {
 
         {/* New chat button */}
         <Button
-          onClick={() => createConversation()}
+          onClick={() => {
+            const conv = createConversation();
+            selectConversation(conv.id);
+          }}
           disabled={!connected}
           variant="primary"
           size="lg"

@@ -120,6 +120,13 @@ export const MessageBubble = memo(function MessageBubble({
   };
 
   const isUser = message.role === "user";
+  
+  // CRITICAL FIX: Safe timestamp handling to prevent crash on invalid dates
+  // formatDistanceToNow throws on invalid date, so we fallback to "just now"
+  const messageTimestamp = new Date(message.timestamp);
+  const timestampLabel = Number.isNaN(messageTimestamp.getTime())
+    ? "just now"
+    : formatDistanceToNow(messageTimestamp, { addSuffix: true });
 
   return (
     <div
@@ -131,7 +138,7 @@ export const MessageBubble = memo(function MessageBubble({
       onMouseEnter={() => setShowTimestamp(true)}
       onMouseLeave={() => setShowTimestamp(false)}
       role="article"
-      aria-label={`Message from ${isUser ? "You" : "Moltz"} sent ${formatDistanceToNow(new Date(message.timestamp), { addSuffix: true })}`}
+      aria-label={`Message from ${isUser ? "You" : "Moltz"} sent ${timestampLabel}`}
     >
       {/* Avatar - smaller in compact mode */}
       <div
@@ -195,10 +202,7 @@ export const MessageBubble = memo(function MessageBubble({
               showTimestamp || message.isPending ? "opacity-100" : "opacity-0",
             )}
           >
-            {!message.isPending &&
-              formatDistanceToNow(new Date(message.timestamp), {
-                addSuffix: true,
-              })}
+            {!message.isPending && timestampLabel}
             {/* Token usage for assistant messages */}
             {!isUser && message.usage?.totalTokens && (
               <span className="ml-2 text-muted-foreground/70">

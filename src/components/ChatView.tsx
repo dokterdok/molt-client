@@ -70,7 +70,6 @@ export function ChatView() {
     attachments: PreparedAttachment[];
   } | null>(null);
   const [messagesLoading, setMessagesLoading] = useState(false);
-  const lastConversationIdRef = useRef<string | null>(null);
 
   // Edit confirmation state
   const [pendingEdit, setPendingEdit] = useState<{
@@ -80,18 +79,20 @@ export function ChatView() {
   } | null>(null);
 
   // Show loading state when switching conversations
+  // CRITICAL FIX: Depend on currentConversationId, NOT currentConversation object
+  // The object reference changes on every message update, which was canceling the timer
+  // and leaving messagesLoading stuck true (causing skeleton placeholders)
   useEffect(() => {
-    if (
-      currentConversation &&
-      lastConversationIdRef.current !== currentConversation.id
-    ) {
-      setMessagesLoading(true);
-      lastConversationIdRef.current = currentConversation.id;
-      // Brief delay to simulate loading (messages load from memory instantly, but we want the skeleton for visual feedback)
-      const timer = setTimeout(() => setMessagesLoading(false), 150);
-      return () => clearTimeout(timer);
+    if (!currentConversationId) {
+      setMessagesLoading(false);
+      return;
     }
-  }, [currentConversation]);
+
+    setMessagesLoading(true);
+    // Brief delay to simulate loading (messages load from memory instantly, but we want the skeleton for visual feedback)
+    const timer = setTimeout(() => setMessagesLoading(false), 150);
+    return () => clearTimeout(timer);
+  }, [currentConversationId]);
 
   // P1: Auto-scroll to bottom on new messages (only if already near bottom)
   // Separate effect for streaming vs. new messages for optimal UX

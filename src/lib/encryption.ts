@@ -14,6 +14,7 @@
 import { invoke } from "@tauri-apps/api/core";
 
 const ENCRYPTION_KEY_NAME = "moltz-client-master-key";
+const LOCAL_STORAGE_KEY = "moltz-client-master-key-local";
 const ALGORITHM = "AES-GCM";
 const KEY_LENGTH = 256;
 
@@ -45,8 +46,22 @@ async function getMasterKey(): Promise<CryptoKey> {
       );
       return cachedKey;
     }
-  } catch {
-    // No existing key found, generating new one
+  } catch (err) {
+    console.warn("Keychain get failed, falling back to localStorage:", err);
+  }
+
+  // Try localStorage fallback
+  const localKey = getLocalStorageKey();
+  if (localKey) {
+    const keyData = base64ToArrayBuffer(localKey);
+    cachedKey = await crypto.subtle.importKey(
+      "raw",
+      keyData,
+      { name: ALGORITHM, length: KEY_LENGTH },
+      false,
+      ["encrypt", "decrypt"],
+    );
+    return cachedKey;
   }
 
   // Generate new key
@@ -68,6 +83,7 @@ async function getMasterKey(): Promise<CryptoKey> {
     });
   } catch (err) {
     console.warn("Failed to store key in keychain:", err);
+    setLocalStorageKey(base64Key);
     // Continue anyway - key will be in memory for this session
   }
 
@@ -196,6 +212,25 @@ function base64ToArrayBuffer(base64: string): ArrayBuffer {
     bytes[i] = binary.charCodeAt(i);
   }
   return bytes.buffer;
+}
+
+function getLocalStorageKey(): string | null {
+  try {
+    if (typeof localStorage === "undefined") return null;
+    return localStorage.getItem(LOCAL_STORAGE_KEY);
+  } catch (err) {
+    console.warn("Failed to read key from localStorage:", err);
+    return null;
+  }
+}
+
+function setLocalStorageKey(value: string): void {
+  try {
+    if (typeof localStorage === "undefined") return;
+    localStorage.setItem(LOCAL_STORAGE_KEY, value);
+  } catch (err) {
+    console.warn("Failed to write key to localStorage:", err);
+  }
 }
 
 /**

@@ -118,13 +118,54 @@ auth: { token: "<user_token>" },
 
 ---
 
+## CRITICAL BUG FOUND (2026-01-30 Session 2)
+
+### Root Cause Identified!
+
+From gateway logs at `06:43:19`:
+```json
+{
+  "cause": "invalid-handshake",
+  "handshake": "failed",
+  "handshakeError": "invalid handshake: first request must be connect",
+  "lastFrameType": "req",
+  "lastFrameMethod": "models.list"
+}
+```
+
+**The Problem:** Client was sending `models.list` request BEFORE the `connect` handshake completed!
+
+**Why it happened:**
+1. `connect_internal()` returned `success: true` immediately after WebSocket connected
+2. Frontend received success, thought connection was complete
+3. Frontend called `get_models()` which sent `models.list` request
+4. Gateway expected `connect` as FIRST request, got `models.list` instead
+5. Gateway rejected with "invalid handshake" error
+6. But client had already emitted success event = "both error AND success"
+
+### Fix Applied (Commit 3b0e32f)
+
+Added handshake wait mechanism:
+1. Created `HandshakeResult` enum (Success/Error)
+2. Added oneshot channel to wait for handshake completion
+3. `connect_internal` now waits for `hello-ok` response before returning
+4. Errors during handshake properly propagate back to caller
+5. 30 second timeout for handshake
+
+### Verification Status
+
+- [x] Fix committed and pushed
+- [ ] Needs testing to confirm fix works
+- [ ] Update this log with test results
+
+---
+
 ## Next Steps to Investigate
 
-1. [ ] Capture FULL error response from gateway to see exact rejection reason
-2. [ ] Compare our ConnectParams JSON with OpenClaw protocol schema
-3. [ ] Check if gateway has stricter validation than documented
-4. [ ] Verify token format matches what gateway expects
-5. [ ] Test with minimal connect params (remove optional fields)
+1. [x] ~~Capture FULL error response from gateway~~ **DONE - found `models.list` sent before connect**
+2. [ ] Test connection with fix applied
+3. [ ] Verify frontend doesn't call other methods before handshake complete
+4. [ ] Consider adding state check in `get_models` to prevent premature calls
 
 ---
 

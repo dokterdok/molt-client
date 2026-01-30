@@ -187,6 +187,78 @@ pub struct TokenUsage {
     pub total_tokens: Option<i32>,
 }
 
+/// Extract text content from various message formats (string, object with content/delta/text, array)
+fn extract_chat_message_text(message: &serde_json::Value) -> Option<String> {
+    match message {
+        serde_json::Value::String(value) => {
+            if value.is_empty() {
+                None
+            } else {
+                Some(value.clone())
+            }
+        }
+        serde_json::Value::Array(items) => {
+            let mut combined = String::new();
+            for item in items {
+                if let Some(text) = extract_chat_message_text(item) {
+                    combined.push_str(&text);
+                }
+            }
+            if combined.is_empty() {
+                None
+            } else {
+                Some(combined)
+            }
+        }
+        serde_json::Value::Object(map) => {
+            // Try direct string fields first
+            if let Some(content) = map.get("content").and_then(|c| c.as_str()) {
+                if !content.is_empty() {
+                    return Some(content.to_string());
+                }
+            }
+            if let Some(delta) = map.get("delta").and_then(|d| d.as_str()) {
+                if !delta.is_empty() {
+                    return Some(delta.to_string());
+                }
+            }
+            if let Some(text) = map.get("text").and_then(|t| t.as_str()) {
+                if !text.is_empty() {
+                    return Some(text.to_string());
+                }
+            }
+            // Try nested structures
+            if let Some(content) = map.get("content") {
+                if let Some(text) = extract_chat_message_text(content) {
+                    return Some(text);
+                }
+            }
+            if let Some(delta) = map.get("delta") {
+                if let Some(text) = extract_chat_message_text(delta) {
+                    return Some(text);
+                }
+            }
+            if let Some(message) = map.get("message") {
+                if let Some(text) = extract_chat_message_text(message) {
+                    return Some(text);
+                }
+            }
+            if let Some(parts) = map.get("parts") {
+                if let Some(text) = extract_chat_message_text(parts) {
+                    return Some(text);
+                }
+            }
+            if let Some(output_text) = map.get("output_text") {
+                if let Some(text) = extract_chat_message_text(output_text) {
+                    return Some(text);
+                }
+            }
+            None
+        }
+        _ => None,
+    }
+}
+
 /// Response from Gateway
 #[derive(Debug, Deserialize, Serialize, Clone)]
 pub struct GatewayResponse {
@@ -1194,10 +1266,8 @@ async fn handle_validated_frame(
                             match chat_event.state.as_deref() {
                                 Some("delta") => {
                                     if let Some(msg) = &chat_event.message {
-                                        if let Some(content) =
-                                            msg.get("content").and_then(|c| c.as_str())
-                                        {
-                                            let _ = app.emit("gateway:stream", content.to_string());
+                                        if let Some(content) = extract_chat_message_text(msg) {
+                                            let _ = app.emit("gateway:stream", content);
                                         }
                                     }
                                 }

@@ -38,7 +38,8 @@ struct GatewayStateInner {
     /// Channel for sending messages to WebSocket
     sender: Mutex<Option<mpsc::Sender<OutgoingMessage>>>,
     /// Pending request responses, keyed by request ID
-    pending_requests: Mutex<HashMap<String, PendingRequest>>,
+    /// Wrapped in Arc so it can be shared with the message handler
+    pending_requests: Arc<Mutex<HashMap<String, PendingRequest>>>,
     /// Stored credentials for reconnection
     stored_credentials: Mutex<Option<StoredCredentials>>,
     /// Message queue for retry during reconnection
@@ -65,7 +66,7 @@ impl Default for GatewayStateInner {
         Self {
             connection_state: RwLock::new(ConnectionState::Disconnected),
             sender: Mutex::new(None),
-            pending_requests: Mutex::new(HashMap::new()),
+            pending_requests: Arc::new(Mutex::new(HashMap::new())),
             stored_credentials: Mutex::new(None),
             message_queue: Mutex::new(VecDeque::new()),
             processed_ids: Mutex::new(HashSet::new()),
@@ -961,10 +962,9 @@ async fn connect_internal(
     let handler_session_id = session_id; // Capture session ID for stale detection
     let state_for_handler = Arc::clone(&state); // Clone Arc for stale session detection
 
-    // Create shared state for handler
-    let pending_requests: Arc<Mutex<HashMap<String, PendingRequest>>> =
-        Arc::new(Mutex::new(HashMap::new()));
-    let pending_clone = pending_requests.clone();
+    // CRITICAL FIX: Use state's pending_requests instead of creating a local copy
+    // This ensures get_models and other commands share the same request map as the handler
+    let pending_clone = Arc::clone(&state.pending_requests);
     let health_metrics = Arc::new(Mutex::new(HealthMetrics::default()));
     let health_clone = health_metrics.clone();
     let active_runs: Arc<Mutex<HashMap<String, Instant>>> = Arc::new(Mutex::new(HashMap::new()));
@@ -1063,7 +1063,7 @@ async fn connect_internal(
     start_stream_timeout_monitor(app.clone(), active_runs.clone()).await;
 
     // CRITICAL-1: Start cleanup task for expired pending requests
-    start_pending_requests_cleanup(pending_requests.clone()).await;
+    start_pending_requests_cleanup(Arc::clone(&state.pending_requests)).await;
 
     // CRITICAL FIX: Wait for handshake to complete before returning success
     // Timeout after 30 seconds (should be plenty for handshake)

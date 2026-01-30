@@ -861,7 +861,7 @@ pub async fn connect(
     let _ = app.emit("gateway:state", ConnectionState::Connecting);
 
     // Perform actual connection
-    match connect_internal(&app, &state.inner, &url, &token, new_session_id).await {
+    match connect_internal(&app, Arc::clone(&state.inner), &url, &token, new_session_id).await {
         Ok(result) => {
             // Only store credentials AFTER successful connection
             *state.inner.stored_credentials.lock().await = Some(StoredCredentials {
@@ -915,7 +915,7 @@ enum HandshakeResult {
 /// Internal connection logic
 async fn connect_internal(
     app: &AppHandle,
-    state: &GatewayStateInner,
+    state: Arc<GatewayStateInner>,
     url: &str,
     token: &str,
     session_id: u64,
@@ -959,8 +959,7 @@ async fn connect_internal(
     let tx_clone = tx.clone();
     let token_clone = token.to_string();
     let handler_session_id = session_id; // Capture session ID for stale detection
-    let state_session_ref = state.connection_session_id.lock().await;
-    drop(state_session_ref); // Just to verify we can access it
+    let state_for_handler = Arc::clone(&state); // Clone Arc for stale session detection
 
     // Create shared state for handler
     let pending_requests: Arc<Mutex<HashMap<String, PendingRequest>>> =
@@ -977,6 +976,19 @@ async fn connect_internal(
         log_protocol_error("MSG_HANDLER", &format!("Started for session {}", handler_session_id));
         
         while let Some(msg) = read.next().await {
+            // Check if this handler is stale (session ID changed)
+            let current_session_id = *state_for_handler.connection_session_id.lock().await;
+            if current_session_id != handler_session_id {
+                log_protocol_error(
+                    "MSG_HANDLER",
+                    &format!(
+                        "Stale handler detected (handler={}, current={}), exiting",
+                        handler_session_id, current_session_id
+                    ),
+                );
+                break;
+            }
+            
             match msg {
                 Ok(WsMessage::Text(text)) => {
                     let text_str = text.to_string();
@@ -1433,7 +1445,7 @@ async fn start_reconnection_loop(app: AppHandle, state: Arc<GatewayStateInner>) 
                     *session_id = session_id.wrapping_add(1);
                     *session_id
                 };
-                match connect_internal(&app, &state, &creds.url, &creds.token, new_session_id).await {
+                match connect_internal(&app, Arc::clone(&state), &creds.url, &creds.token, new_session_id).await {
                     Ok(_) => {
                         // Success!
                         state.reconnect_attempt.store(0, Ordering::SeqCst);

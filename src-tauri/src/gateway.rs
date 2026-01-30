@@ -1026,7 +1026,14 @@ async fn connect_internal(
                         .map(|f| f.reason.to_string())
                         .unwrap_or_else(|| "Unknown".to_string());
                     log_protocol_error("WebSocket closed", &format!("session={} reason={}", handler_session_id, reason));
+                    
+                    // CRITICAL: Update connection state on close
+                    *state_for_handler.connection_state.write().await = ConnectionState::Disconnected;
+                    *state_for_handler.sender.lock().await = None;
+                    state_for_handler.active_runs.lock().await.clear();
+                    
                     let _ = app_clone.emit("gateway:disconnected", reason.clone());
+                    let _ = app_clone.emit("gateway:state", ConnectionState::Disconnected);
                     
                     // Signal handshake failure if we close before completing
                     if let Some(tx) = handshake_tx_clone.lock().await.take() {
@@ -1039,7 +1046,18 @@ async fn connect_internal(
                 }
                 Err(e) => {
                     log_protocol_error("WebSocket error", &format!("session={} err={}", handler_session_id, e));
+                    
+                    // CRITICAL: Update connection state on error
+                    let fail_state = ConnectionState::Failed {
+                        reason: e.to_string(),
+                        can_retry: true,
+                    };
+                    *state_for_handler.connection_state.write().await = fail_state.clone();
+                    *state_for_handler.sender.lock().await = None;
+                    state_for_handler.active_runs.lock().await.clear();
+                    
                     let _ = app_clone.emit("gateway:error", e.to_string());
+                    let _ = app_clone.emit("gateway:state", fail_state);
                     
                     // Signal handshake failure on error
                     if let Some(tx) = handshake_tx_clone.lock().await.take() {

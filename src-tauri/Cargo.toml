@@ -28,7 +28,7 @@ tokio-tungstenite = { version = "0.28", features = ["native-tls"] }
 tokio-native-tls = "0.3"
 native-tls = "0.2"
 url = "2"
-socket2 = "0.5"
+socket2 = "0.6"
 futures-util = "0.3"
 chrono = { version = "0.4", features = ["serde"] }
 uuid = { version = "1", features = ["v4", "serde"] }
